@@ -1,0 +1,21 @@
+==================================================================================================
+						WebTester
+==================================================================================================
+
+The main goal is to simplify integrationtesting on the .NET platform, uttermost on websites with 
+basic authentication.
+
+It is a lightweight framework with no external dependencies.
+
+
+E.g of a test written in nUnit accessing a site with basic authentication:
+
+[Test]
+public void SomeUrl_Get_ReturnSomeData()
+{
+	var session = new Session(URL).As(USERNAME, PASSWORD);
+
+	var result = session.Get();
+
+	Assert.That(result.Html, Is.StringContaining("somedata"));
+}
