@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Net;
 using NUnit.Framework;
+using RestInspector.Navigation.Implementation;
 
-namespace RestInspector.UnitTests
+namespace RestInspector.UnitTests.Navigation
 {
 	[TestFixture]
-	public class NavigationTests
+	public class NavigatorTests
 	{
 		private TestableNavigator navigator;
 
@@ -13,6 +14,12 @@ namespace RestInspector.UnitTests
 		public void Setup()
 		{
 			navigator = new TestableNavigator(new Uri("http://noauth.local")); //uri is not important in these tests
+		}
+
+		[Test]
+		public void Ctor_ArgumentIsNull_ThrowArgumentNullException()
+		{
+			Assert.Throws<ArgumentNullException>(() => new Navigator(null));
 		}
 
 		[Test]

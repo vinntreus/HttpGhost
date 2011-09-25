@@ -46,7 +46,19 @@ namespace RestInspector
 
 		public INavigationResult Get()
 		{
-			return navigatorFactory.Create(Authentication, Credentials, url).Get();
+			var navigator = CreateNavigator();
+			return navigator.Get();
+		}
+
+		public INavigationResult Post(object postingObject)
+		{
+			var navigator = CreateNavigator();
+			return navigator.Post(postingObject);
+		}
+
+		private INavigator CreateNavigator()
+		{
+			return navigatorFactory.Create(Authentication, Credentials, url);
 		}
 	}
 }

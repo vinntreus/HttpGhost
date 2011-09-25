@@ -56,7 +56,7 @@ namespace RestInspector.UnitTests
 		}
 
 		[Test]
-		public void Get_WhenAuthenticationTypeIsAnonymous_ShouldGetStandardNavigator()
+		public void Get_ShouldUseNavigationFactory()
 		{
 			var session = new TestableSession(SOME_URL);
 			var factory = new Mock<INavigatorFactory>();
@@ -67,6 +67,32 @@ namespace RestInspector.UnitTests
 			session.Get();
 
 			factory.Verify(f => f.Create(It.IsAny<AuthenticationType>(), It.IsAny<Credentials>(), It.IsAny<Uri>()));
+			navigator.Verify(n => n.Get(), Times.Once());
+		}
+
+		//post any object
+		//serialize posting objekt to json, something more?
+
+
+		[Test]
+		public void Post_ShouldUseNavigationFactory()
+		{
+			var session = new TestableSession(SOME_URL);
+			var factory = new Mock<INavigatorFactory>();
+			var navigator = new Mock<INavigator>();
+			factory.Setup(f => f.Create(It.IsAny<AuthenticationType>(), It.IsAny<Credentials>(), It.IsAny<Uri>())).Returns(navigator.Object);
+			session.SetupNavigatorFactory(factory);
+
+			var postingObject = new PostingClass();
+			session.Post(postingObject);
+
+			factory.Verify(f => f.Create(It.IsAny<AuthenticationType>(), It.IsAny<Credentials>(), It.IsAny<Uri>()));
+			navigator.Verify(n => n.Post(postingObject), Times.Once());
+		}
+
+		private class PostingClass
+		{
+			public string Id { get; set; }
 		}
 
 		private class TestableSession : Session

@@ -1,7 +1,7 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using RestInspector.Authentication;
 
-namespace RestInspector.UnitTests
+namespace RestInspector.UnitTests.Authentication
 {
 	[TestFixture]
 	public class CredentialsTests	

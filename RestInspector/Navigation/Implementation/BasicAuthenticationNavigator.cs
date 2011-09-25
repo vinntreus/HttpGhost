@@ -7,7 +7,7 @@ namespace RestInspector.Navigation.Implementation
 {
 	public class BasicAuthenticationNavigator : Navigator
 	{
-		private readonly Credentials credentials;
+		protected readonly Credentials credentials;
 
 		public BasicAuthenticationNavigator(Uri uri, Credentials credentials) : base(uri)
 		{
