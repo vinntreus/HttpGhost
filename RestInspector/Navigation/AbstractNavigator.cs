@@ -31,7 +31,13 @@ namespace RestInspector.Navigation
 
 		public INavigationResult Post(object postingObject)
 		{
-			throw new NotImplementedException();
+			webRequest = CreateWebRequest();
+
+			webRequest.ObjectToPost(postingObject);
+
+			var response = GetWebResponse(webRequest);
+
+			return new NavigationResult(response);
 		}
 
 		protected virtual IWebResponse GetWebResponse(IWebRequest request)

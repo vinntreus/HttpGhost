@@ -7,5 +7,6 @@ namespace RestInspector.Infrastructure
 		IWebResponse GetResponse();
 		ICredentials Credentials { get; set; }
 		WebHeaderCollection Headers { get; set; }
+		void ObjectToPost(object postingObject);
 	}
 }

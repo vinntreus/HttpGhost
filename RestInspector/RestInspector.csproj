@@ -34,11 +34,14 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationType.cs" />
     <Compile Include="Authentication\Credentials.cs" />
     <Compile Include="Authentication\InvalidUserCredentialsException.cs" />
+    <Compile Include="Infrastructure\HttpSerializer.cs" />
     <Compile Include="Infrastructure\IWebRequest.cs" />
     <Compile Include="Infrastructure\IWebResponse.cs" />
     <Compile Include="Infrastructure\WrappedHttpWebRequest.cs" />
