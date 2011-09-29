@@ -43,14 +43,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\CredentialsTests.cs" />
-    <Compile Include="Navigation\BasicAuthenticationNavigatorTests.cs" />
-    <Compile Include="Navigation\NavigatorFactoryTests.cs" />
+    <Compile Include="FormSerializerTests.cs" />
     <Compile Include="Navigation\NavigatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionTests.cs" />
-    <Compile Include="TestableBasicAuthenticationNavigator.cs" />
     <Compile Include="TestableNavigationResult.cs" />
     <Compile Include="TestableNavigator.cs" />
+    <Compile Include="Transport\RequestTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

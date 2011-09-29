@@ -11,9 +11,9 @@ namespace RestInspector.IntegrationTests
 		[Test]
 		public void Session_GetHtml_ReturnHtml()
 		{
-			var session = new Session(BaseUrl);
+			var session = new Session();
 
-			var result = session.Get();
+			var result = session.Get(BaseUrl);
 
 			Assert.That(result.Html, Is.StringStarting("<!DOCTYPE html>"));
 		}
@@ -21,9 +21,9 @@ namespace RestInspector.IntegrationTests
 		[Test]
 		public void Session_PostHtml_ReturnHtml()
 		{
-			var session = new Session(BaseUrl + "/Home/create/");
+			var session = new Session();
 
-			var result = session.Post(new {Title = "jippi"});
+			var result = session.Post(new {Title = "jippi"}, BaseUrl + "/Home/Create");
 
 			Assert.That(result.Html, Is.StringContaining("jippi"));
 		}

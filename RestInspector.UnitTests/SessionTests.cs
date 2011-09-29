@@ -1,5 +1,4 @@
-﻿using System;
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 using RestInspector.Authentication;
 using RestInspector.Navigation;
@@ -11,100 +10,81 @@ namespace RestInspector.UnitTests
 	{
 		private const string SOME_URL = "http://a";
 
-		//string parsing, find data in html result
-
 		[Test]
 		public void Ctor_ShouldSetAuthenticationTypeToAnonymous()
 		{
-			var session = new Session(SOME_URL);
+			var session = new Session();
 			
-			Assert.That(session.Authentication, Is.EqualTo(AuthenticationType.Anonymous));
+			Assert.That(session.Authentication.Type, Is.EqualTo(AuthenticationType.Anonymous));
 		}
 
 		[Test]
 		public void Ctor_ShouldSetCredentialsToNull()
 		{
-			var session = new Session(SOME_URL);
+			var session = new Session();
 
-			Assert.That(session.Credentials, Is.Null);
+			Assert.That(session.Authentication.Credentials, Is.Null);
 		}
 
 		[Test]
-		public void As_WithValidUserNameAndPassword_SetsAuthenticationTypeToBasic()
+		public void Ctor_WithUserNameAndPassWord_ShouldSetAuthenticationTypeToBasic()
 		{
-			var session = new Session(SOME_URL).As("a", "b");
+			var session = new Session("a", "b");
 
-			Assert.That(session.Authentication, Is.EqualTo(AuthenticationType.BasicAuthentication));
+			Assert.That(session.Authentication.Type, Is.EqualTo(AuthenticationType.BasicAuthentication));
 		}
 
 		[Test]
-		public void As_WithValidUserNameAndPassword_SetsCredentials()
+		public void Ctor_WithUserNameAndPassWord_ShouldSetAuthenticationCredentials()
 		{
-			var session = new Session(SOME_URL).As("a", "b");
+			var session = new Session("a", "b");
 
-			Assert.That(session.Credentials.Username, Is.EqualTo("a"));
-			Assert.That(session.Credentials.Password, Is.EqualTo("b"));
+			Assert.That(session.Authentication.Credentials.Username, Is.EqualTo("a"));
+			Assert.That(session.Authentication.Credentials.Password, Is.EqualTo("b"));
 		}
 
 		[Test]
-		public void WithAuthentication_IsAlreadyBasicSetToAnonymous_ShouldReturnAnonymous()
+		public void Get_ShouldReturnResultFromNavigator()
 		{
-			var session = new Session(SOME_URL).As("a", "b").WithAuthentication(AuthenticationType.Anonymous);
+			var session = new TestableSession();
+			var expectedResult = new TestableNavigationResult();
+			session.SetupGetToReturn(expectedResult);
 
-			Assert.That(session.Authentication, Is.EqualTo(AuthenticationType.Anonymous));
-			
+			var result = session.Get(SOME_URL);
+
+			Assert.That(result, Is.SameAs(expectedResult));
 		}
 
 		[Test]
-		public void Get_ShouldUseNavigationFactory()
+		public void Post_ShouldReturnResultFromNavigator()
 		{
-			var session = new TestableSession(SOME_URL);
-			var factory = new Mock<INavigatorFactory>();
-			var navigator = new Mock<INavigator>();
-			factory.Setup(f => f.Create(It.IsAny<AuthenticationType>(), It.IsAny<Credentials>(), It.IsAny<Uri>())).Returns(navigator.Object);
-			session.SetupNavigatorFactory(factory);
-			
-			session.Get();
+			var session = new TestableSession();
+			var expectedResult = new TestableNavigationResult();
+			session.SetupPostToReturn(expectedResult);
 
-			factory.Verify(f => f.Create(It.IsAny<AuthenticationType>(), It.IsAny<Credentials>(), It.IsAny<Uri>()));
-			navigator.Verify(n => n.Get(), Times.Once());
-		}
+			var result = session.Post("a=a", SOME_URL);
 
-		//post any object
-		//serialize posting objekt to json, something more?
-
-
-		[Test]
-		public void Post_ShouldUseNavigationFactory()
-		{
-			var session = new TestableSession(SOME_URL);
-			var factory = new Mock<INavigatorFactory>();
-			var navigator = new Mock<INavigator>();
-			factory.Setup(f => f.Create(It.IsAny<AuthenticationType>(), It.IsAny<Credentials>(), It.IsAny<Uri>())).Returns(navigator.Object);
-			session.SetupNavigatorFactory(factory);
-
-			var postingObject = new PostingClass();
-			session.Post(postingObject);
-
-			factory.Verify(f => f.Create(It.IsAny<AuthenticationType>(), It.IsAny<Credentials>(), It.IsAny<Uri>()));
-			navigator.Verify(n => n.Post(postingObject), Times.Once());
-		}
-
-		private class PostingClass
-		{
-			public string Id { get; set; }
+			Assert.That(result, Is.SameAs(expectedResult));
 		}
 
 		private class TestableSession : Session
 		{
-			public TestableSession(string url) : base(url)
+			private readonly Mock<INavigator> navigatorMock = new Mock<INavigator>();
+
+			public TestableSession()
 			{
-				
+				navigatorMock = new Mock<INavigator>();
+				navigator = navigatorMock.Object;
 			}
 
-			public void SetupNavigatorFactory(Mock<INavigatorFactory> factory)
+			public void SetupPostToReturn(INavigationResult navigationResult)
 			{
-				navigatorFactory = factory.Object;
+				navigatorMock.Setup(n => n.Post(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<AuthenticationInfo>())).Returns(navigationResult);
+			}
+
+			public void SetupGetToReturn(INavigationResult navigationResult)
+			{
+				navigatorMock.Setup(n => n.Get(It.IsAny<string>(), It.IsAny<AuthenticationInfo>())).Returns(navigationResult);
 			}
 		}
 	}

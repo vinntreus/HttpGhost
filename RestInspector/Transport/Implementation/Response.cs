@@ -2,13 +2,13 @@ using System;
 using System.IO;
 using System.Net;
 
-namespace RestInspector.Infrastructure
+namespace RestInspector.Transport.Implementation
 {
-	public class WrappedHttpWebResponse : IWebResponse
+	public class Response : IResponse
 	{
 		private readonly HttpWebResponse response;
 
-		public WrappedHttpWebResponse(HttpWebResponse response)
+		public Response(HttpWebResponse response)
 		{
 			this.response = response;
 		}

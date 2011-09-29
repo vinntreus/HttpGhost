@@ -1,21 +1,21 @@
 using System;
 using Moq;
-using RestInspector.Infrastructure;
 using RestInspector.Navigation.Implementation;
+using RestInspector.Transport;
 
 namespace RestInspector.UnitTests
 {
 	public class TestableNavigator : Navigator
 	{
-		public Mock<IWebResponse> responseMock = new Mock<IWebResponse>(); 
-		public Mock<IWebRequest> requestMock = new Mock<IWebRequest>();
+		public Mock<IResponse> responseMock = new Mock<IResponse>(); 
+		public Mock<IRequest> requestMock = new Mock<IRequest>();
 
-		public TestableNavigator(Uri uri) : base(uri)
+		public TestableNavigator(ISerializer serializer) : base(serializer)
 		{
 			requestMock.Setup(r => r.GetResponse()).Returns(responseMock.Object);
 		}
 
-		protected override IWebRequest CreateWebRequest()
+		protected override IRequest CreateWebRequest(string url)
 		{
 			return requestMock.Object;
 		}

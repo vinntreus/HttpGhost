@@ -1,39 +1,37 @@
 using System.Reflection;
 using System.Text;
 
-namespace RestInspector.Infrastructure
+namespace RestInspector
 {
-	//Spiked -- cap and add tests
-	public class HttpSerializer
+	public class FormSerializer : ISerializer
 	{
-		private readonly object objektToSerialize;
 		private StringBuilder httpString;
 
-		public HttpSerializer(object objektToSerialize)
+		public FormSerializer()
 		{
-			this.objektToSerialize = objektToSerialize;
 			httpString = new StringBuilder();
 		}
 
-		public string Serialize()
+		public string Serialize(object objectToSerialize)
 		{
 			httpString = new StringBuilder();
-			var properties = objektToSerialize.GetType().GetProperties();
+
+			var properties = objectToSerialize.GetType().GetProperties();
 			foreach (var propertyInfo in properties)
 			{
 				if (propertyInfo.CanRead)
 				{
 					AppendPropertyName(propertyInfo);
 					AppendEqualitySign();
-					AppendPropertyValue(propertyInfo);
+					AppendPropertyValue(propertyInfo, objectToSerialize);
 				}
 			}
 			return httpString.ToString();
 		}
 
-		private void AppendPropertyValue(PropertyInfo propertyInfo)
+		private void AppendPropertyValue(PropertyInfo propertyInfo, object objectToSerialize)
 		{
-			httpString.Append(propertyInfo.GetValue(objektToSerialize, null));
+			httpString.Append(propertyInfo.GetValue(objectToSerialize, null));
 		}
 
 		private void AppendEqualitySign()

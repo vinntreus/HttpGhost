@@ -1,19 +1,19 @@
 using System.Net;
-using RestInspector.Infrastructure;
+using RestInspector.Transport;
 
 namespace RestInspector.Navigation.Implementation
 {
 	public class NavigationResult : INavigationResult
 	{
-		private readonly IWebResponse webResponse;
+		private readonly IResponse response;
 
-		public NavigationResult(IWebResponse webResponse)
+		public NavigationResult(IResponse response)
 		{
-			this.webResponse = webResponse;
+			this.response = response;
 		}
 
-		public HttpStatusCode Status { get { return webResponse.StatusCode; } }
+		public HttpStatusCode Status { get { return response.StatusCode; } }
 
-		public string Html { get { return webResponse.Html; } }
+		public string Html { get { return response.Html; } }
 	}
 }

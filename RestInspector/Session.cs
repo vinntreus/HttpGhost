@@ -1,4 +1,3 @@
-using System;
 using RestInspector.Authentication;
 using RestInspector.Navigation;
 using RestInspector.Navigation.Implementation;
@@ -7,58 +6,33 @@ namespace RestInspector
 {
 	public class Session
 	{
-		private readonly Uri url;
-		protected INavigatorFactory navigatorFactory;
-		public AuthenticationType Authentication { get; private set; }
-		public Credentials Credentials { get; private set; }
+		protected INavigator navigator;
+		public AuthenticationInfo Authentication { get; private set; }
 
 		/// <summary>
-		/// Defaults the AuthenticationType to Anonymous
+		/// Sets the AuthenticationType to Anonymous
 		/// </summary>
-		/// <param name="url"></param>
-		public Session(string url)
-		{
-			this.url = new Uri(url);
-			Authentication = AuthenticationType.Anonymous;
-			Credentials = null;
-			navigatorFactory = new NavigatorFactory();
-		}
+		public Session() : this(AuthenticationType.Anonymous, null){}
 
 		/// <summary>
-		/// Defaults the AuthenticationType to BasicAuthentication (to switch, use WithAuthentication)
+		/// Sets the AuthenticationType to Basic
 		/// </summary>
-		/// <param name="username"></param>
-		/// <param name="password"></param>
-		/// <returns></returns>
-		public Session As(string username, string password)
+		public Session(string username, string password) : this(AuthenticationType.BasicAuthentication, new Credentials(username, password)){}
+
+		private Session(AuthenticationType type, Credentials credentials)
 		{
-			Credentials = new Credentials(username, password);
-			Authentication = AuthenticationType.BasicAuthentication;
-			
-			return this;
+			Authentication = new AuthenticationInfo(type, credentials);
+			navigator = new Navigator(new FormSerializer());
 		}
 
-		public Session WithAuthentication(AuthenticationType authenticationType)
+		public INavigationResult Get(string url)
 		{
-			Authentication = authenticationType;
-			return this;
+			return navigator.Get(url, Authentication);
 		}
 
-		public INavigationResult Get()
+		public INavigationResult Post(object postingObject, string url)
 		{
-			var navigator = CreateNavigator();
-			return navigator.Get();
-		}
-
-		public INavigationResult Post(object postingObject)
-		{
-			var navigator = CreateNavigator();
-			return navigator.Post(postingObject);
-		}
-
-		private INavigator CreateNavigator()
-		{
-			return navigatorFactory.Create(Authentication, Credentials, url);
+			return navigator.Post(postingObject, url, Authentication);
 		}
 	}
 }

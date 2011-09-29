@@ -1,8 +1,8 @@
 using System.Net;
 
-namespace RestInspector.Infrastructure
+namespace RestInspector.Transport
 {
-	public interface IWebResponse
+	public interface IResponse
 	{
 		HttpStatusCode StatusCode { get; }
 		string Html { get; }
