@@ -13,9 +13,9 @@ E.g of a test written in nUnit accessing a site with basic authentication:
 [Test]
 public void SomeUrl_Get_ReturnSomeData()
 {
-	var session = new Session(URL).As(USERNAME, PASSWORD);
+	var session = new Session(USERNAME, PASSWORD);
 
-	var result = session.Get();
+	var result = session.Get(URL);
 
 	Assert.That(result.Html, Is.StringContaining("somedata"));
 }
