@@ -36,5 +36,13 @@ namespace RestInspector.UnitTests
 
 			Assert.That(result, Is.StringEnding("=a"));
 		}
+
+		[Test]
+		public void Serialize_String_ReturnString()
+		{
+			var result = formserializer.Serialize("aj");
+
+			Assert.That(result, Is.EqualTo("aj"));
+		}
 	}
 }

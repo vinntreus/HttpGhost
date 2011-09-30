@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -14,17 +15,17 @@ namespace RestInspector
 
 		public string Serialize(object objectToSerialize)
 		{
+			if (objectToSerialize is string)
+				return objectToSerialize.ToString();
+
 			httpString = new StringBuilder();
 
 			var properties = objectToSerialize.GetType().GetProperties();
-			foreach (var propertyInfo in properties)
+			foreach (var propertyInfo in properties.Where(propertyInfo => propertyInfo.CanRead))
 			{
-				if (propertyInfo.CanRead)
-				{
-					AppendPropertyName(propertyInfo);
-					AppendEqualitySign();
-					AppendPropertyValue(propertyInfo, objectToSerialize);
-				}
+				AppendPropertyName(propertyInfo);
+				AppendEqualitySign();
+				AppendPropertyValue(propertyInfo, objectToSerialize);
 			}
 			return httpString.ToString();
 		}
