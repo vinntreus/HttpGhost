@@ -1,4 +1,3 @@
-using System;
 using Moq;
 using RestInspector.Navigation.Implementation;
 using RestInspector.Transport;

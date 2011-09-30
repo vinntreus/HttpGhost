@@ -1,6 +1,4 @@
-using System;
 using System.Net;
-using System.Text;
 using Moq;
 using NUnit.Framework;
 using RestInspector.Authentication;

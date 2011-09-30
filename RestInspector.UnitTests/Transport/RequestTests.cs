@@ -29,7 +29,9 @@ namespace RestInspector.UnitTests.Transport
 			request.SetAuthentication(new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b")));
 
 			Assert.That(httpWebRequest.Headers.Count, Is.EqualTo(1));
+// ReSharper disable PossibleNullReferenceException
 			Assert.That(httpWebRequest.Headers.GetValues("Authorization").GetValue(0), Is.EqualTo("Basic " + base64String));
+// ReSharper restore PossibleNullReferenceException
 		}
 
 		[Test]
