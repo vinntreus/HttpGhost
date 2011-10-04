@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using NUnit.Framework;
 
 namespace RestInspector.IntegrationTests
@@ -13,9 +14,12 @@ namespace RestInspector.IntegrationTests
 		{
 			var session = new Session();
 
+			var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 			var result = session.Get(BaseUrl);
+			stopwatch.Stop();
 
 			Assert.That(result.Html, Is.StringStarting("<!DOCTYPE html>"));
+			Console.WriteLine(string.Format("Finished Session_GetHtml_ReturnHtml in {0}ms", stopwatch.ElapsedMilliseconds));
 		}
 
 		[Test]

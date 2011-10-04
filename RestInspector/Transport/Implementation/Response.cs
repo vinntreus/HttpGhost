@@ -28,10 +28,10 @@ namespace RestInspector.Transport.Implementation
 					var responseStream = response.GetResponseStream();
 					if (responseStream == null)
 						throw new InvalidOperationException("Reponsestream is null");
-
+					
 					using (var sr = new StreamReader(responseStream))
 					{
-						html = sr.ReadToEnd();
+					    html = sr.ReadToEnd();
 					}
 				}
 

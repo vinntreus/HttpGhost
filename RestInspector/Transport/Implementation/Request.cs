@@ -7,9 +7,9 @@ namespace RestInspector.Transport.Implementation
 {
 	public class Request : IRequest
 	{
-		private readonly HttpWebRequest webRequest;
+		private readonly WebRequest webRequest;
 
-		public Request(HttpWebRequest webRequest)
+		public Request(WebRequest webRequest)
 		{
 			this.webRequest = webRequest;
 			webRequest.Headers = new WebHeaderCollection();
