@@ -142,5 +142,34 @@ namespace RestInspector.UnitTests.Navigation
 
 			Assert.That(result.Html, Is.EqualTo(htmlBodyBodyHtml));
 		}
+
+		[Test]
+		public void Delete_ShouldSetMethodToDelete()
+		{
+			navigator.Delete(some_url, null);
+
+			navigator.requestMock.Verify(r => r.SetMethod("Delete"), Times.Once());
+		}
+
+		[Test]
+		public void Delete_ShouldSetAuthenticationInfo()
+		{
+			var authenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
+
+			navigator.Delete(some_url, authenticationInfo);
+
+			navigator.requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
+		}
+
+		[Test]
+		public void Delete_SHouldReturnHtmlFromResponse()
+		{
+			const string htmlBodyBodyHtml = "<html><body></body></html>";
+			navigator.responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+
+			var result = navigator.Delete(some_url, null);
+
+			Assert.That(result.Html, Is.EqualTo(htmlBodyBodyHtml));
+		}
 	}
 }

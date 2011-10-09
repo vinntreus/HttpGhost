@@ -30,8 +30,9 @@ namespace RestInspector.Navigation.Implementation
 			webRequest.SetAuthentication(authenticationInfo);
 			webRequest.SetMethod("Post");
 			webRequest.SetContentType("application/x-www-form-urlencoded");
+			SerializePostingObjectToRequest(postingObject, webRequest);
 
-			return ResultFromResponse(postingObject, webRequest);
+			return ResultFromResponse(webRequest);
 		}
 
 		public INavigationResult Put(object postingObject, string url, AuthenticationInfo authenticationInfo)
@@ -39,14 +40,28 @@ namespace RestInspector.Navigation.Implementation
 			var webRequest = CreateWebRequest(url);
 			webRequest.SetAuthentication(authenticationInfo);
 			webRequest.SetMethod("Put");
+			SerializePostingObjectToRequest(postingObject, webRequest);
 
-			return ResultFromResponse(postingObject, webRequest);
+			return ResultFromResponse(webRequest);
 		}
 
-		private INavigationResult ResultFromResponse(object postingObject, IRequest webRequest)
+		public INavigationResult Delete(string url, AuthenticationInfo authenticationInfo)
+		{
+			var webRequest = CreateWebRequest(url);
+			webRequest.SetAuthentication(authenticationInfo);
+			webRequest.SetMethod("Delete");
+
+			return ResultFromResponse(webRequest);
+		}
+
+		private void SerializePostingObjectToRequest(object postingObject, IRequest webRequest)
 		{
 			var formData = serializer.Serialize(postingObject);
 			webRequest.WriteFormDataToRequestStream(formData);
+		}
+
+		private INavigationResult ResultFromResponse(IRequest webRequest)
+		{
 			var response = GetWebResponse(webRequest);
 
 			return new NavigationResult(response);
@@ -59,7 +74,7 @@ namespace RestInspector.Navigation.Implementation
 
 		protected virtual IRequest CreateWebRequest(string url)
 		{
-			return new Request((HttpWebRequest)WebRequest.Create(new Uri(url)));
+			return new Request(WebRequest.Create(new Uri(url)));
 		}
 	}
 }
