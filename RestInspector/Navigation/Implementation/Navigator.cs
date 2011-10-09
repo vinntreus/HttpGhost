@@ -30,9 +30,23 @@ namespace RestInspector.Navigation.Implementation
 			webRequest.SetAuthentication(authenticationInfo);
 			webRequest.SetMethod("Post");
 			webRequest.SetContentType("application/x-www-form-urlencoded");
+
+			return ResultFromResponse(postingObject, webRequest);
+		}
+
+		public INavigationResult Put(object postingObject, string url, AuthenticationInfo authenticationInfo)
+		{
+			var webRequest = CreateWebRequest(url);
+			webRequest.SetAuthentication(authenticationInfo);
+			webRequest.SetMethod("Put");
+
+			return ResultFromResponse(postingObject, webRequest);
+		}
+
+		private INavigationResult ResultFromResponse(object postingObject, IRequest webRequest)
+		{
 			var formData = serializer.Serialize(postingObject);
 			webRequest.WriteFormDataToRequestStream(formData);
-			
 			var response = GetWebResponse(webRequest);
 
 			return new NavigationResult(response);

@@ -104,5 +104,43 @@ namespace RestInspector.UnitTests.Navigation
 			
 			navigator.requestMock.Verify(r => r.WriteFormDataToRequestStream("jihaa"), Times.Once());
 		}
+
+		[Test]
+		public void Put_ShouldSetMethodToPut()
+		{
+			navigator.Put("a", some_url, null);
+
+			navigator.requestMock.Verify(r => r.SetMethod("Put"), Times.Once());
+		}
+
+		[Test]
+		public void Put_ShouldSetAuthenticationInfo()
+		{
+			var authenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
+			
+			navigator.Put("a", some_url, authenticationInfo);
+
+			navigator.requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
+		}
+
+		[Test]
+		public void Put_ShouldSetFormCollection()
+		{
+			serializerMock.Setup(s => s.Serialize(It.IsAny<object>())).Returns("jihaa");
+			navigator.Put("a=a", some_url, null);
+
+			navigator.requestMock.Verify(r => r.WriteFormDataToRequestStream("jihaa"), Times.Once());
+		}
+
+		[Test]
+		public void Put_SHouldReturnHtmlFromResponse()
+		{
+			const string htmlBodyBodyHtml = "<html><body></body></html>";
+			navigator.responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+
+			var result = navigator.Put("b=b", some_url, null);
+
+			Assert.That(result.Html, Is.EqualTo(htmlBodyBodyHtml));
+		}
 	}
 }

@@ -18,5 +18,7 @@ namespace RestInspector.UnitTests
 		{
 			return requestMock.Object;
 		}
+
+		
 	}
 }
