@@ -144,6 +144,14 @@ namespace RestInspector.UnitTests.Navigation
 		}
 
 		[Test]
+		public void Put_ShouldSetCorrectContentType()
+		{
+			navigator.Put("a=a", some_url, null);
+
+			navigator.requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
+		}
+
+		[Test]
 		public void Delete_ShouldSetMethodToDelete()
 		{
 			navigator.Delete(some_url, null);

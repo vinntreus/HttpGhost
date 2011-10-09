@@ -40,6 +40,7 @@ namespace RestInspector.Navigation.Implementation
 			var webRequest = CreateWebRequest(url);
 			webRequest.SetAuthentication(authenticationInfo);
 			webRequest.SetMethod("Put");
+			webRequest.SetContentType("application/x-www-form-urlencoded");
 			SerializePostingObjectToRequest(postingObject, webRequest);
 
 			return ResultFromResponse(webRequest);
