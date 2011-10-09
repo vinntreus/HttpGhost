@@ -67,6 +67,30 @@ namespace RestInspector.UnitTests
 			Assert.That(result, Is.SameAs(expectedResult));
 		}
 
+		[Test]
+		public void Put_ShouldReturnResultFromNavigator()
+		{
+			var session = new TestableSession();
+			var expectedResult = new TestableNavigationResult();
+			session.SetupPutToReturn(expectedResult);
+
+			var result = session.Put("a=a", SOME_URL);
+
+			Assert.That(result, Is.SameAs(expectedResult));
+		}
+
+		[Test]
+		public void Delete_ShouldReturnResultFromNavigator()
+		{
+			var session = new TestableSession();
+			var expectedResult = new TestableNavigationResult();
+			session.SetupDeleteToReturn(expectedResult);
+
+			var result = session.Delete(SOME_URL);
+
+			Assert.That(result, Is.SameAs(expectedResult));
+		}
+
 		private class TestableSession : Session
 		{
 			private readonly Mock<INavigator> navigatorMock = new Mock<INavigator>();
@@ -86,6 +110,18 @@ namespace RestInspector.UnitTests
 			{
 				navigatorMock.Setup(n => n.Get(It.IsAny<string>(), It.IsAny<AuthenticationInfo>())).Returns(navigationResult);
 			}
+
+			public void SetupPutToReturn(INavigationResult navigationResult)
+			{
+				navigatorMock.Setup(n => n.Put(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<AuthenticationInfo>())).Returns(navigationResult);
+			}
+
+			public void SetupDeleteToReturn(INavigationResult navigationResult)
+			{
+				navigatorMock.Setup(n => n.Delete(It.IsAny<string>(), It.IsAny<AuthenticationInfo>())).Returns(navigationResult);
+			}
+
+			
 		}
 	}
 }

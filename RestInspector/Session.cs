@@ -34,5 +34,15 @@ namespace RestInspector
 		{
 			return navigator.Post(postingObject, url, Authentication);
 		}
+
+		public INavigationResult Put(object postingObject, string url)
+		{
+			return navigator.Put(postingObject, url, Authentication);
+		}
+
+		public INavigationResult Delete(string url)
+		{
+			return navigator.Delete(url, Authentication);
+		}
 	}
 }
