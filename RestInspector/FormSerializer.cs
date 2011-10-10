@@ -26,8 +26,15 @@ namespace RestInspector
 				AppendPropertyName(propertyInfo);
 				AppendEqualitySign();
 				AppendPropertyValue(propertyInfo, objectToSerialize);
+				AppendAmpersandSign();
 			}
-			return httpString.ToString();
+			
+			return httpString.ToString().TrimEnd('&');
+		}
+
+		private void AppendAmpersandSign()
+		{
+			httpString.Append("&");
 		}
 
 		private void AppendPropertyValue(PropertyInfo propertyInfo, object objectToSerialize)

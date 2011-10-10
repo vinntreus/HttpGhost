@@ -44,5 +44,13 @@ namespace RestInspector.UnitTests
 
 			Assert.That(result, Is.EqualTo("aj"));
 		}
+
+		[Test]
+		public void Serialize_WithMultipleProperties_ShouldSeparateWithAmpersand()
+		{
+			var result = formserializer.Serialize(new { Title = "a", Fuddle = "b" });
+
+			Assert.That(result, Is.StringEnding("Title=a&Fuddle=b"));
+		}
 	}
 }
