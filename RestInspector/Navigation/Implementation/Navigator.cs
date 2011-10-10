@@ -15,14 +15,16 @@ namespace RestInspector.Navigation.Implementation
 			this.serializer = serializer;
 		}
 
-		public INavigationResult Get(string url, AuthenticationInfo authentication)
+		public INavigationResult Get(string url, AuthenticationInfo authentication, string contentType = null)
 		{
 			var request = CreateWebRequest(url);
+			request.SetContentType(contentType);
 			request.SetAuthentication(authentication);
 			var response = request.GetResponse();
 
 			return new NavigationResult(response);
 		}
+	
 
 		public INavigationResult Post(object postingObject, string url, AuthenticationInfo authenticationInfo)
 		{

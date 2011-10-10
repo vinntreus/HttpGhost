@@ -10,7 +10,12 @@ namespace RestInspector.UnitTests
 			get { throw new System.NotImplementedException(); }
 		}
 
-		public string Html
+		public string ResponseString
+		{
+			get { throw new System.NotImplementedException(); }
+		}
+
+		public object AsContentTypeFormat
 		{
 			get { throw new System.NotImplementedException(); }
 		}

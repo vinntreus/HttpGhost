@@ -38,7 +38,7 @@ namespace RestInspector.UnitTests.Navigation
 
 			var result = navigator.Get(some_url, null);
 
-			Assert.That(result.Html, Is.EqualTo(htmlBodyBodyHtml));
+			Assert.That(result.ResponseString, Is.EqualTo(htmlBodyBodyHtml));
 		}
 
 		[Test]
@@ -59,7 +59,7 @@ namespace RestInspector.UnitTests.Navigation
 
 			var result = navigator.Post("b=b",some_url, null);
 
-			Assert.That(result.Html, Is.EqualTo(htmlBodyBodyHtml));
+			Assert.That(result.ResponseString, Is.EqualTo(htmlBodyBodyHtml));
 		}
 
 		[Test]
@@ -140,7 +140,7 @@ namespace RestInspector.UnitTests.Navigation
 
 			var result = navigator.Put("b=b", some_url, null);
 
-			Assert.That(result.Html, Is.EqualTo(htmlBodyBodyHtml));
+			Assert.That(result.ResponseString, Is.EqualTo(htmlBodyBodyHtml));
 		}
 
 		[Test]
@@ -177,7 +177,7 @@ namespace RestInspector.UnitTests.Navigation
 
 			var result = navigator.Delete(some_url, null);
 
-			Assert.That(result.Html, Is.EqualTo(htmlBodyBodyHtml));
+			Assert.That(result.ResponseString, Is.EqualTo(htmlBodyBodyHtml));
 		}
 	}
 }

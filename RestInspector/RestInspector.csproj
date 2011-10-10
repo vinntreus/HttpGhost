@@ -45,8 +45,10 @@
     <Compile Include="Authentication\AuthenticationType.cs" />
     <Compile Include="Authentication\Credentials.cs" />
     <Compile Include="Authentication\InvalidUserCredentialsException.cs" />
+    <Compile Include="ContentType.cs" />
     <Compile Include="FormSerializer.cs" />
     <Compile Include="ISerializer.cs" />
+    <Compile Include="Navigation\Extensions\INavigationResultExtensions.cs" />
     <Compile Include="Transport\Implementation\Request.cs" />
     <Compile Include="Transport\Implementation\Response.cs" />
     <Compile Include="Transport\IRequest.cs" />

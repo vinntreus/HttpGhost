@@ -24,7 +24,7 @@ namespace RestInspector.IntegrationTests
 			
 			var result = session.Get(baseUrl);
 
-			Assert.That(result.Html, Is.StringContaining("<html>"));
+			Assert.That(result.ResponseString, Is.StringContaining("<html>"));
 		}
 
 		[Test]
@@ -36,7 +36,7 @@ namespace RestInspector.IntegrationTests
 
 			var result = session.Post(new { Title = "jippi"}, url);
 
-			Assert.That(result.Html, Is.StringContaining("<h2>jippi</h2>"));
+			Assert.That(result.ResponseString, Is.StringContaining("<h2>jippi</h2>"));
 		}
 
 		[Test]
@@ -48,7 +48,7 @@ namespace RestInspector.IntegrationTests
 
 			var result = session.Put(new { Title = "jippi" }, url);
 
-			Assert.That(result.Html, Is.StringContaining("<h2>New title: jippi</h2>"));
+			Assert.That(result.ResponseString, Is.StringContaining("<h2>New title: jippi</h2>"));
 		}
 
 		[Test]
@@ -60,7 +60,7 @@ namespace RestInspector.IntegrationTests
 
 			var result = session.Delete(url);
 
-			Assert.That(result.Html, Is.StringContaining("<h2>Deleted: 2</h2>"));
+			Assert.That(result.ResponseString, Is.StringContaining("<h2>Deleted: 2</h2>"));
 		}
 	}
 }

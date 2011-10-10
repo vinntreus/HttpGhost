@@ -1,5 +1,6 @@
 ﻿using System.Configuration;
 using NUnit.Framework;
+using RestInspector.Navigation.Extensions;
 
 namespace RestInspector.IntegrationTests
 {
@@ -22,7 +23,7 @@ namespace RestInspector.IntegrationTests
 			
 			var result = session.Get(baseUrl);
 
-			Assert.That(result.Html, Is.StringStarting("<!DOCTYPE html>"));
+			Assert.That(result.ResponseString, Is.StringStarting("<!DOCTYPE html>"));
 		}
 
 		[Test]
@@ -33,7 +34,7 @@ namespace RestInspector.IntegrationTests
 
 			var result = session.Post(new {Title = "jippi"}, baseUrl + "/Home/Create");
 
-			Assert.That(result.Html, Is.StringContaining("jippi"));
+			Assert.That(result.ResponseString, Is.StringContaining("jippi"));
 		}
 
 		[Test]
@@ -45,7 +46,7 @@ namespace RestInspector.IntegrationTests
 
 			var result = session.Put(new { Title = "jippi" }, url);
 
-			Assert.That(result.Html, Is.StringContaining("<h2>New title: jippi</h2>"));
+			Assert.That(result.ResponseString, Is.StringContaining("<h2>New title: jippi</h2>"));
 		}
 
 		[Test]
@@ -57,7 +58,20 @@ namespace RestInspector.IntegrationTests
 
 			var result = session.Delete(url);
 
-			Assert.That(result.Html, Is.StringContaining("<h2>Deleted: 2</h2>"));
+			Assert.That(result.ResponseString, Is.StringContaining("<h2>Deleted: 2</h2>"));
+		}
+
+		[Test]
+		public void Session_GetThatReturnsJson_ReturnJson()
+		{
+			currentTest = "NoAuthenticationTests_Session_GetThatReturnsJson_ReturnJson";
+			var url = baseUrl + "/Home/JsonTest/";
+			var session = new Session();
+			var result = session.Get(url);
+
+			var json = result.ToJson();
+
+			Assert.That(json["Jippi"], Is.EqualTo(2));
 		}
 	}
 }

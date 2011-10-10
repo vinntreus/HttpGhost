@@ -5,7 +5,7 @@ namespace RestInspector.Navigation.Implementation
 {
 	public class NavigationResult : INavigationResult
 	{
-		private readonly IResponse response;
+		protected readonly IResponse response;
 
 		public NavigationResult(IResponse response)
 		{
@@ -14,6 +14,11 @@ namespace RestInspector.Navigation.Implementation
 
 		public HttpStatusCode Status { get { return response.StatusCode; } }
 
-		public string Html { get { return response.Html; } }
+		public string ResponseString { get { return response.Html; } }
+
+		public virtual object AsContentTypeFormat
+		{
+			get { return ResponseString; }
+		}
 	}
 }

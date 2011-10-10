@@ -9,6 +9,8 @@ namespace RestInspector
 		protected INavigator navigator;
 		public AuthenticationInfo Authentication { get; private set; }
 
+		public string ContentType { get; set; }
+
 		/// <summary>
 		/// Sets the AuthenticationType to Anonymous
 		/// </summary>
@@ -27,7 +29,7 @@ namespace RestInspector
 
 		public INavigationResult Get(string url)
 		{
-			return navigator.Get(url, Authentication);
+			return navigator.Get(url, Authentication, ContentType);
 		}
 
 		public INavigationResult Post(object postingObject, string url)

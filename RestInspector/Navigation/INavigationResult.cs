@@ -5,6 +5,7 @@ namespace RestInspector.Navigation
 	public interface INavigationResult
 	{
 		HttpStatusCode Status { get; }
-		string Html { get; }
+		string ResponseString { get; }
+		object AsContentTypeFormat { get; }
 	}
 }
