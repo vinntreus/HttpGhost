@@ -10,7 +10,7 @@ namespace RestInspector.UnitTests
 			get { return HttpStatusCode.OK;}
 		}
 
-		public string ResponseString
+		public string ResponseContent
 		{
 			get { throw new System.NotImplementedException(); }
 		}

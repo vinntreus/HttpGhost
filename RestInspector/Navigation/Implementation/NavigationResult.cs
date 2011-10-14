@@ -14,13 +14,8 @@ namespace RestInspector.Navigation.Implementation
 
 		public HttpStatusCode Status { get { return response.StatusCode; } }
 
-		public string ResponseString { get { return response.Html; } }
-
-		public virtual object AsContentTypeFormat
-		{
-			get { return ResponseString; }
-		}
-
+		public string ResponseContent { get { return response.Html; } }
+		
 		public WebHeaderCollection ResponseHeaders
 		{
 			get { return response.Headers; }

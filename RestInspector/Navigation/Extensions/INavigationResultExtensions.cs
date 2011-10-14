@@ -7,7 +7,7 @@ namespace RestInspector.Navigation.Extensions
 	{
 		public static IDictionary<string, object> ToJson(this INavigationResult navigationResult)
 		{
-			return new JavaScriptSerializer().Deserialize<dynamic>(navigationResult.ResponseString);
+			return new JavaScriptSerializer().Deserialize<dynamic>(navigationResult.ResponseContent);
 		}
 	}
 }
