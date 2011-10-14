@@ -67,6 +67,11 @@ namespace RestInspector.Navigation.Implementation
 		{
 			var response = GetWebResponse(webRequest);
 
+			if(response.StatusCode == HttpStatusCode.Redirect)
+			{
+				
+			}
+
 			return new NavigationResult(response);
 		}
 
@@ -77,7 +82,7 @@ namespace RestInspector.Navigation.Implementation
 
 		protected virtual IRequest CreateWebRequest(string url)
 		{
-			return new Request(WebRequest.Create(new Uri(url)));
+			return new Request((HttpWebRequest)WebRequest.Create(new Uri(url)));
 		}
 	}
 }

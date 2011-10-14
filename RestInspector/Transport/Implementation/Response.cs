@@ -7,6 +7,7 @@ namespace RestInspector.Transport.Implementation
 	public class Response : IResponse
 	{
 		private readonly HttpWebResponse response;
+		private string html;
 
 		public Response(HttpWebResponse response)
 		{
@@ -18,7 +19,11 @@ namespace RestInspector.Transport.Implementation
 			get { return response.StatusCode; }
 		}
 
-		private string html;
+		public WebHeaderCollection Headers
+		{
+			get { return response.Headers; }
+		}
+		
 		public string Html
 		{
 			get
@@ -28,10 +33,10 @@ namespace RestInspector.Transport.Implementation
 					var responseStream = response.GetResponseStream();
 					if (responseStream == null)
 						throw new InvalidOperationException("Reponsestream is null");
-					
+
 					using (var sr = new StreamReader(responseStream))
 					{
-					    html = sr.ReadToEnd();
+						html = sr.ReadToEnd();
 					}
 				}
 

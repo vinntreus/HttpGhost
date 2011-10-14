@@ -20,5 +20,10 @@ namespace RestInspector.Navigation.Implementation
 		{
 			get { return ResponseString; }
 		}
+
+		public WebHeaderCollection ResponseHeaders
+		{
+			get { return response.Headers; }
+		}
 	}
 }

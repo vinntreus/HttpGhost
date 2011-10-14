@@ -7,5 +7,6 @@ namespace RestInspector.Navigation
 		HttpStatusCode Status { get; }
 		string ResponseString { get; }
 		object AsContentTypeFormat { get; }
+		WebHeaderCollection ResponseHeaders { get; } 
 	}
 }

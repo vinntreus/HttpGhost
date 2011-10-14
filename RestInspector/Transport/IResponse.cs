@@ -6,5 +6,6 @@ namespace RestInspector.Transport
 	{
 		HttpStatusCode StatusCode { get; }
 		string Html { get; }
+		WebHeaderCollection Headers { get; }
 	}
 }

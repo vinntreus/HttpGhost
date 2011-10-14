@@ -62,5 +62,17 @@ namespace RestInspector.IntegrationTests
 
 			Assert.That(result.ResponseString, Is.StringContaining("<h2>Deleted: 2</h2>"));
 		}
+
+		[Test]
+		public void Session_PostThatRedirects_ShouldPassCredentialsInRedirect()
+		{
+			currentTest = "Session_PostThatRedirects_ShouldPassCredentialsInRedirect";
+			var url = baseUrl + "/Home/Redirect";
+			var session = new Session(username, password);
+
+			var result = session.Post(new {title = "arne"}, url);
+
+			Assert.That(result.ResponseString, Is.StringContaining("jippi"));
+		}
 	}
 }

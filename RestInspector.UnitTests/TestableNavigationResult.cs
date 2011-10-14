@@ -7,7 +7,7 @@ namespace RestInspector.UnitTests
 	{
 		public HttpStatusCode Status
 		{
-			get { throw new System.NotImplementedException(); }
+			get { return HttpStatusCode.OK;}
 		}
 
 		public string ResponseString
@@ -18,6 +18,11 @@ namespace RestInspector.UnitTests
 		public object AsContentTypeFormat
 		{
 			get { throw new System.NotImplementedException(); }
+		}
+
+		public WebHeaderCollection ResponseHeaders
+		{
+			get { return new WebHeaderCollection(); }
 		}
 	}
 }

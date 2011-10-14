@@ -7,9 +7,9 @@ namespace RestInspector.Transport.Implementation
 {
 	public class Request : IRequest
 	{
-		private readonly WebRequest webRequest;
+		private readonly HttpWebRequest webRequest;
 
-		public Request(WebRequest webRequest)
+		public Request(HttpWebRequest webRequest)
 		{
 			this.webRequest = webRequest;
 			webRequest.Headers = new WebHeaderCollection();
@@ -28,7 +28,9 @@ namespace RestInspector.Transport.Implementation
 			var base64String = Convert.ToBase64String(new ASCIIEncoding().GetBytes(authentication.Credentials.UsernamePassword));
 			webRequest.Headers.Add("Authorization", "Basic " + base64String);
 			var networkCredential = new NetworkCredential(authentication.Credentials.Username, authentication.Credentials.Password);
-			webRequest.Credentials = new CredentialCache { { webRequest.RequestUri , "Basic", networkCredential } };
+			webRequest.Credentials = new CredentialCache{{ webRequest.RequestUri , "Basic", networkCredential }} ;
+			webRequest.AllowAutoRedirect = false;
+
 		}
 
 		public void SetMethod(string method)
