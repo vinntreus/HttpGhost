@@ -1,6 +1,4 @@
-==================================================================================================
-					RestInspector
-==================================================================================================
+# HttpGhost
 
 The main goal is to simplify integrationtesting on the .NET platform, foremost on websites using 
 an authentication mechanism like basic authentication.
@@ -17,5 +15,5 @@ public void SomeUrl_Get_ReturnSomeData()
 
 	var result = session.Get(URL);
 
-	Assert.That(result.Html, Is.StringContaining("somedata"));
+	Assert.That(result.ResponseContent, Is.StringContaining("somedata"));
 }
