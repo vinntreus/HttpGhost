@@ -3,7 +3,7 @@
 The main goal is to simplify integrationtesting on the .NET platform, foremost on websites using 
 an authentication mechanism like basic authentication.
 
-It is a lightweight framework with no external dependencies.
+It is a lightweight framework with few external dependencies.
 
 
 E.g of a test written in nUnit accessing a site with basic authentication:
