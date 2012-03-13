@@ -44,6 +44,15 @@ namespace UnitTests.Navigation
 			Assert.That(result.ResponseContent, Is.EqualTo(htmlBodyBodyHtml));
 		}
 
+	    [Test]
+	    public void Get_ValidUrl_ReturnsUrl()
+	    {
+	        navigator.requestMock.Setup(n => n.Url).Returns("http://ab");
+            var result = navigator.Get(some_url, null);
+
+            Assert.That(result.RequestUrl, Is.EqualTo("http://ab"));
+	    }
+
 		[Test]
 		public void Post_ValidUrl_ReturnHttpStatus()
 		{

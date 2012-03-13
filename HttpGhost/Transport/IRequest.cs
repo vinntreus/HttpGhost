@@ -12,5 +12,7 @@ namespace HttpGhost.Transport
 		void SetMethod(string method);
 		void SetContentType(string contentType);
 		void WriteFormDataToRequestStream(string formData);
+
+	    string Url { get; }
 	}
 }

@@ -17,6 +17,11 @@ namespace HttpGhost.Transport.Implementation
 			webRequest.Headers = new WebHeaderCollection();
 		}
 
+	    public string Url
+	    {
+	        get { return this.webRequest.RequestUri.PathAndQuery; }
+	    }
+
 		public IResponse GetResponse()
 		{
 			return new Response((HttpWebResponse) webRequest.GetResponse());

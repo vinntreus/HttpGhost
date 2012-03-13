@@ -24,7 +24,7 @@ namespace HttpGhost.Navigation.Implementation
 			request.SetAuthentication(authentication);
 			var response = request.GetResponse();
 
-			return new NavigationResult(response);
+			return new NavigationResult(request, response);
 		}
 	
 
@@ -69,12 +69,7 @@ namespace HttpGhost.Navigation.Implementation
 		{
 			var response = GetWebResponse(webRequest);
 
-			if(response.StatusCode == HttpStatusCode.Redirect)
-			{
-				
-			}
-
-			return new NavigationResult(response);
+			return new NavigationResult(webRequest, response);
 		}
 
 		protected virtual IResponse GetWebResponse(IRequest request)

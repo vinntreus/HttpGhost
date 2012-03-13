@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using HttpGhost;
-using HttpGhost.Navigation.Extensions;
 using NUnit.Framework;
 
 namespace IntegrationTests
@@ -63,19 +62,6 @@ namespace IntegrationTests
 			var result = session.Delete(url);
 
 			Assert.That(result.ResponseContent, Is.StringContaining("<h2>Deleted: 2</h2>"));
-		}
-
-		[Test]
-		public void Session_GetThatReturnsJson_ReturnJson()
-		{
-			currentTest = "NoAuthenticationTests_Session_GetThatReturnsJson_ReturnJson";
-			var url = baseUrl + "/Home/JsonTest/";
-			var session = new Session();
-			var result = session.Get(url);
-
-			var json = result.ToJson();
-
-			Assert.That(json["Jippi"], Is.EqualTo(2));
 		}
 	}
 }
