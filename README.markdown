@@ -8,7 +8,8 @@ It is a lightweight framework with no external dependencies.
 
 E.g of a test written in nUnit accessing a site with basic authentication:
 
-[Test]
+
+<pre><code>[Test]
 public void SomeUrl_Get_ReturnSomeData()
 {
 	var session = new Session(USERNAME, PASSWORD);
@@ -16,4 +17,4 @@ public void SomeUrl_Get_ReturnSomeData()
 	var result = session.Get(URL);
 
 	Assert.That(result.ResponseContent, Is.StringContaining("somedata"));
-}
+}</code></pre>
