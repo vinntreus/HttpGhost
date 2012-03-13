@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using HttpGhost;
 using HttpGhost.Authentication;
 using HttpGhost.Navigation;
+using HttpGhost.Navigation.Implementation;
 using Moq;
 using NUnit.Framework;
 
@@ -50,7 +51,7 @@ namespace UnitTests
 		public void Get_ShouldReturnResultFromNavigator()
 		{
 			var session = new TestableSession();
-			var expectedResult = new TestableNavigationResult();
+			var expectedResult = Mock.Of<INavigationResult>();
 			session.SetupGetToReturn(expectedResult);
 
 			var result = session.Get(SOME_URL);
@@ -62,7 +63,7 @@ namespace UnitTests
 		public void Post_ShouldReturnResultFromNavigator()
 		{
 			var session = new TestableSession();
-			var expectedResult = new TestableNavigationResult();
+            var expectedResult = Mock.Of<INavigationResult>();
 			session.SetupPostToReturn(expectedResult);
 
 			var result = session.Post("a=a", SOME_URL);
@@ -74,7 +75,7 @@ namespace UnitTests
 		public void Put_ShouldReturnResultFromNavigator()
 		{
 			var session = new TestableSession();
-			var expectedResult = new TestableNavigationResult();
+            var expectedResult = Mock.Of<INavigationResult>();
 			session.SetupPutToReturn(expectedResult);
 
 			var result = session.Put("a=a", SOME_URL);
@@ -86,7 +87,7 @@ namespace UnitTests
 		public void Delete_ShouldReturnResultFromNavigator()
 		{
 			var session = new TestableSession();
-			var expectedResult = new TestableNavigationResult();
+            var expectedResult = Mock.Of<INavigationResult>();
 			session.SetupDeleteToReturn(expectedResult);
 
 			var result = session.Delete(SOME_URL);

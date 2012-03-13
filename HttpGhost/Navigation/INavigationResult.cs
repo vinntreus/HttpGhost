@@ -9,7 +9,7 @@ namespace HttpGhost.Navigation
 		HttpStatusCode Status { get; }
 		string ResponseContent { get; }
 		WebHeaderCollection ResponseHeaders { get; }
-	    IEnumerable<string> Find();
+	    IEnumerable<string> Find(string pattern);
 	    T ToJson<T>();
 	    string RequestUrl { get; }
 	}

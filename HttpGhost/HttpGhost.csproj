@@ -44,6 +44,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\AuthenticationInfo.cs" />

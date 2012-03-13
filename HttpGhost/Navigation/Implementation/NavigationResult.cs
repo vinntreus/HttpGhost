@@ -25,9 +25,14 @@ namespace HttpGhost.Navigation.Implementation
 			get { return response.Headers; }
 		}
 
-	    public IEnumerable<string> Find()
+	    public IEnumerable<string> Find(string pattern)
 	    {
-	        throw new System.NotImplementedException();
+	        var htmlDoc = new HtmlAgilityPack.HtmlDocument();
+            htmlDoc.LoadHtml(ResponseContent);
+
+	        var items = htmlDoc.DocumentNode.SelectNodes(pattern);
+
+            return items == null ? new List<string>() : items.Select(i => i.OuterHtml);
 	    }
 
 	    public T ToJson<T>()
