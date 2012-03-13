@@ -48,6 +48,7 @@
     <Compile Include="FormSerializerTests.cs" />
     <Compile Include="Navigation\NavigationResultTests.cs" />
     <Compile Include="Navigation\NavigatorTests.cs" />
+    <Compile Include="Navigation\XPathifyTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SessionTests.cs" />
     <Compile Include="TestableNavigator.cs" />

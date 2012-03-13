@@ -54,6 +54,13 @@
     <Compile Include="ContentType.cs" />
     <Compile Include="FormSerializer.cs" />
     <Compile Include="ISerializer.cs" />
+    <Compile Include="Navigation\Parse\ClassToken.cs" />
+    <Compile Include="Navigation\Parse\DescendentToken.cs" />
+    <Compile Include="Navigation\Parse\ElementToken.cs" />
+    <Compile Include="Navigation\Parse\IdToken.cs" />
+    <Compile Include="Navigation\Parse\SpaceToken.cs" />
+    <Compile Include="Navigation\Parse\Token.cs" />
+    <Compile Include="Navigation\Parse\CssToXpath.cs" />
     <Compile Include="Transport\Implementation\Request.cs" />
     <Compile Include="Transport\Implementation\Response.cs" />
     <Compile Include="Transport\IRequest.cs" />

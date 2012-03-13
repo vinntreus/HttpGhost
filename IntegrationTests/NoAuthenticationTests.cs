@@ -35,7 +35,7 @@ namespace IntegrationTests
 			currentTest = "NoAuthenticationTests_Session_Post_ReturnHtml";
 			var session = new Session();
 
-			var result = session.Post(new {Title = "jippi"}, baseUrl + "/Home/Create");
+			var result = session.Post(new {Title = "jippi"}, baseUrl + "/Home/Parse");
 
 			Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
 		}

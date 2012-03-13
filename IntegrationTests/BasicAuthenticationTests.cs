@@ -35,7 +35,7 @@ namespace IntegrationTests
 		public void Session_Post_ReturnHtml()
 		{
 			currentTest = "BasicAuthenticationTests_Session_Post_ReturnHtml";
-			var url = baseUrl + "/Home/Create";
+			var url = baseUrl + "/Home/Parse";
 			var session = new Session(username, password);
 
 			var result = session.Post(new { Title = "jippi"}, url);
