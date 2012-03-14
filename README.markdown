@@ -38,5 +38,5 @@ public void When_Posting_Should_Save()
 
 	var result = session.Post(new { Title = "jippi"}, url);
 
-	Assert.That(result.ResponseContent, Is.StringContaining("<h2>jippi</h2>"));
+	Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
 }</code></pre>
