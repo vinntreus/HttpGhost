@@ -38,9 +38,9 @@ namespace HttpGhost.Navigation.Implementation
             return items == null ? new List<string>() : items.Select(i => i.OuterHtml);
         }
 
-        public T ToJson<T>()
+        public T FromJsonTo<T>()
         {
-            return new System.Web.Script.Serialization.JavaScriptSerializer().Deserialize<T>(ResponseContent);
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(ResponseContent);
         }
 
         public string RequestUrl
