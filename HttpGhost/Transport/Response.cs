@@ -1,10 +1,10 @@
-using System.Linq;
-using System.Collections.Generic;
 using System;
 using System.IO;
+using System.Linq;
+using System.Collections.Generic;
 using System.Net;
 
-namespace HttpGhost.Transport.Implementation
+namespace HttpGhost.Transport
 {
 	public class Response : IResponse
 	{

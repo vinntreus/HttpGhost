@@ -1,12 +1,12 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
-using System;
 using System.Net;
 using System.Text;
 using HttpGhost.Authentication;
 using HttpGhost.Serialization;
 
-namespace HttpGhost.Transport.Implementation
+namespace HttpGhost.Transport
 {
 	public class Request : IRequest
 	{

@@ -6,7 +6,7 @@ using System.Text;
 using HttpGhost;
 using HttpGhost.Authentication;
 using HttpGhost.Serialization;
-using HttpGhost.Transport.Implementation;
+using HttpGhost.Transport;
 using Moq;
 using NUnit.Framework;
 
