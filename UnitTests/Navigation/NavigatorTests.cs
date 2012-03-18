@@ -25,7 +25,7 @@ namespace UnitTests.Navigation
             requestMock = new Mock<IRequest>();
 	        responseMock = new Mock<IResponse>();
 	        requestMock.Setup(r => r.GetResponse()).Returns(responseMock.Object);
-            factoryMock.Setup(f => f.Get(It.IsAny<string>())).Returns(requestMock.Object);
+            factoryMock.Setup(f => f.Create(It.IsAny<string>())).Returns(requestMock.Object);
 
             navigator = new Navigator(factoryMock.Object);
 		}

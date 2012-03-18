@@ -2,6 +2,6 @@ namespace HttpGhost.Transport
 {
     public interface IRequestFactory
     {
-        IRequest Get(string url);
+        IRequest Create(string url);
     }
 }

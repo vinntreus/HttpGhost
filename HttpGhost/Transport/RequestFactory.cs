@@ -13,7 +13,7 @@ namespace HttpGhost.Transport
             this.serializer = serializer;
         }
 
-        public IRequest Get(string url)
+        public IRequest Create(string url)
         {
             return new Request((HttpWebRequest)WebRequest.Create(new Uri(url)), serializer);
         }
