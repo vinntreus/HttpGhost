@@ -166,28 +166,37 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Delete_ShouldSetMethodToDelete()
 		{
-			navigator.Delete(some_url, null);
+			navigator.Delete("a=a", some_url, null);
 
 			navigator.requestMock.Verify(r => r.SetMethod("Delete"), Times.Once());
 		}
+
+        [Test]
+        public void Delete_ShouldSetFormCollection()
+        {
+            serializerMock.Setup(s => s.Serialize(It.IsAny<object>())).Returns("jihaa");
+            navigator.Delete("a=a", some_url, null);
+
+            navigator.requestMock.Verify(r => r.WriteFormDataToRequestStream("jihaa"), Times.Once());
+        }
 
 		[Test]
 		public void Delete_ShouldSetAuthenticationInfo()
 		{
 			var authenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
 
-			navigator.Delete(some_url, authenticationInfo);
+			navigator.Delete("a=a", some_url, authenticationInfo);
 
 			navigator.requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
 		}
 
 		[Test]
-		public void Delete_SHouldReturnHtmlFromResponse()
+		public void Delete_ShouldReturnHtmlFromResponse()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
 			navigator.responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
-			var result = navigator.Delete(some_url, null);
+			var result = navigator.Delete("a=a", some_url, null);
 
 			Assert.That(result.ResponseContent, Is.EqualTo(htmlBodyBodyHtml));
 		}

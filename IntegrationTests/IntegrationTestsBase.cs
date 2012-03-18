@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System;
 using System.Diagnostics;
+using Firefly.Http;
+using Gate.Builder;
+using HttpGhost;
 using NUnit.Framework;
 
 namespace IntegrationTests
@@ -10,14 +13,30 @@ namespace IntegrationTests
 	{
 		protected Stopwatch stopwatch;
 		protected string currentTest;
+	    private IDisposable server;
 
-		private static Stopwatch StartStopwatch()
+	    private static Stopwatch StartStopwatch()
 		{
 			return Stopwatch.StartNew();
 		}
 
+        [TestFixtureSetUp]
+        public void BeforeAllTests()
+        {
+            var builder = new AppBuilder();
+            var application = new WebApi.Startup();
+            var app = builder.Build(application.Configuration);
+            server = new ServerFactory(new StdoutTrace()).Create(app, 8080);
+        }
+
+        [TestFixtureTearDown]
+        public void AfterAllTests()
+        {
+            server.Dispose();
+        }
+
 		[SetUp]
-		public void Setup()
+		public virtual void Setup()
 		{
 			stopwatch = StartStopwatch();
 		}
@@ -25,7 +44,7 @@ namespace IntegrationTests
 		[TearDown]
 		public void TearDown()
 		{
-			Console.WriteLine(String.Format("Finished {0} in {1} ms", currentTest, stopwatch.ElapsedMilliseconds));
+			Console.WriteLine(String.Format("Finished in {0} ms", stopwatch.ElapsedMilliseconds));
 		}
 	}
 }

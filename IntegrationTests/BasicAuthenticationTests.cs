@@ -59,10 +59,10 @@ namespace IntegrationTests
 		public void Session_Delete_ReturnHtml()
 		{
 			currentTest = "BasicAuthenticationTests_Session_Delete_ReturnHtml";
-			var url = baseUrl + "/Home/Delete/2";
+			var url = baseUrl + "/Home/Delete/";
 			var session = new Session(username, password);
 
-			var result = session.Delete(url);
+			var result = session.Delete(new {id = 2}, url);
 
 			Assert.That(result.ResponseContent, Is.StringContaining("<h2>Deleted: 2</h2>"));
 		}

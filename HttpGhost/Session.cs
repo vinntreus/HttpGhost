@@ -48,9 +48,9 @@ namespace HttpGhost
 			return GetResult(u => navigator.Put(postingObject, url, Authentication), url);
 		}
 
-		public INavigationResult Delete(string url)
+		public INavigationResult Delete(object postingObject, string url)
 		{
-			return GetResult(u => navigator.Delete(url, Authentication), url);
+			return GetResult(u => navigator.Delete(postingObject, url, Authentication), url);
 		}
 
 		private INavigationResult GetResult(Func<string, INavigationResult> navigate, string url)

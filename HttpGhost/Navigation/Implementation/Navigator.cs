@@ -50,11 +50,13 @@ namespace HttpGhost.Navigation.Implementation
 			return ResultFromResponse(webRequest);
 		}
 
-		public INavigationResult Delete(string url, AuthenticationInfo authenticationInfo)
+		public INavigationResult Delete(object postingObject, string url, AuthenticationInfo authenticationInfo)
 		{
 			var webRequest = CreateWebRequest(url);
 			webRequest.SetAuthentication(authenticationInfo);
 			webRequest.SetMethod("Delete");
+            webRequest.SetContentType("application/x-www-form-urlencoded");
+            SerializePostingObjectToRequest(postingObject, webRequest);
 
 			return ResultFromResponse(webRequest);
 		}

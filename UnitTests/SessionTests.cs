@@ -90,7 +90,7 @@ namespace UnitTests
             var expectedResult = Mock.Of<INavigationResult>();
 			session.SetupDeleteToReturn(expectedResult);
 
-			var result = session.Delete(SOME_URL);
+			var result = session.Delete("a=a", SOME_URL);
 
 			Assert.That(result, Is.SameAs(expectedResult));
 		}
@@ -122,7 +122,7 @@ namespace UnitTests
 
 			public void SetupDeleteToReturn(INavigationResult navigationResult)
 			{
-				navigatorMock.Setup(n => n.Delete(It.IsAny<string>(), It.IsAny<AuthenticationInfo>())).Returns(navigationResult);
+				navigatorMock.Setup(n => n.Delete(It.IsAny<object>(), It.IsAny<string>(), It.IsAny<AuthenticationInfo>())).Returns(navigationResult);
 			}
 
 			
