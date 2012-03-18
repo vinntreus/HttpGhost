@@ -4,7 +4,9 @@ using System;
 using System.Net;
 using HttpGhost.Authentication;
 using HttpGhost.Navigation;
-using HttpGhost.Navigation.Implementation;
+using HttpGhost.Serialization;
+using HttpGhost.Transport;
+using HttpGhost.Transport.Implementation;
 
 namespace HttpGhost
 {
@@ -29,7 +31,7 @@ namespace HttpGhost
 		private Session(AuthenticationType type, Credentials credentials)
 		{
 			Authentication = new AuthenticationInfo(type, credentials);
-			navigator = new Navigator(new FormSerializer());
+            navigator = new Navigator(new RequestFactory(new FormSerializer()));
 			AutoFollowRedirect = true;
 		}
 
@@ -71,4 +73,19 @@ namespace HttpGhost
 			return result;
 		}
 	}
+
+    internal class RequestFactory : IRequestFactory
+    {
+        private readonly ISerializer serializer;
+
+        public RequestFactory(ISerializer serializer)
+        {
+            this.serializer = serializer;
+        }
+
+        public IRequest Get(string url)
+        {
+            return new Request((HttpWebRequest)WebRequest.Create(new Uri(url)), serializer);
+        }
+    }
 }

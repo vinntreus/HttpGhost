@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System;
 using System.Net;
 using System.Text;
+using HttpGhost;
 using HttpGhost.Authentication;
+using HttpGhost.Serialization;
 using HttpGhost.Transport.Implementation;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.Transport
@@ -14,13 +17,15 @@ namespace UnitTests.Transport
 	{
 		private Request request;
 		private HttpWebRequest httpWebRequest;
+	    private Mock<ISerializer> serializerMock;
 		private const string some_url = "http://a";
 
 		[SetUp]
 		public void Setup()
 		{
+            serializerMock = new Mock<ISerializer>();
 			httpWebRequest = (HttpWebRequest)WebRequest.Create(some_url);
-			request = new Request(httpWebRequest);
+			request = new Request(httpWebRequest, serializerMock.Object);
 		}
 
 		[Test]

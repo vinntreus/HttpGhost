@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using HttpGhost.Navigation.Implementation;
+using HttpGhost.Navigation;
 using HttpGhost.Transport;
 using Moq;
 using NUnit.Framework;

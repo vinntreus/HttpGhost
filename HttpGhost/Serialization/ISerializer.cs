@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace HttpGhost
+namespace HttpGhost.Serialization
 {
 	public interface ISerializer
 	{

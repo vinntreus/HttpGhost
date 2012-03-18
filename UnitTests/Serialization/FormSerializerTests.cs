@@ -1,9 +1,9 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Collections.Generic;
-using HttpGhost;
+using HttpGhost.Serialization;
 using NUnit.Framework;
 
-namespace UnitTests
+namespace UnitTests.Serialization
 {
 	[TestFixture]
 	public class FormSerializerTests

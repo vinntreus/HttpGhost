@@ -1,21 +1,22 @@
-﻿using HttpGhost.Navigation.Implementation;
-using HttpGhost.Navigation.Parse;
+using System.Linq;
+using System.Collections.Generic;
+using HttpGhost.Parsing;
 using NUnit.Framework;
 
-namespace UnitTests.Navigation
+namespace UnitTests.Parsing
 {
     [TestFixture]
-    public class XPathifyTests
+    public class SelectorParserTests
     {
-        private string GetXPathifyString(string pattern)
+        private string ToXPath(string pattern)
         {
-            return new CssToXpath(pattern).Parse();
+            return new SelectorParser(pattern).ToXPath();
         }
 
         [Test]
         public void Create_StartsWithTwoForwardSlash_DoNothing()
         {
-            var xpath = GetXPathifyString("//a");
+            var xpath = ToXPath("//a");
 
             Assert.That(xpath, Is.EqualTo("//a"));
         }
@@ -23,7 +24,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Create_StartsWithNoForwardSlash_AddTwoForwardSlash()
         {
-            var xpath = GetXPathifyString("a");
+            var xpath = ToXPath("a");
 
             Assert.That(xpath, Is.EqualTo("//a"));
         }
@@ -31,7 +32,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Create_ContainDot_AddClassAttribute()
         {
-            var xpath = GetXPathifyString("a.beer");
+            var xpath = ToXPath("a.beer");
 
             Assert.That(xpath, Is.EqualTo("//a[contains(@class,'beer')]"));
         }
@@ -39,7 +40,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Create_ContainSharp_AddIdAttribute()
         {
-            var xpath = GetXPathifyString("a#beer");
+            var xpath = ToXPath("a#beer");
 
             Assert.That(xpath, Is.EqualTo("//a[@id=\"beer\"]"));
         }
@@ -47,7 +48,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Create_ContainDescendent_AddSlash()
         {
-            var xpath = GetXPathifyString("a#beer > li");
+            var xpath = ToXPath("a#beer > li");
 
             Assert.That(xpath, Is.EqualTo("//a[@id=\"beer\"]/li"));
         }
@@ -55,7 +56,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Create_ContainDescendentWithClass_AddSlash()
         {
-            var xpath = GetXPathifyString("a#beer > li.carlsberg");
+            var xpath = ToXPath("a#beer > li.carlsberg");
 
             Assert.That(xpath, Is.EqualTo("//a[@id=\"beer\"]/li[contains(@class,'carlsberg')]"));
         }
@@ -63,7 +64,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Create_IdWithoutElement_AddStar()
         {
-            var xpath = GetXPathifyString("#beer");
+            var xpath = ToXPath("#beer");
 
             Assert.That(xpath, Is.EqualTo("//*[@id=\"beer\"]"));
         }
@@ -71,7 +72,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Create_ClassWithoutElement_AddStarWithContains()
         {
-            var xpath = GetXPathifyString(".beer");
+            var xpath = ToXPath(".beer");
 
             Assert.That(xpath, Is.EqualTo("//*[contains(@class,'beer')]"));
         }
@@ -79,7 +80,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Create_ClassWithoutElementDescendsClassWithoutElement_AddStarWithContains()
         {
-            var xpath = GetXPathifyString(".beer .soda");
+            var xpath = ToXPath(".beer .soda");
 
             Assert.That(xpath, Is.EqualTo("//*[contains(@class,'beer')]/*[contains(@class,'soda')]"));
         }

@@ -1,28 +1,28 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace HttpGhost.Navigation.Parse
+namespace HttpGhost.Parsing
 {
     public class IdToken : Token
     {
         private readonly List<char> pattern;
-        private readonly CssToXpath cssToXpath;
+        private readonly SelectorParser selectorParser;
 
-        public IdToken(List<char> pattern, CssToXpath cssToXpath) : base(cssToXpath.PreviousChar)
+        public IdToken(List<char> pattern, SelectorParser selectorParser) : base(selectorParser.PreviousChar)
         {
             this.pattern = pattern;
-            this.cssToXpath = cssToXpath;
+            this.selectorParser = selectorParser;
         }
 
         public void ToXpath()
         {
-            cssToXpath.IsProcessingAttribute = true;
+            selectorParser.IsProcessingAttribute = true;
             if (!IsPreviousCharElement())
             {
                 pattern.Add('*');
             }
             pattern.AddRange("[@id=\"");
-            cssToXpath.EndProcessingAttributeWith = "\"]";
+            selectorParser.EndProcessingAttributeWith = "\"]";
         }
     }
 }

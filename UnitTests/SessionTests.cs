@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using HttpGhost;
 using HttpGhost.Authentication;
 using HttpGhost.Navigation;
-using HttpGhost.Navigation.Implementation;
 using Moq;
 using NUnit.Framework;
 

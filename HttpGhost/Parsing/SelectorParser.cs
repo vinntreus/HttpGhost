@@ -2,16 +2,16 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 
-namespace HttpGhost.Navigation.Parse
+namespace HttpGhost.Parsing
 {
-    public class CssToXpath
+    public class SelectorParser
     {
         private string pattern;
         protected bool IsXpath { get; private set; }
         public bool IsProcessingAttribute { get; set; }
         public string EndProcessingAttributeWith { get; set; }
         public char PreviousChar { get; private set; }
-        private readonly IDictionary<char, Action<List<char>, CssToXpath>> tokens = new Dictionary<char, Action<List<char>, CssToXpath>>
+        private readonly IDictionary<char, Action<List<char>, SelectorParser>> tokens = new Dictionary<char, Action<List<char>, SelectorParser>>
                                                                                       {
             {'.', (pattern, me) => new ClassToken(pattern, me).ToXpath()},
             {'#', (pattern, me) => new IdToken(pattern, me).ToXpath()},
@@ -19,14 +19,14 @@ namespace HttpGhost.Navigation.Parse
             {' ', (pattern, me) => new SpaceToken(pattern, me).ToXpath()}
         };
 
-        public CssToXpath(string pattern)
+        public SelectorParser(string pattern)
         {
             IsXpath = pattern.StartsWith("//", StringComparison.InvariantCulture);
             this.pattern = pattern;
         }
 
 
-        public string Parse()
+        public string ToXPath()
         {
             if (IsXpath)
                 return pattern;

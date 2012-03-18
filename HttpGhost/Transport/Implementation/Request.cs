@@ -4,17 +4,20 @@ using System;
 using System.Net;
 using System.Text;
 using HttpGhost.Authentication;
+using HttpGhost.Serialization;
 
 namespace HttpGhost.Transport.Implementation
 {
 	public class Request : IRequest
 	{
 		private readonly HttpWebRequest webRequest;
+	    private readonly ISerializer serializer;
 
-		public Request(HttpWebRequest webRequest)
+	    public Request(HttpWebRequest webRequest, ISerializer serializer)
 		{
 			this.webRequest = webRequest;
-			webRequest.Headers = new WebHeaderCollection();
+		    this.serializer = serializer;
+		    webRequest.Headers = new WebHeaderCollection();
 		}
 
 	    public string Url
@@ -22,7 +25,7 @@ namespace HttpGhost.Transport.Implementation
 	        get { return this.webRequest.RequestUri.PathAndQuery; }
 	    }
 
-		public IResponse GetResponse()
+	    public IResponse GetResponse()
 		{
 			return new Response((HttpWebResponse) webRequest.GetResponse());
 		}
@@ -49,6 +52,11 @@ namespace HttpGhost.Transport.Implementation
 		{
 			webRequest.ContentType = contentType;
 		}
+
+        public void WriteFormDataToRequestStream(object formData)
+        {
+            WriteFormDataToRequestStream(serializer.Serialize(formData));
+        }
 
 		public void WriteFormDataToRequestStream(string formData)
 		{

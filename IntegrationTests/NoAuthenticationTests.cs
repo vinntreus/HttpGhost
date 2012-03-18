@@ -30,7 +30,7 @@ namespace IntegrationTests
         public void Session_Post_ReturnHtml()
         {
             var result = session.Post(new { title = "jippi" }, baseUrl);
-
+            
             Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
         }
 

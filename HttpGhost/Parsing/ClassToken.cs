@@ -1,22 +1,22 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace HttpGhost.Navigation.Parse
+namespace HttpGhost.Parsing
 {
     public class ClassToken : Token
     {
         private readonly List<char> pattern;
-        private readonly CssToXpath cssToXpath;
+        private readonly SelectorParser selectorParser;
 
-        public ClassToken(List<char> pattern, CssToXpath cssToXpath) : base(cssToXpath.PreviousChar)
+        public ClassToken(List<char> pattern, SelectorParser selectorParser) : base(selectorParser.PreviousChar)
         {
             this.pattern = pattern;
-            this.cssToXpath = cssToXpath;
+            this.selectorParser = selectorParser;
         }
 
         public void ToXpath()
         {
-            cssToXpath.IsProcessingAttribute = true;
+            selectorParser.IsProcessingAttribute = true;
 
             if (IsPreviousCharSpace())
             {
@@ -27,7 +27,7 @@ namespace HttpGhost.Navigation.Parse
                 pattern.Add('*');
             }
             pattern.AddRange("[contains(@class,'");
-            cssToXpath.EndProcessingAttributeWith = "')]";
+            selectorParser.EndProcessingAttributeWith = "')]";
         }
     }
 }

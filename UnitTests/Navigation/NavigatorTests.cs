@@ -1,8 +1,9 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Net;
-using HttpGhost;
 using HttpGhost.Authentication;
+using HttpGhost.Navigation;
+using HttpGhost.Transport;
 using Moq;
 using NUnit.Framework;
 
@@ -11,22 +12,28 @@ namespace UnitTests.Navigation
 	[TestFixture]
 	public class NavigatorTests
 	{
-		private TestableNavigator navigator;
 		private const string some_url = "http:/a";
+		
+	    private Navigator navigator;
+	    private Mock<IRequest> requestMock;
+	    private Mock<IResponse> responseMock;
 
-		private Mock<ISerializer> serializerMock;
-		[SetUp]
+	    [SetUp]
 		public void Setup()
 		{
-			serializerMock = new Mock<ISerializer>();
-			
-			navigator = new TestableNavigator(serializerMock.Object);
+            var factoryMock = new Mock<IRequestFactory>();
+            requestMock = new Mock<IRequest>();
+	        responseMock = new Mock<IResponse>();
+	        requestMock.Setup(r => r.GetResponse()).Returns(responseMock.Object);
+            factoryMock.Setup(f => f.Get(It.IsAny<string>())).Returns(requestMock.Object);
+
+            navigator = new Navigator(factoryMock.Object);
 		}
 
 		[Test]
 		public void Get_ValidUrl_ReturnHttpStatus()
 		{
-			navigator.responseMock.Setup(n => n.StatusCode).Returns(HttpStatusCode.OK);
+			responseMock.Setup(n => n.StatusCode).Returns(HttpStatusCode.OK);
 
 			var result = navigator.Get(some_url, null);
 
@@ -37,7 +44,7 @@ namespace UnitTests.Navigation
 		public void Get_ValidUrl_ReturnHtml()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
-			navigator.responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
 			var result = navigator.Get(some_url, null);
 
@@ -47,7 +54,7 @@ namespace UnitTests.Navigation
 	    [Test]
 	    public void Get_ValidUrl_ReturnsUrl()
 	    {
-	        navigator.requestMock.Setup(n => n.Url).Returns("http://ab");
+	        requestMock.Setup(n => n.Url).Returns("http://ab");
             var result = navigator.Get(some_url, null);
 
             Assert.That(result.RequestUrl, Is.EqualTo("http://ab"));
@@ -56,7 +63,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Post_ValidUrl_ReturnHttpStatus()
 		{
-			navigator.responseMock.Setup(n => n.StatusCode).Returns(HttpStatusCode.OK);
+			responseMock.Setup(n => n.StatusCode).Returns(HttpStatusCode.OK);
 
 			var result = navigator.Post("a=a",some_url, null);
 
@@ -67,7 +74,7 @@ namespace UnitTests.Navigation
 		public void Post_ValidUrl_ReturnHtml()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
-			navigator.responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
 			var result = navigator.Post("b=b",some_url, null);
 
@@ -80,7 +87,7 @@ namespace UnitTests.Navigation
 			var expectedAuthenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
 			navigator.Get(some_url, expectedAuthenticationInfo);
 
-			navigator.requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
+			requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
 		}
 
 		[Test]
@@ -89,7 +96,7 @@ namespace UnitTests.Navigation
 			var expectedAuthenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
 			navigator.Post("a=a", some_url, expectedAuthenticationInfo);
 
-			navigator.requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
+			requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
 		}
 
 		[Test]
@@ -97,7 +104,7 @@ namespace UnitTests.Navigation
 		{
 			navigator.Post("a=a", some_url, null);
 
-			navigator.requestMock.Verify(r => r.SetMethod("Post"), Times.Once());
+			requestMock.Verify(r => r.SetMethod("Post"), Times.Once());
 		}
 
 		[Test]
@@ -105,16 +112,15 @@ namespace UnitTests.Navigation
 		{
 			navigator.Post("a=a", some_url, null);
 
-			navigator.requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
+			requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
 		}
 
 		[Test]
 		public void Post_ShouldSetFormCollection()
 		{
-			serializerMock.Setup(s => s.Serialize(It.IsAny<object>())).Returns("jihaa");
-			navigator.Post("a=a", some_url, null);
+            navigator.Post("a=a", some_url, null);
 			
-			navigator.requestMock.Verify(r => r.WriteFormDataToRequestStream("jihaa"), Times.Once());
+			requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"a=a"), Times.Once());
 		}
 
 		[Test]
@@ -122,7 +128,7 @@ namespace UnitTests.Navigation
 		{
 			navigator.Put("a", some_url, null);
 
-			navigator.requestMock.Verify(r => r.SetMethod("Put"), Times.Once());
+			requestMock.Verify(r => r.SetMethod("Put"), Times.Once());
 		}
 
 		[Test]
@@ -132,23 +138,22 @@ namespace UnitTests.Navigation
 			
 			navigator.Put("a", some_url, authenticationInfo);
 
-			navigator.requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
+			requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
 		}
 
 		[Test]
 		public void Put_ShouldSetFormCollection()
 		{
-			serializerMock.Setup(s => s.Serialize(It.IsAny<object>())).Returns("jihaa");
-			navigator.Put("a=a", some_url, null);
+			navigator.Put("a=b", some_url, null);
 
-			navigator.requestMock.Verify(r => r.WriteFormDataToRequestStream("jihaa"), Times.Once());
+			requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"a=b"), Times.Once());
 		}
 
 		[Test]
 		public void Put_SHouldReturnHtmlFromResponse()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
-			navigator.responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
 			var result = navigator.Put("b=b", some_url, null);
 
@@ -160,7 +165,7 @@ namespace UnitTests.Navigation
 		{
 			navigator.Put("a=a", some_url, null);
 
-			navigator.requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
+			requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
 		}
 
 		[Test]
@@ -168,16 +173,15 @@ namespace UnitTests.Navigation
 		{
 			navigator.Delete("a=a", some_url, null);
 
-			navigator.requestMock.Verify(r => r.SetMethod("Delete"), Times.Once());
+			requestMock.Verify(r => r.SetMethod("Delete"), Times.Once());
 		}
 
         [Test]
         public void Delete_ShouldSetFormCollection()
         {
-            serializerMock.Setup(s => s.Serialize(It.IsAny<object>())).Returns("jihaa");
-            navigator.Delete("a=a", some_url, null);
+            navigator.Delete("b=a", some_url, null);
 
-            navigator.requestMock.Verify(r => r.WriteFormDataToRequestStream("jihaa"), Times.Once());
+            requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"b=a"), Times.Once());
         }
 
 		[Test]
@@ -187,14 +191,14 @@ namespace UnitTests.Navigation
 
 			navigator.Delete("a=a", some_url, authenticationInfo);
 
-			navigator.requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
+			requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
 		}
 
 		[Test]
 		public void Delete_ShouldReturnHtmlFromResponse()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
-			navigator.responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
 			var result = navigator.Delete("a=a", some_url, null);
 

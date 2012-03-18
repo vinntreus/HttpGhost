@@ -14,5 +14,6 @@ namespace HttpGhost.Transport
 		void WriteFormDataToRequestStream(string formData);
 
 	    string Url { get; }
+	    void WriteFormDataToRequestStream(object formData);
 	}
 }

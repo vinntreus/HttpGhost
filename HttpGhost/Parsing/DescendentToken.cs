@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace HttpGhost.Navigation.Parse
+namespace HttpGhost.Parsing
 {
     public class DescendentToken
     {

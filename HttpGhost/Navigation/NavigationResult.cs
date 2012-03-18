@@ -1,10 +1,10 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Net;
-using HttpGhost.Navigation.Parse;
+using HttpGhost.Parsing;
 using HttpGhost.Transport;
 
-namespace HttpGhost.Navigation.Implementation
+namespace HttpGhost.Navigation
 {
     public class NavigationResult : INavigationResult
     {
@@ -31,7 +31,7 @@ namespace HttpGhost.Navigation.Implementation
             var htmlDoc = new HtmlAgilityPack.HtmlDocument();
             htmlDoc.LoadHtml(ResponseContent);
 
-            pattern = new CssToXpath(pattern).Parse();
+            pattern = new SelectorParser(pattern).ToXPath();
 
             var items = htmlDoc.DocumentNode.SelectNodes(pattern);
 
