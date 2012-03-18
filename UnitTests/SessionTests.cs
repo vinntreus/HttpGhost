@@ -112,7 +112,7 @@ namespace UnitTests
 
 			public void SetupGetToReturn(INavigationResult navigationResult)
 			{
-				navigatorMock.Setup(n => n.Get(It.IsAny<string>(), It.IsAny<AuthenticationInfo>(), null)).Returns(navigationResult);
+				navigatorMock.Setup(n => n.Get(It.IsAny<string>(), It.IsAny<AuthenticationInfo>(), null, null)).Returns(navigationResult);
 			}
 
 			public void SetupPutToReturn(INavigationResult navigationResult)

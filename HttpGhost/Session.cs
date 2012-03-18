@@ -33,39 +33,39 @@ namespace HttpGhost
 			AutoFollowRedirect = true;
 		}
 
-		public INavigationResult Get(string url)
+		public INavigationResult Get(string url, object querystring = null)
 		{
-			return GetResult(u => navigator.Get(u, Authentication, ContentType), url);
+			return GetResult(() => navigator.Get(url, Authentication, ContentType, querystring));
 		}
 
 		public INavigationResult Post(object postingObject, string url)
 		{
-			return GetResult(u => navigator.Post(postingObject, u, Authentication), url);
+			return GetResult(() => navigator.Post(postingObject, url, Authentication));
 		}
 
 		public INavigationResult Put(object postingObject, string url)
 		{
-			return GetResult(u => navigator.Put(postingObject, url, Authentication), url);
+			return GetResult(() => navigator.Put(postingObject, url, Authentication));
 		}
 
 		public INavigationResult Delete(object postingObject, string url)
 		{
-			return GetResult(u => navigator.Delete(postingObject, url, Authentication), url);
+			return GetResult(() => navigator.Delete(postingObject, url, Authentication));
 		}
 
-		private INavigationResult GetResult(Func<string, INavigationResult> navigate, string url)
+		private INavigationResult GetResult(Func<INavigationResult> navigate)
 		{
-			var result = navigate(url);
+			var result = navigate();
 
 			if (AutoFollowRedirect && result.Status == HttpStatusCode.Redirect)
 			{
 				var location = result.ResponseHeaders["Location"];
 				if (!string.IsNullOrEmpty(location))
 				{
-					var uri = new Uri(url);
+					var uri = new Uri(result.RequestUrl);
 					var urlToRedirectTo = string.Format("{0}://{1}{2}", uri.Scheme, uri.Host, location);
 
-					return GetResult(u => navigator.Get(u, Authentication, ContentType), urlToRedirectTo);
+					return GetResult(() => navigator.Get(urlToRedirectTo, Authentication, ContentType));
 				}
 			}
 			return result;

@@ -6,7 +6,7 @@ namespace HttpGhost.Navigation
 {
 	public interface INavigator
 	{
-		INavigationResult Get(string url, AuthenticationInfo authentication, string contentType = null);
+		INavigationResult Get(string url, AuthenticationInfo authentication, string contentType = null, object querystring = null);
 		INavigationResult Post(object postingObject, string url, AuthenticationInfo authenticationInfo);
 		INavigationResult Put(object postingObject, string url, AuthenticationInfo authenticationInfo);
 		INavigationResult Delete(object postingObject, string url, AuthenticationInfo authenticationInfo);

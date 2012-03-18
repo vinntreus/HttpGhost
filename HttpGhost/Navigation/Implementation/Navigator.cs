@@ -17,7 +17,7 @@ namespace HttpGhost.Navigation.Implementation
 			this.serializer = serializer;
 		}
 
-		public INavigationResult Get(string url, AuthenticationInfo authentication, string contentType = null)
+		public INavigationResult Get(string url, AuthenticationInfo authentication, string contentType = null, object querystring = null)
 		{
 			var request = CreateWebRequest(url);
 			request.SetContentType(contentType);
