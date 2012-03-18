@@ -4,14 +4,14 @@ using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation.Methods
 {
-    public class Delete : NavigationBase
+    public class Delete : Navigator
     {
         public Delete(IRequest request, DeleteNavigationOptions options) : base(request)
         {
-            request.SetMethod("Delete");
-            request.SetContentType("application/x-www-form-urlencoded");
-            request.SetAuthentication(options.AuthenticationInfo);
-            request.WriteFormDataToRequestStream(options.PostingObject);
+            this.request.SetMethod("Delete");
+            this.request.SetContentType("application/x-www-form-urlencoded");
+            this.request.SetAuthentication(options.AuthenticationInfo);
+            this.request.WriteFormDataToRequestStream(options.PostingObject);
         }
     }
 }

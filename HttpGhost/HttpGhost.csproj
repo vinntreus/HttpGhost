@@ -56,13 +56,12 @@
     <Compile Include="Authentication\InvalidUserCredentialsException.cs" />
     <Compile Include="ContentType.cs" />
     <Compile Include="Navigation\INavigationResult.cs" />
-    <Compile Include="Navigation\NavigationBase.cs" />
+    <Compile Include="Navigation\Navigator.cs" />
     <Compile Include="Navigation\Methods\Delete\DeleteNavigationOptions.cs" />
     <Compile Include="Navigation\Methods\Delete\Delete.cs" />
     <Compile Include="Navigation\Methods\Get\GetNavigationOptions.cs" />
     <Compile Include="Navigation\Methods\Get\Get.cs" />
     <Compile Include="Navigation\NavigationResult.cs" />
-    <Compile Include="Navigation\Navigator.cs" />
     <Compile Include="Navigation\Methods\Post\PostNavigationOptions.cs" />
     <Compile Include="Navigation\Methods\Post\Post.cs" />
     <Compile Include="Navigation\Methods\Put\PutNavigationOptions.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Transport\IRequest.cs" />
     <Compile Include="Transport\IRequestFactory.cs" />
     <Compile Include="Transport\IResponse.cs" />
-    <Compile Include="Navigation\INavigator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Transport\Request.cs" />

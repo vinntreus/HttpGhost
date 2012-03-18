@@ -4,14 +4,14 @@ using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation.Methods
 {
-    public class Put : NavigationBase
+    public class Put : Navigator
     {
         public Put(IRequest request, PutNavigationOptions options) : base(request)
         {
-            request.SetMethod("Put");
-            request.SetContentType("application/x-www-form-urlencoded");
-            request.SetAuthentication(options.AuthenticationInfo);
-            request.WriteFormDataToRequestStream(options.PostingObject);
+            this.request.SetMethod("Put");
+            this.request.SetContentType("application/x-www-form-urlencoded");
+            this.request.SetAuthentication(options.AuthenticationInfo);
+            this.request.WriteFormDataToRequestStream(options.PostingObject);
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using HttpGhost.Authentication;
-using HttpGhost.Navigation;
+using HttpGhost.Navigation.Methods;
 using HttpGhost.Transport;
 using Moq;
 using NUnit.Framework;
@@ -12,22 +12,35 @@ namespace UnitTests.Navigation
 	[TestFixture]
 	public class NavigatorTests
 	{
-		private const string some_url = "http:/a";
-		
-	    private Navigator navigator;
 	    private Mock<IRequest> requestMock;
 	    private Mock<IResponse> responseMock;
+
+	    private Get GetNavigator(GetNavigationOptions options = null)
+	    {
+	        return new Get(requestMock.Object, options ?? new GetNavigationOptions(null, null, null));
+	    }
+
+        private Post PostNavigator(PostNavigationOptions options = null)
+        {
+            return new Post(requestMock.Object, options ?? new PostNavigationOptions(null, null));
+        }
+
+        private Put PutNavigator(PutNavigationOptions options = null)
+        {
+            return new Put(requestMock.Object, options ?? new PutNavigationOptions(null, null));
+        }
+
+        private Delete DeleteNavigator(DeleteNavigationOptions options = null)
+        {
+            return new Delete(requestMock.Object, options ?? new DeleteNavigationOptions(null, null));
+        }
 
 	    [SetUp]
 		public void Setup()
 		{
-            var factoryMock = new Mock<IRequestFactory>();
             requestMock = new Mock<IRequest>();
 	        responseMock = new Mock<IResponse>();
 	        requestMock.Setup(r => r.GetResponse()).Returns(responseMock.Object);
-            factoryMock.Setup(f => f.Create(It.IsAny<string>())).Returns(requestMock.Object);
-
-            navigator = new Navigator(factoryMock.Object);
 		}
 
 		[Test]
@@ -35,7 +48,7 @@ namespace UnitTests.Navigation
 		{
 			responseMock.Setup(n => n.StatusCode).Returns(HttpStatusCode.OK);
 
-			var result = navigator.Get(some_url, null);
+			var result = GetNavigator().Navigate();
 
 			Assert.That(result.Status, Is.EqualTo(HttpStatusCode.OK));
 		}
@@ -46,7 +59,7 @@ namespace UnitTests.Navigation
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
 			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
-			var result = navigator.Get(some_url, null);
+            var result = GetNavigator().Navigate();
 
 			Assert.That(result.ResponseContent, Is.EqualTo(htmlBodyBodyHtml));
 		}
@@ -55,7 +68,8 @@ namespace UnitTests.Navigation
 	    public void Get_ValidUrl_ReturnsUrl()
 	    {
 	        requestMock.Setup(n => n.Url).Returns("http://ab");
-            var result = navigator.Get(some_url, null);
+
+            var result = GetNavigator().Navigate();
 
             Assert.That(result.RequestUrl, Is.EqualTo("http://ab"));
 	    }
@@ -65,7 +79,7 @@ namespace UnitTests.Navigation
 		{
 			responseMock.Setup(n => n.StatusCode).Returns(HttpStatusCode.OK);
 
-			var result = navigator.Post("a=a",some_url, null);
+			var result = PostNavigator().Navigate();
 
 			Assert.That(result.Status, Is.EqualTo(HttpStatusCode.OK));
 		}
@@ -76,7 +90,7 @@ namespace UnitTests.Navigation
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
 			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
-			var result = navigator.Post("b=b",some_url, null);
+            var result = PostNavigator().Navigate();
 
 			Assert.That(result.ResponseContent, Is.EqualTo(htmlBodyBodyHtml));
 		}
@@ -85,7 +99,8 @@ namespace UnitTests.Navigation
 		public void Get_ShouldSetAuthentication()
 		{
 			var expectedAuthenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
-			navigator.Get(some_url, expectedAuthenticationInfo);
+
+			GetNavigator(new GetNavigationOptions(expectedAuthenticationInfo, "", null));
 
 			requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
 		}
@@ -94,7 +109,8 @@ namespace UnitTests.Navigation
 		public void Post_ShouldSetAuthentication()
 		{
 			var expectedAuthenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
-			navigator.Post("a=a", some_url, expectedAuthenticationInfo);
+			
+            PostNavigator(new PostNavigationOptions(null, expectedAuthenticationInfo));
 
 			requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
 		}
@@ -102,7 +118,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Post_ShouldSetMethodToPost()
 		{
-			navigator.Post("a=a", some_url, null);
+			PostNavigator();
 
 			requestMock.Verify(r => r.SetMethod("Post"), Times.Once());
 		}
@@ -110,7 +126,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Post_ShouldSetCorrectContentType()
 		{
-			navigator.Post("a=a", some_url, null);
+            PostNavigator();
 
 			requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
 		}
@@ -118,7 +134,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Post_ShouldSetFormCollection()
 		{
-            navigator.Post("a=a", some_url, null);
+            PostNavigator(new PostNavigationOptions("a=a", null));
 			
 			requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"a=a"), Times.Once());
 		}
@@ -126,7 +142,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Put_ShouldSetMethodToPut()
 		{
-			navigator.Put("a", some_url, null);
+			PutNavigator();
 
 			requestMock.Verify(r => r.SetMethod("Put"), Times.Once());
 		}
@@ -136,7 +152,7 @@ namespace UnitTests.Navigation
 		{
 			var authenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
 			
-			navigator.Put("a", some_url, authenticationInfo);
+			PutNavigator(new PutNavigationOptions(null, authenticationInfo));
 
 			requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
 		}
@@ -144,7 +160,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Put_ShouldSetFormCollection()
 		{
-			navigator.Put("a=b", some_url, null);
+		    PutNavigator(new PutNavigationOptions("a=b", null));
 
 			requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"a=b"), Times.Once());
 		}
@@ -155,7 +171,7 @@ namespace UnitTests.Navigation
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
 			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
-			var result = navigator.Put("b=b", some_url, null);
+			var result = PutNavigator().Navigate();
 
 			Assert.That(result.ResponseContent, Is.EqualTo(htmlBodyBodyHtml));
 		}
@@ -163,7 +179,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Put_ShouldSetCorrectContentType()
 		{
-			navigator.Put("a=a", some_url, null);
+			PutNavigator();
 
 			requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
 		}
@@ -171,7 +187,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Delete_ShouldSetMethodToDelete()
 		{
-			navigator.Delete("a=a", some_url, null);
+		    DeleteNavigator();
 
 			requestMock.Verify(r => r.SetMethod("Delete"), Times.Once());
 		}
@@ -179,7 +195,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Delete_ShouldSetFormCollection()
         {
-            navigator.Delete("b=a", some_url, null);
+            DeleteNavigator(new DeleteNavigationOptions("b=a",null));
 
             requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"b=a"), Times.Once());
         }
@@ -189,7 +205,7 @@ namespace UnitTests.Navigation
 		{
 			var authenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
 
-			navigator.Delete("a=a", some_url, authenticationInfo);
+			DeleteNavigator(new DeleteNavigationOptions(null, authenticationInfo));
 
 			requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
 		}
@@ -200,7 +216,7 @@ namespace UnitTests.Navigation
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
 			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
 
-			var result = navigator.Delete("a=a", some_url, null);
+		    var result = DeleteNavigator().Navigate();
 
 			Assert.That(result.ResponseContent, Is.EqualTo(htmlBodyBodyHtml));
 		}

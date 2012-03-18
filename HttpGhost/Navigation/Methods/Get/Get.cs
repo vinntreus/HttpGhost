@@ -4,13 +4,13 @@ using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation.Methods
 {
-    public class Get: NavigationBase
+    public class Get: Navigator
     {
         public Get(IRequest request, GetNavigationOptions options) : base(request)
         {
-            request.SetMethod("Get");
-            request.SetContentType(options.ContentType);
-            request.SetAuthentication(options.AuthenticationInfo);
+            this.request.SetMethod("Get");
+            this.request.SetContentType(options.ContentType);
+            this.request.SetAuthentication(options.AuthenticationInfo);
         }
     }
 }
