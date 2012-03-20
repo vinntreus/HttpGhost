@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using IntegrationTests.Nancy;
 
-namespace IntegrationTests.DebugNancy
+namespace IntegrationTests.NancyConsole
 {
     class Program
     {

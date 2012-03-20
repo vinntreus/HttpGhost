@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2E9DF3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests.Nancy", "IntegrationTests.Nancy\IntegrationTests.Nancy.csproj", "{7CF9893B-947D-485E-9ED9-2342736A3856}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests.DebugNancy", "IntegrationTests.DebugNancy\IntegrationTests.DebugNancy.csproj", "{2D6EDAC8-C750-41EE-9167-2631D28E2188}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests.NancyConsole", "IntegrationTests.NancyConsole\IntegrationTests.NancyConsole.csproj", "{2D6EDAC8-C750-41EE-9167-2631D28E2188}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
