@@ -1,50 +1,25 @@
 ﻿using System.Linq;
 using System.Collections.Generic;
-using System;
-using System.Diagnostics;
-using Firefly.Http;
-using Gate.Builder;
-using HttpGhost;
+using IntegrationTests.Nancy;
 using NUnit.Framework;
 
 namespace IntegrationTests
 {
-	public abstract class IntegrationTestsBase
-	{
-		protected Stopwatch stopwatch;
-		protected string currentTest;
-	    private IDisposable server;
-
-	    private static Stopwatch StartStopwatch()
-		{
-			return Stopwatch.StartNew();
-		}
+    public abstract class IntegrationTestsBase
+    {
+        private Host host;
 
         [TestFixtureSetUp]
         public void BeforeAllTests()
         {
-            var builder = new AppBuilder();
-            var application = new WebApi.Startup();
-            var app = builder.Build(application.Configuration);
-            server = new ServerFactory(new StdoutTrace()).Create(app, 8080);
+            host = new Host();
+            host.Start();
         }
 
         [TestFixtureTearDown]
         public void AfterAllTests()
         {
-            server.Dispose();
+            host.Stop();
         }
-
-		[SetUp]
-		public virtual void Setup()
-		{
-			stopwatch = StartStopwatch();
-		}
-
-		[TearDown]
-		public void TearDown()
-		{
-			Console.WriteLine(String.Format("Finished in {0} ms", stopwatch.ElapsedMilliseconds));
-		}
-	}
+    }
 }

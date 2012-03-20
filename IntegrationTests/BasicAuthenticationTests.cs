@@ -14,16 +14,9 @@ namespace IntegrationTests
 		private readonly string password = ConfigurationManager.AppSettings["BasicAuthenticationPassword"];
 		private readonly string baseUrl = ConfigurationManager.AppSettings["BasicAuthenticationUrl"];
 
-		[TestFixtureSetUp]
-		public void BeforeAllTests()
-		{
-			new Session(username, password).Get(baseUrl); //this is for jit warmup, to measure times better for requests
-		}
-
 		[Test]
 		public void Session_Get_ReturnHtml()
 		{
-			currentTest = "BasicAuthenticationTests_Session_Get_ReturnHtml";
 			var session = new Session(username, password);
 			
 			var result = session.Get(baseUrl);
@@ -34,7 +27,6 @@ namespace IntegrationTests
 		[Test]
 		public void Session_Post_ReturnHtml()
 		{
-			currentTest = "BasicAuthenticationTests_Session_Post_ReturnHtml";
 			var url = baseUrl + "/Home/Parse";
 			var session = new Session(username, password);
 
@@ -46,7 +38,6 @@ namespace IntegrationTests
 		[Test]
 		public void Session_Put_ReturnHtml()
 		{
-			currentTest = "BasicAuthenticationTests_Session_Put_ReturnHtml";
 			var url = baseUrl + "/Home/Update";
 			var session = new Session(username, password);
 
@@ -58,7 +49,6 @@ namespace IntegrationTests
 		[Test]
 		public void Session_Delete_ReturnHtml()
 		{
-			currentTest = "BasicAuthenticationTests_Session_Delete_ReturnHtml";
 			var url = baseUrl + "/Home/Delete/";
 			var session = new Session(username, password);
 
@@ -70,7 +60,6 @@ namespace IntegrationTests
 		[Test]
 		public void Session_PostThatRedirects_ShouldPassCredentialsInRedirect()
 		{
-			currentTest = "Session_PostThatRedirects_ShouldPassCredentialsInRedirect";
 			var url = baseUrl + "/Home/Redirect";
 			var session = new Session(username, password);
 

@@ -17,6 +17,8 @@ namespace HttpGhost.Navigation
             this.response = response;
         }
 
+        public long TimeSpent { get; set; }
+
         public HttpStatusCode Status { get { return response.StatusCode; } }
 
         public string ResponseContent { get { return response.Html; } }
@@ -47,5 +49,7 @@ namespace HttpGhost.Navigation
         {
             get { return request.Url; }
         }
+
+
     }
 }

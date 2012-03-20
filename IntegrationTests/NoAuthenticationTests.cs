@@ -12,9 +12,8 @@ namespace IntegrationTests
 	    private Session session;
 
 	    [SetUp]
-	    public override void Setup()
+	    public void Setup()
 	    {
-	        base.Setup();
             session = new Session();
 	    }
         
@@ -23,15 +22,24 @@ namespace IntegrationTests
 		{
 			var result = session.Get(baseUrl);
 
-			Assert.That(result.ResponseContent, Is.StringContaining("Hello"));
+			Assert.That(result.ResponseContent, Is.StringContaining("Getting"));
 		}
+
+        [Test]
+        public void Session_GetWithQuerystring_ReturnHtml()
+        {
+            var url = baseUrl + "/getqs";
+            var result = session.Get(url, new {q = "b"});
+
+            Assert.That(result.ResponseContent, Is.StringContaining("b"));
+        }
 
         [Test]
         public void Session_Post_ReturnHtml()
         {
             var result = session.Post(new { title = "jippi" }, baseUrl);
             
-            Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
+            Assert.That(result.ResponseContent, Is.StringContaining("Posting"));
         }
 
         [Test]
@@ -39,7 +47,7 @@ namespace IntegrationTests
         {
             var result = session.Put(new { Title = "jippi" }, baseUrl);
 
-            Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
+            Assert.That(result.ResponseContent, Is.StringContaining("Putting"));
         }
 
         [Test]
@@ -47,7 +55,7 @@ namespace IntegrationTests
         {
             var result = session.Delete(new { id = 2 }, baseUrl);
 
-            Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
+            Assert.That(result.ResponseContent, Is.StringContaining("Deleting"));
         }
 	}
 }

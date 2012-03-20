@@ -6,6 +6,10 @@ namespace HttpGhost.Navigation
 {
 	public interface INavigationResult
 	{
+        /// <summary>
+        /// Time spent in milliseconds
+        /// </summary>
+	    long TimeSpent { get; }
 		HttpStatusCode Status { get; }
 		string ResponseContent { get; }
 		WebHeaderCollection ResponseHeaders { get; }

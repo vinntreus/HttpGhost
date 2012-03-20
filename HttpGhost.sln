@@ -15,6 +15,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2E9DF3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests.WebApi", "IntegrationTests.WebApi\IntegrationTests.WebApi.csproj", "{6E13B24C-0B14-4306-A50A-5AAD37D23B30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests.Nancy", "IntegrationTests.Nancy\IntegrationTests.Nancy.csproj", "{7CF9893B-947D-485E-9ED9-2342736A3856}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{6E13B24C-0B14-4306-A50A-5AAD37D23B30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E13B24C-0B14-4306-A50A-5AAD37D23B30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E13B24C-0B14-4306-A50A-5AAD37D23B30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CF9893B-947D-485E-9ED9-2342736A3856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CF9893B-947D-485E-9ED9-2342736A3856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CF9893B-947D-485E-9ED9-2342736A3856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CF9893B-947D-485E-9ED9-2342736A3856}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
