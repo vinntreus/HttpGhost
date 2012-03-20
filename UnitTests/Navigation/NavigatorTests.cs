@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using HttpGhost.Authentication;
 using HttpGhost.Navigation.Methods;
-using HttpGhost.Transport;
-using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.Navigation
@@ -12,41 +10,40 @@ namespace UnitTests.Navigation
 	[TestFixture]
 	public class NavigatorTests
 	{
-	    private Mock<IRequest> requestMock;
-	    private Mock<IResponse> responseMock;
+	    private FakeRequest requestMock;
+	    private FakeResponse responseMock;
 
 	    private Get GetNavigator(GetNavigationOptions options = null)
 	    {
-	        return new Get(requestMock.Object, options ?? new GetNavigationOptions(null, null));
+	        return new Get(requestMock, options ?? new GetNavigationOptions(null, null));
 	    }
 
         private Post PostNavigator(PostNavigationOptions options = null)
         {
-            return new Post(requestMock.Object, options ?? new PostNavigationOptions(null, null));
+            return new Post(requestMock, options ?? new PostNavigationOptions(null, null));
         }
 
         private Put PutNavigator(PutNavigationOptions options = null)
         {
-            return new Put(requestMock.Object, options ?? new PutNavigationOptions(null, null));
+            return new Put(requestMock, options ?? new PutNavigationOptions(null, null));
         }
 
         private Delete DeleteNavigator(DeleteNavigationOptions options = null)
         {
-            return new Delete(requestMock.Object, options ?? new DeleteNavigationOptions(null, null));
+            return new Delete(requestMock, options ?? new DeleteNavigationOptions(null, null));
         }
 
 	    [SetUp]
 		public void Setup()
 		{
-            requestMock = new Mock<IRequest>();
-	        responseMock = new Mock<IResponse>();
-	        requestMock.Setup(r => r.GetResponse()).Returns(responseMock.Object);
+            responseMock = new FakeResponse();
+            requestMock = new FakeRequest(responseMock);
 		}
 
 		[Test]
 		public void Get_ValidUrl_ReturnHttpStatus()
 		{
-			responseMock.Setup(n => n.StatusCode).Returns(HttpStatusCode.OK);
+			responseMock.StatusCode = HttpStatusCode.OK;
 
 			var result = GetNavigator().Navigate();
 
@@ -57,7 +54,7 @@ namespace UnitTests.Navigation
 		public void Get_ValidUrl_ReturnHtml()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
-			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+			responseMock.Html = htmlBodyBodyHtml;
 
             var result = GetNavigator().Navigate();
 
@@ -67,7 +64,7 @@ namespace UnitTests.Navigation
 	    [Test]
 	    public void Get_ValidUrl_ReturnsUrl()
 	    {
-	        requestMock.Setup(n => n.Url).Returns("http://ab");
+	        requestMock.Url = "http://ab";
 
             var result = GetNavigator().Navigate();
 
@@ -77,7 +74,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Post_ValidUrl_ReturnHttpStatus()
 		{
-			responseMock.Setup(n => n.StatusCode).Returns(HttpStatusCode.OK);
+			responseMock.StatusCode = HttpStatusCode.OK;
 
 			var result = PostNavigator().Navigate();
 
@@ -88,7 +85,7 @@ namespace UnitTests.Navigation
 		public void Post_ValidUrl_ReturnHtml()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
-			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+			responseMock.Html = htmlBodyBodyHtml;
 
             var result = PostNavigator().Navigate();
 
@@ -102,7 +99,7 @@ namespace UnitTests.Navigation
 
 			GetNavigator(new GetNavigationOptions(expectedAuthenticationInfo, ""));
 
-			requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
+            Assert.That(requestMock.HaveSetAuthentication, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -112,15 +109,15 @@ namespace UnitTests.Navigation
 			
             PostNavigator(new PostNavigationOptions(null, expectedAuthenticationInfo));
 
-			requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
+            Assert.That(requestMock.HaveSetAuthentication, Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Post_ShouldSetMethodToPost()
 		{
 			PostNavigator();
-
-			requestMock.Verify(r => r.SetMethod("Post"), Times.Once());
+			
+            Assert.That(requestMock.HaveSetMethodWith("Post"), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -128,23 +125,23 @@ namespace UnitTests.Navigation
 		{
             PostNavigator();
 
-			requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
+            Assert.That(requestMock.HaveSetContentTypeWith("application/x-www-form-urlencoded"), Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Post_ShouldSetFormCollection()
 		{
             PostNavigator(new PostNavigationOptions("a=a", null));
-			
-			requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"a=a"), Times.Once());
+
+            Assert.That(requestMock.HaveSetFormDataWith((object)"a=a"), Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Put_ShouldSetMethodToPut()
 		{
 			PutNavigator();
-
-			requestMock.Verify(r => r.SetMethod("Put"), Times.Once());
+			
+            Assert.That(requestMock.HaveSetMethodWith("Put"), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -154,7 +151,7 @@ namespace UnitTests.Navigation
 			
 			PutNavigator(new PutNavigationOptions(null, authenticationInfo));
 
-			requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
+		    Assert.That(requestMock.HaveSetAuthentication, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -162,14 +159,14 @@ namespace UnitTests.Navigation
 		{
 		    PutNavigator(new PutNavigationOptions("a=b", null));
 
-			requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"a=b"), Times.Once());
+			Assert.That(requestMock.HaveSetFormDataWith((object)"a=b"), Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Put_SHouldReturnHtmlFromResponse()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
-			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+			responseMock.Html = htmlBodyBodyHtml;
 
 			var result = PutNavigator().Navigate();
 
@@ -181,23 +178,23 @@ namespace UnitTests.Navigation
 		{
 			PutNavigator();
 
-			requestMock.Verify(r => r.SetContentType("application/x-www-form-urlencoded"), Times.Once());
+            Assert.That(requestMock.HaveSetContentTypeWith("application/x-www-form-urlencoded"), Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Delete_ShouldSetMethodToDelete()
 		{
 		    DeleteNavigator();
-
-			requestMock.Verify(r => r.SetMethod("Delete"), Times.Once());
+			
+            Assert.That(requestMock.HaveSetMethodWith("Delete"), Is.EqualTo(1));
 		}
 
         [Test]
         public void Delete_ShouldSetFormCollection()
         {
             DeleteNavigator(new DeleteNavigationOptions("b=a",null));
-
-            requestMock.Verify(r => r.WriteFormDataToRequestStream((object)"b=a"), Times.Once());
+            
+            Assert.That(requestMock.HaveSetFormDataWith((object)"b=a"), Is.EqualTo(1));
         }
 
 		[Test]
@@ -207,14 +204,14 @@ namespace UnitTests.Navigation
 
 			DeleteNavigator(new DeleteNavigationOptions(null, authenticationInfo));
 
-			requestMock.Verify(r => r.SetAuthentication(authenticationInfo), Times.Once());
+		    Assert.That(requestMock.HaveSetAuthentication, Is.EqualTo(1));
 		}
 
 		[Test]
 		public void Delete_ShouldReturnHtmlFromResponse()
 		{
 			const string htmlBodyBodyHtml = "<html><body></body></html>";
-			responseMock.Setup(n => n.Html).Returns(htmlBodyBodyHtml);
+			responseMock.Html = htmlBodyBodyHtml;
 
 		    var result = DeleteNavigator().Navigate();
 

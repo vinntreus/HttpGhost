@@ -33,9 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -45,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authentication\CredentialsTests.cs" />
+    <Compile Include="FakeRequest.cs" />
+    <Compile Include="FakeResponse.cs" />
     <Compile Include="Navigation\NavigationResultTests.cs" />
     <Compile Include="Navigation\NavigatorTests.cs" />
     <Compile Include="Parsing\SelectorParserTests.cs" />

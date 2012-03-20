@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System;
 using System.Net;
 using System.Text;
-using HttpGhost;
 using HttpGhost.Authentication;
 using HttpGhost.Serialization;
 using HttpGhost.Transport;
-using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.Transport
@@ -16,16 +14,14 @@ namespace UnitTests.Transport
 	public class RequestTests
 	{
 		private Request request;
-		private HttpWebRequest httpWebRequest;
-	    private Mock<ISerializer> serializerMock;
-		private const string some_url = "http://a";
+        private readonly HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(SomeURL);
+	    private readonly FakeSerializer serializerMock = new FakeSerializer();
+		private const string SomeURL = "http://a";
 
 		[SetUp]
 		public void Setup()
 		{
-            serializerMock = new Mock<ISerializer>();
-			httpWebRequest = (HttpWebRequest)WebRequest.Create(some_url);
-			request = new Request(httpWebRequest, serializerMock.Object);
+			request = new Request(httpWebRequest, serializerMock);
 		}
 
 		[Test]
@@ -53,7 +49,7 @@ namespace UnitTests.Transport
 		public void SetAuthenctication_WhenBasicAuthentication_SetCredentialCache()
 		{
 			request.SetAuthentication(new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b")));
-			var credential = httpWebRequest.Credentials.GetCredential(new Uri(some_url), "Basic");
+			var credential = httpWebRequest.Credentials.GetCredential(new Uri(SomeURL), "Basic");
 
 			Assert.That(credential.UserName, Is.EqualTo("a"));
 			Assert.That(credential.Password, Is.EqualTo("b"));
@@ -85,4 +81,14 @@ namespace UnitTests.Transport
 			Assert.That(httpWebRequest.ContentType, Is.EqualTo(contentType));
 		}
 	}
+
+    public class FakeSerializer : ISerializer
+    {
+        public string Serialize(object objectToSerialize)
+        {
+            return SerializeResult;
+        }
+
+        protected string SerializeResult { get; set; }
+    }
 }

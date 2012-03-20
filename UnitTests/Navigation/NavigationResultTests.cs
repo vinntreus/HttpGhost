@@ -1,7 +1,5 @@
 ﻿using System.Linq;
 using HttpGhost.Navigation;
-using HttpGhost.Transport;
-using Moq;
 using NUnit.Framework;
 
 namespace UnitTests.Navigation
@@ -10,21 +8,21 @@ namespace UnitTests.Navigation
     public class NavigationResultTests
     {
         private NavigationResult navigationResult;
-        private Mock<IRequest> requestMock;
-        private Mock<IResponse> responseMock;
+        private FakeRequest requestFake;
+        private FakeResponse responseFake;
 
         [SetUp]
         public void Setup()
         {
-            requestMock = new Mock<IRequest>();
-            responseMock = new Mock<IResponse>();
-            navigationResult = new NavigationResult(requestMock.Object, responseMock.Object);
+            requestFake = new FakeRequest();
+            responseFake = new FakeResponse(); 
+            navigationResult = new NavigationResult(requestFake, responseFake);
         }
 
         [Test]
         public void Find_NotFindingAnything_ReturnEmptyList()
         {
-            responseMock.Setup(r => r.Html).Returns("");
+            responseFake.Html = "";
 
             var result = navigationResult.Find("//li");
 
@@ -34,7 +32,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingOneLiByXPath_ReturnListWithOneLi()
         {
-            responseMock.Setup(r => r.Html).Returns("<li>bacon</li>");
+            responseFake.Html = "<li>bacon</li>";
 
             var result = navigationResult.Find("//li");
 
@@ -45,7 +43,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingLiByClassByXPath_ReturnListWithOneLi()
         {
-            responseMock.Setup(r => r.Html).Returns("<li class=\"flurp\">bacon</li><li>arne</li>");
+            responseFake.Html = "<li class=\"flurp\">bacon</li><li>arne</li>";
 
             var result = navigationResult.Find("//li[@class=\"flurp\"]");
 
@@ -56,7 +54,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingMultipleLiByXPath_ReturnListWithOneLi()
         {
-            responseMock.Setup(r => r.Html).Returns("<li class=\"flurp\">bacon</li><li>arne</li>");
+            responseFake.Html = "<li class=\"flurp\">bacon</li><li>arne</li>";
 
             var result = navigationResult.Find("//li");
 
@@ -66,7 +64,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingByClassDescendantsByXPath_ReturnListWithOneLi()
         {
-            responseMock.Setup(r => r.Html).Returns("<li class=\"flurp\"><li class=\"tjong\">arne</li></li>");
+            responseFake.Html = "<li class=\"flurp\"><li class=\"tjong\">arne</li></li>";
 
             var result = navigationResult.Find("//*[contains(@class,'flurp')]/*[contains(@class,'tjong')]");
 
@@ -78,7 +76,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingOneLiByCSS_ReturnListWithOneLi()
         {
-            responseMock.Setup(r => r.Html).Returns("<li>bacon</li>");
+            responseFake.Html = "<li>bacon</li>";
 
             var result = navigationResult.Find("li");
 
@@ -89,7 +87,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingLiByClassByCSS_ReturnListWithOneLi()
         {
-            responseMock.Setup(r => r.Html).Returns("<li class=\"flurp\">bacon</li><li>arne</li>");
+            responseFake.Html = "<li class=\"flurp\">bacon</li><li>arne</li>";
 
             var result = navigationResult.Find("li.flurp");
 
@@ -100,7 +98,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingByClassDescendantsByCSS_ReturnListWithOneLi()
         {
-            responseMock.Setup(r => r.Html).Returns("<li class=\"flurp\"><li class=\"tjong\">arne</li></li>");
+            responseFake.Html = "<li class=\"flurp\"><li class=\"tjong\">arne</li></li>";
 
             var result = navigationResult.Find(".flurp .tjong");
 
