@@ -61,23 +61,5 @@ namespace HttpGhost
             var options = new DeleteNavigationOptions(postingObject, Authentication);
             return new Delete(webRequest, options).Navigate();
 		}
-
-        //private INavigationResult GetResult(Func<INavigationResult> navigate)
-        //{
-        //    var result = navigate();
-
-        //    if (AutoFollowRedirect && result.Status == HttpStatusCode.Redirect)
-        //    {
-        //        var location = result.ResponseHeaders["Location"];
-        //        if (!string.IsNullOrEmpty(location))
-        //        {
-        //            var uri = new Uri(result.RequestUrl);
-        //            var urlToRedirectTo = string.Format("{0}://{1}{2}", uri.Scheme, uri.Host, location);
-
-        //            return GetResult(() => navigator.Get(urlToRedirectTo, Authentication, ContentType));
-        //        }
-        //    }
-        //    return result;
-        //}
 	}
 }

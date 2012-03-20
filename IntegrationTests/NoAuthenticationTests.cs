@@ -28,10 +28,19 @@ namespace IntegrationTests
         [Test]
         public void Session_GetWithQuerystring_ReturnHtml()
         {
-            var url = baseUrl + "/getqs";
+            var url = baseUrl + "/get-querystring";
             var result = session.Get(url, new {q = "b"});
 
             Assert.That(result.ResponseContent, Is.StringContaining("b"));
+        }
+
+        [Test]
+        public void Session_GetToUrlWhichRedirects_FollowRedirect()
+        {
+            var url = baseUrl + "/redirect-to-home";
+            var result = session.Get(url);
+
+            Assert.That(result.ResponseContent, Is.StringContaining("Getting"));
         }
 
         [Test]
