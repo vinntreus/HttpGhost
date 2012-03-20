@@ -8,13 +8,11 @@ namespace HttpGhost.Navigation.Methods
     {
         public AuthenticationInfo AuthenticationInfo { get; private set; }
         public string ContentType { get; private set; }
-        public object Querystring { get; private set; }
 
-        public GetNavigationOptions(AuthenticationInfo authenticationInfo, string contentType, object querystring)
+        public GetNavigationOptions(AuthenticationInfo authenticationInfo, string contentType)
         {
             AuthenticationInfo = authenticationInfo;
             ContentType = contentType;
-            Querystring = querystring;
         }
     }
 }

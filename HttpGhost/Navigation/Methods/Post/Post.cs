@@ -11,7 +11,7 @@ namespace HttpGhost.Navigation.Methods
             this.request.SetMethod("Post");
             this.request.SetContentType("application/x-www-form-urlencoded");
             this.request.SetAuthentication(options.AuthenticationInfo);
-            this.request.WriteFormDataToRequestStream((object) options.PostingObject);
+            this.request.WriteFormDataToRequestStream(options.PostingObject);
         }
     }
 }

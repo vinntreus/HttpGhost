@@ -58,7 +58,7 @@ namespace HttpGhost.Transport
             WriteFormDataToRequestStream(serializer.Serialize(formData));
         }
 
-		public void WriteFormDataToRequestStream(string formData)
+	    public void WriteFormDataToRequestStream(string formData)
 		{
 			var bytes = Encoding.UTF8.GetBytes(formData);
 			webRequest.ContentLength = bytes.Length;

@@ -83,6 +83,7 @@
     <Compile Include="Transport\Request.cs" />
     <Compile Include="Transport\RequestFactory.cs" />
     <Compile Include="Transport\Response.cs" />
+    <Compile Include="UrlBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

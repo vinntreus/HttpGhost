@@ -17,7 +17,7 @@ namespace UnitTests.Navigation
 
 	    private Get GetNavigator(GetNavigationOptions options = null)
 	    {
-	        return new Get(requestMock.Object, options ?? new GetNavigationOptions(null, null, null));
+	        return new Get(requestMock.Object, options ?? new GetNavigationOptions(null, null));
 	    }
 
         private Post PostNavigator(PostNavigationOptions options = null)
@@ -100,7 +100,7 @@ namespace UnitTests.Navigation
 		{
 			var expectedAuthenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
 
-			GetNavigator(new GetNavigationOptions(expectedAuthenticationInfo, "", null));
+			GetNavigator(new GetNavigationOptions(expectedAuthenticationInfo, ""));
 
 			requestMock.Verify(r => r.SetAuthentication(expectedAuthenticationInfo), Times.Once());
 		}

@@ -35,8 +35,9 @@ namespace HttpGhost
 
 		public INavigationResult Get(string url, object querystring = null)
 		{
-            var webRequest = requestFactory.Create(url);
-            var options = new GetNavigationOptions(Authentication, ContentType, querystring);
+		    var actualUrl = new UrlBuilder(url, querystring).Build();
+            var webRequest = requestFactory.Create(actualUrl);
+            var options = new GetNavigationOptions(Authentication, ContentType);
             return new Get(webRequest, options).Navigate();
 		}
 

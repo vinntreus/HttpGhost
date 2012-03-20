@@ -52,6 +52,7 @@
     <Compile Include="Serialization\FormSerializerTests.cs" />
     <Compile Include="SessionTests.cs" />
     <Compile Include="Transport\RequestTests.cs" />
+    <Compile Include="UrlBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
