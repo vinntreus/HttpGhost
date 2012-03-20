@@ -23,7 +23,6 @@ Thumbs.db
 obj
 [Rr]elease*/
 _ReSharper*/
-*.nuspec
 *.nupkg
 [Tt]est[Rr]esult*
 *.IntegrationTests/App.config

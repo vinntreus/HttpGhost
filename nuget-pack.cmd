@@ -1,0 +1,1 @@
+.nuget\nuget.exe pack HttpGhost\HttpGhost.csproj -Prop Configuration=Release
