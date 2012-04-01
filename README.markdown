@@ -12,7 +12,7 @@ E.g of some tests written in nUnit accessing a site with basic authentication:
 
 
 <pre><code>[Test]
-public void SomeUrl_Get_ReturnSomeData()
+public void Get_SomeUrl_ReturnsSomeData()
 {
 	var session = new Session(USERNAME, PASSWORD);
 
@@ -22,7 +22,7 @@ public void SomeUrl_Get_ReturnSomeData()
 }
 	
 [Test]
-public void When_Navigating_To_URL_Output_Should_Contain_ListItems()
+public void Get_URL_ReturnsTwoBeers()
 {
 	var session = new Session(USERNAME, PASSWORD);
 
@@ -32,7 +32,7 @@ public void When_Navigating_To_URL_Output_Should_Contain_ListItems()
 }
 
 [Test]
-public void When_Posting_Should_Save()
+public void Post_Title_ReturnsTitle()
 {
 	var session = new Session(USERNAME, PASSWORD);
 
