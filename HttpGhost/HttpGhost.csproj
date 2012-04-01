@@ -57,7 +57,11 @@
     <Compile Include="Authentication\Credentials.cs" />
     <Compile Include="Authentication\InvalidUserCredentialsException.cs" />
     <Compile Include="ContentType.cs" />
+    <Compile Include="Html\Element.cs" />
+    <Compile Include="Html\Elements.cs" />
+    <Compile Include="Navigation\FollowRequest.cs" />
     <Compile Include="Navigation\INavigationResult.cs" />
+    <Compile Include="Navigation\NavigationResultException.cs" />
     <Compile Include="Navigation\Navigator.cs" />
     <Compile Include="Navigation\Methods\Delete\DeleteNavigationOptions.cs" />
     <Compile Include="Navigation\Methods\Delete\Delete.cs" />
@@ -68,6 +72,7 @@
     <Compile Include="Navigation\Methods\Post\Post.cs" />
     <Compile Include="Navigation\Methods\Put\PutNavigationOptions.cs" />
     <Compile Include="Navigation\Methods\Put\Put.cs" />
+    <Compile Include="Navigation\UrlByLink.cs" />
     <Compile Include="Parsing\ClassToken.cs" />
     <Compile Include="Parsing\SelectorParser.cs" />
     <Compile Include="Parsing\DescendentToken.cs" />

@@ -10,34 +10,34 @@ namespace UnitTests.Navigation
 	[TestFixture]
 	public class NavigatorTests
 	{
-	    private FakeRequest requestMock;
+	    private RequestFake mock;
 	    private FakeResponse responseMock;
 
 	    private Get GetNavigator(GetNavigationOptions options = null)
 	    {
-	        return new Get(requestMock, options ?? new GetNavigationOptions(null, null));
+	        return new Get(mock, options ?? new GetNavigationOptions(null, null));
 	    }
 
         private Post PostNavigator(PostNavigationOptions options = null)
         {
-            return new Post(requestMock, options ?? new PostNavigationOptions(null, null));
+            return new Post(mock, options ?? new PostNavigationOptions(null, null));
         }
 
         private Put PutNavigator(PutNavigationOptions options = null)
         {
-            return new Put(requestMock, options ?? new PutNavigationOptions(null, null));
+            return new Put(mock, options ?? new PutNavigationOptions(null, null));
         }
 
         private Delete DeleteNavigator(DeleteNavigationOptions options = null)
         {
-            return new Delete(requestMock, options ?? new DeleteNavigationOptions(null, null));
+            return new Delete(mock, options ?? new DeleteNavigationOptions(null, null));
         }
 
 	    [SetUp]
 		public void Setup()
 		{
             responseMock = new FakeResponse();
-            requestMock = new FakeRequest(responseMock);
+            mock = new RequestFake(responseMock);
 		}
 
 		[Test]
@@ -64,7 +64,7 @@ namespace UnitTests.Navigation
 	    [Test]
 	    public void Get_ValidUrl_ReturnsUrl()
 	    {
-	        requestMock.Url = "http://ab";
+	        mock.Url = "http://ab";
 
             var result = GetNavigator().Navigate();
 
@@ -99,7 +99,7 @@ namespace UnitTests.Navigation
 
 			GetNavigator(new GetNavigationOptions(expectedAuthenticationInfo, ""));
 
-            Assert.That(requestMock.HaveSetAuthentication, Is.EqualTo(1));
+            Assert.That(mock.HaveSetAuthentication, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -109,7 +109,7 @@ namespace UnitTests.Navigation
 			
             PostNavigator(new PostNavigationOptions(null, expectedAuthenticationInfo));
 
-            Assert.That(requestMock.HaveSetAuthentication, Is.EqualTo(1));
+            Assert.That(mock.HaveSetAuthentication, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -117,7 +117,7 @@ namespace UnitTests.Navigation
 		{
 			PostNavigator();
 			
-            Assert.That(requestMock.HaveSetMethodWith("Post"), Is.EqualTo(1));
+            Assert.That(mock.HaveSetMethodWith("Post"), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -125,7 +125,7 @@ namespace UnitTests.Navigation
 		{
             PostNavigator();
 
-            Assert.That(requestMock.HaveSetContentTypeWith("application/x-www-form-urlencoded"), Is.EqualTo(1));
+            Assert.That(mock.HaveSetContentTypeWith("application/x-www-form-urlencoded"), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -133,7 +133,7 @@ namespace UnitTests.Navigation
 		{
             PostNavigator(new PostNavigationOptions("a=a", null));
 
-            Assert.That(requestMock.HaveSetFormDataWith((object)"a=a"), Is.EqualTo(1));
+            Assert.That(mock.HaveSetFormDataWith((object)"a=a"), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -141,7 +141,7 @@ namespace UnitTests.Navigation
 		{
 			PutNavigator();
 			
-            Assert.That(requestMock.HaveSetMethodWith("Put"), Is.EqualTo(1));
+            Assert.That(mock.HaveSetMethodWith("Put"), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -151,7 +151,7 @@ namespace UnitTests.Navigation
 			
 			PutNavigator(new PutNavigationOptions(null, authenticationInfo));
 
-		    Assert.That(requestMock.HaveSetAuthentication, Is.EqualTo(1));
+		    Assert.That(mock.HaveSetAuthentication, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -159,7 +159,7 @@ namespace UnitTests.Navigation
 		{
 		    PutNavigator(new PutNavigationOptions("a=b", null));
 
-			Assert.That(requestMock.HaveSetFormDataWith((object)"a=b"), Is.EqualTo(1));
+			Assert.That(mock.HaveSetFormDataWith((object)"a=b"), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -178,7 +178,7 @@ namespace UnitTests.Navigation
 		{
 			PutNavigator();
 
-            Assert.That(requestMock.HaveSetContentTypeWith("application/x-www-form-urlencoded"), Is.EqualTo(1));
+            Assert.That(mock.HaveSetContentTypeWith("application/x-www-form-urlencoded"), Is.EqualTo(1));
 		}
 
 		[Test]
@@ -186,7 +186,7 @@ namespace UnitTests.Navigation
 		{
 		    DeleteNavigator();
 			
-            Assert.That(requestMock.HaveSetMethodWith("Delete"), Is.EqualTo(1));
+            Assert.That(mock.HaveSetMethodWith("Delete"), Is.EqualTo(1));
 		}
 
         [Test]
@@ -194,7 +194,7 @@ namespace UnitTests.Navigation
         {
             DeleteNavigator(new DeleteNavigationOptions("b=a",null));
             
-            Assert.That(requestMock.HaveSetFormDataWith((object)"b=a"), Is.EqualTo(1));
+            Assert.That(mock.HaveSetFormDataWith((object)"b=a"), Is.EqualTo(1));
         }
 
 		[Test]
@@ -204,7 +204,7 @@ namespace UnitTests.Navigation
 
 			DeleteNavigator(new DeleteNavigationOptions(null, authenticationInfo));
 
-		    Assert.That(requestMock.HaveSetAuthentication, Is.EqualTo(1));
+		    Assert.That(mock.HaveSetAuthentication, Is.EqualTo(1));
 		}
 
 		[Test]

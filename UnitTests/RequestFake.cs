@@ -6,13 +6,13 @@ using HttpGhost.Transport;
 
 namespace UnitTests
 {
-    public class FakeRequest : IRequest
+    public class RequestFake : IRequest
     {
         private readonly IResponse response;
 
-        public FakeRequest(){}
+        public RequestFake(){}
 
-        public FakeRequest(IResponse response)
+        public RequestFake(IResponse response)
         {
             this.response = response;
         }
@@ -78,10 +78,7 @@ namespace UnitTests
             throw new System.NotImplementedException();
         }
 
-        public Uri Uri
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public Uri Uri { get; set; }
 
         public int HaveSetMethodWith(string method)
         {

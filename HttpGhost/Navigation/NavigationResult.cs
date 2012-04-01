@@ -1,11 +1,9 @@
-using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using HtmlAgilityPack;
-using HttpGhost.Navigation.Methods;
+using HttpGhost.Html;
 using HttpGhost.Parsing;
-using HttpGhost.Serialization;
 using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation
@@ -13,6 +11,7 @@ namespace HttpGhost.Navigation
     public class NavigationResult : INavigationResult
     {
         private readonly IRequest request;
+        private IEnumerable<HtmlNode> nodes;
         protected readonly IResponse response;
 
         public NavigationResult(IRequest request, IResponse response)
@@ -32,19 +31,9 @@ namespace HttpGhost.Navigation
             get { return response.Headers; }
         }
 
-        public IEnumerable<string> Find(string pattern)
+        public string RequestUrl
         {
-            var items = GetHtmlNodes(pattern);
-
-            return items == null ? new List<string>() : items.Select(i => i.OuterHtml);
-        }
-
-        private IEnumerable<HtmlNode> GetHtmlNodes(string pattern)
-        {
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(ResponseContent);
-            pattern = new SelectorParser(pattern).ToXPath();
-            return htmlDoc.DocumentNode.SelectNodes(pattern);
+            get { return request.Url; }
         }
 
         public T FromJsonTo<T>()
@@ -52,39 +41,34 @@ namespace HttpGhost.Navigation
             return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(ResponseContent);
         }
 
-        public string RequestUrl
+        public Elements Find(string selector)
         {
-            get { return request.Url; }
+            return new Elements(GetHtmlNodes(selector));
+        }
+        
+        private IEnumerable<HtmlNode> GetHtmlNodes(string selector)
+        {
+            if (nodes == null)
+            {
+                var htmlDoc = new HtmlDocument();
+                htmlDoc.LoadHtml(ResponseContent);
+                selector = new SelectorParser(selector).ToXPath();
+                nodes = htmlDoc.DocumentNode.SelectNodes(selector);
+            }
+            return nodes;
         }
 
         public INavigationResult Follow(string selector)
         {
-            var url = GetHtmlNodes(selector).First().Attributes["href"].Value;
-            var actualUrl = new GetUrlBuilder(url, request.Uri).Build();
-            Console.WriteLine(actualUrl);
-            var webRequest = new RequestFactory(new FormSerializer()).Create(actualUrl);
-            var options = new GetNavigationOptions(request.GetAuthentication(), request.GetContentType());
-            return new Get(webRequest, options).Navigate();
-        }
-    }
-
-    public class GetUrlBuilder
-    {
-        private readonly string url;
-        private readonly Uri uri;
-
-        public GetUrlBuilder(string url, Uri uri)
-        {
-            this.url = url;
-            this.uri = uri;
+            var href = Find(selector).Attribute("href");
+            if (string.IsNullOrEmpty(href))
+                throw new NavigationResultException("No element with href found for selector: " + selector);
+            return GetFollowRequest(href).Navigate();
         }
 
-        public string Build()
+        protected virtual FollowRequest GetFollowRequest(string href)
         {
-            if (url.StartsWith("http"))
-                return url;
-
-            return string.Format("{0}://{1}{2}", "http", uri.Authority,url);
+            return new FollowRequest(request, href);
         }
     }
 }

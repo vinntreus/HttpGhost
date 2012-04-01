@@ -20,6 +20,11 @@ namespace HttpGhost.Transport
 		    webRequest.Headers = new WebHeaderCollection();
 		}
 
+        public static IRequest Create(string url, ISerializer serializer = null)
+        {
+            return new Request((HttpWebRequest)WebRequest.Create(new Uri(url)), serializer ?? new FormSerializer());
+        }
+
 	    public string Url
 	    {
 	        get { return this.webRequest.RequestUri.PathAndQuery; }

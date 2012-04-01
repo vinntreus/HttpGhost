@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System.Net;
+using HttpGhost.Html;
 
 namespace HttpGhost.Navigation
 {
@@ -17,9 +18,9 @@ namespace HttpGhost.Navigation
         /// <summary>
         /// Find elements by css-selector or x-path
         /// </summary>
-        /// <param name="pattern">css-selector or x-path</param>
+        /// <param name="selector">css-selector or x-path</param>
         /// <returns></returns>
-	    IEnumerable<string> Find(string pattern);
+	    Elements Find(string selector);
 
         /// <summary>
         /// Converts ResponseContent (assuming it is JSON) to desired type

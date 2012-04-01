@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using HttpGhost.Navigation;
+using HttpGhost.Transport;
 using NUnit.Framework;
 
 namespace UnitTests.Navigation
@@ -8,13 +9,13 @@ namespace UnitTests.Navigation
     public class NavigationResultTests
     {
         private NavigationResult navigationResult;
-        private FakeRequest requestFake;
+        private RequestFake requestFake;
         private FakeResponse responseFake;
 
         [SetUp]
         public void Setup()
         {
-            requestFake = new FakeRequest();
+            requestFake = new RequestFake();
             responseFake = new FakeResponse(); 
             navigationResult = new NavigationResult(requestFake, responseFake);
         }
@@ -37,7 +38,8 @@ namespace UnitTests.Navigation
             var result = navigationResult.Find("//li");
 
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.ElementAt(0), Is.EqualTo("<li>bacon</li>"));
+            Assert.That(result.Raw, Is.EqualTo("<li>bacon</li>"));
+            Assert.That(result.Text, Is.EqualTo("bacon"));
         }
 
         [Test]
@@ -48,7 +50,7 @@ namespace UnitTests.Navigation
             var result = navigationResult.Find("//li[@class=\"flurp\"]");
 
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.ElementAt(0), Is.EqualTo("<li class=\"flurp\">bacon</li>"));
+            Assert.That(result.Raw, Is.EqualTo("<li class=\"flurp\">bacon</li>"));
         }
 
         [Test]
@@ -69,7 +71,7 @@ namespace UnitTests.Navigation
             var result = navigationResult.Find("//*[contains(@class,'flurp')]/*[contains(@class,'tjong')]");
 
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.ElementAt(0), Is.EqualTo("<li class=\"tjong\">arne</li>"));
+            Assert.That(result.Raw, Is.EqualTo("<li class=\"tjong\">arne</li>"));
         }
 
 
@@ -81,7 +83,7 @@ namespace UnitTests.Navigation
             var result = navigationResult.Find("li");
 
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.ElementAt(0), Is.EqualTo("<li>bacon</li>"));
+            Assert.That(result.Raw, Is.EqualTo("<li>bacon</li>"));
         }
 
         [Test]
@@ -92,7 +94,7 @@ namespace UnitTests.Navigation
             var result = navigationResult.Find("li.flurp");
 
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.ElementAt(0), Is.EqualTo("<li class=\"flurp\">bacon</li>"));
+            Assert.That(result.Raw, Is.EqualTo("<li class=\"flurp\">bacon</li>"));
         }
 
         [Test]
@@ -103,8 +105,16 @@ namespace UnitTests.Navigation
             var result = navigationResult.Find(".flurp .tjong");
 
             Assert.That(result.Count(), Is.EqualTo(1));
-            Assert.That(result.ElementAt(0), Is.EqualTo("<li class=\"tjong\">arne</li>"));
+            Assert.That(result.Raw, Is.EqualTo("<li class=\"tjong\">arne</li>"));
         }
-        
+
+        [Test]
+        public void Follow_NoElements_ThrowsException()
+        {
+            responseFake.Html = "";
+
+            Assert.That(() => navigationResult.Follow("#link"), 
+                Throws.TypeOf<NavigationResultException>().With.Message.StringContaining("No element with href found"));
+        }
     }
 }
