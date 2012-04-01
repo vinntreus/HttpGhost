@@ -83,12 +83,10 @@
     <Compile Include="Serialization\FormSerializer.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Transport\IRequest.cs" />
-    <Compile Include="Transport\IRequestFactory.cs" />
     <Compile Include="Transport\IResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="Transport\Request.cs" />
-    <Compile Include="Transport\RequestFactory.cs" />
     <Compile Include="Transport\Response.cs" />
     <Compile Include="UrlBuilder.cs" />
   </ItemGroup>
