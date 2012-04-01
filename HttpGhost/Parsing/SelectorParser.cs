@@ -33,7 +33,7 @@ namespace HttpGhost.Parsing
             
             var newPattern = new List<char> { '/', '/' };
             InitPreviousChar();
-            AddSpaceToPattern();
+            AddEndingDelimiterToPattern();
 
             foreach (var currentChar in pattern)
             {
@@ -43,7 +43,7 @@ namespace HttpGhost.Parsing
                 }
                 else
                 {
-                    new ElementToken(newPattern, currentChar).ToXpath();
+                    new ElementToken(newPattern, currentChar, PreviousChar).ToXpath();
                 }
                 PreviousChar = currentChar;
             }
@@ -51,7 +51,7 @@ namespace HttpGhost.Parsing
             return string.Join("", newPattern).TrimEnd();
         }
 
-        private void AddSpaceToPattern()
+        private void AddEndingDelimiterToPattern()
         {
             pattern += " ";
         }

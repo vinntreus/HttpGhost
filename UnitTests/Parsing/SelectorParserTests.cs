@@ -8,7 +8,7 @@ namespace UnitTests.Parsing
     [TestFixture]
     public class SelectorParserTests
     {
-        private string ToXPath(string pattern)
+        private static string ToXPath(string pattern)
         {
             return new SelectorParser(pattern).ToXPath();
         }
@@ -38,7 +38,7 @@ namespace UnitTests.Parsing
         }
 
         [Test]
-        public void Create_ContainSharp_AddIdAttribute()
+        public void Create_ContainHash_AddIdAttribute()
         {
             var xpath = ToXPath("a#beer");
 
@@ -83,6 +83,22 @@ namespace UnitTests.Parsing
             var xpath = ToXPath(".beer .soda");
 
             Assert.That(xpath, Is.EqualTo("//*[contains(@class,'beer')]/*[contains(@class,'soda')]"));
+        }
+
+        [Test]
+        public void Create_ClassWithElementDescendsClassWithoutElement_AddStarWithContains()
+        {
+            var xpath = ToXPath("ul.beer .soda");
+
+            Assert.That(xpath, Is.EqualTo("//ul[contains(@class,'beer')]/*[contains(@class,'soda')]"));
+        }
+
+        [Test]
+        public void Create_ClassWithElementDescendsClassWithElement_AddStarWithContains()
+        {
+            var xpath = ToXPath("ul.beer li.soda");
+
+            Assert.That(xpath, Is.EqualTo("//ul[contains(@class,'beer')]//li[contains(@class,'soda')]"));
         }
     }
 }
