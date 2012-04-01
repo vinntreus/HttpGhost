@@ -24,11 +24,11 @@ public void SomeUrl_Get_ReturnSomeData()
 [Test]
 public void When_Navigating_To_URL_Output_Should_Contain_ListItems()
 {
-  var session = new Session(USERNAME, PASSWORD);
+	var session = new Session(USERNAME, PASSWORD);
 
-  IEnumerable<string> listItems = session.Get(URL).Find("li.beer");
+	var elements = session.Get(URL).Find("li.beer");
 
-  Assert.That(listItems.Count(), Is.EqualTo(2));
+	Assert.That(elements.Count(), Is.EqualTo(2));
 }
 
 [Test]
