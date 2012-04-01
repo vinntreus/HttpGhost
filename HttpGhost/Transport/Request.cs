@@ -30,8 +30,10 @@ namespace HttpGhost.Transport
 			return new Response((HttpWebResponse) webRequest.GetResponse());
 		}
 
+	    private AuthenticationInfo authenticationInfo;
 		public void SetAuthentication(AuthenticationInfo authentication)
 		{
+		    authenticationInfo = authentication;
 			if (authentication.Type == AuthenticationType.Anonymous)
 				return;
 
@@ -57,6 +59,21 @@ namespace HttpGhost.Transport
         {
             WriteFormDataToRequestStream(serializer.Serialize(formData));
         }
+
+	    public AuthenticationInfo GetAuthentication()
+	    {
+	        return authenticationInfo;
+	    }
+
+	    public string GetContentType()
+	    {
+	        return webRequest.ContentType;
+	    }
+
+	    public Uri Uri
+	    {
+            get { return webRequest.RequestUri; }
+	    }
 
 	    public void WriteFormDataToRequestStream(string formData)
 		{

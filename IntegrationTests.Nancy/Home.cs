@@ -16,6 +16,9 @@ namespace IntegrationTests.Nancy
             Put["/"] = _ => "Putting";
             Delete["/"] = _ => "Deleting";
 
+
+            Get["/with-link"] = _ => "<a id='mylink' href='/follow'>follow</a> ";
+            Get["/follow"] = _ => "Followed";
         }
     }
 }

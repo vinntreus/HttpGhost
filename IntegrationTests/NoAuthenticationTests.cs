@@ -66,5 +66,16 @@ namespace IntegrationTests
 
             Assert.That(result.ResponseContent, Is.StringContaining("Deleting"));
         }
+
+	    [Test]
+	    public void Session_GetAndFollow_ReturnsHtml()
+	    {
+            var url = baseUrl + "/with-link";
+            var firstResult = session.Get(url);
+	        var secondResult = firstResult.Follow("#mylink");
+            
+	        Assert.That(secondResult.RequestUrl, Is.StringEnding("follow"));
+            Assert.That(secondResult.ResponseContent, Is.EqualTo("Followed"));
+	    }
 	}
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using HttpGhost.Authentication;
@@ -65,6 +66,21 @@ namespace UnitTests
         public void WriteFormDataToRequestStream(object formData)
         {
             SetDictionary(setFormData, formData);
+        }
+
+        public AuthenticationInfo GetAuthentication()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public string GetContentType()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Uri Uri
+        {
+            get { throw new NotImplementedException(); }
         }
 
         public int HaveSetMethodWith(string method)

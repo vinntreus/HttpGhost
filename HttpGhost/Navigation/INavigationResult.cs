@@ -29,5 +29,12 @@ namespace HttpGhost.Navigation
 	    T FromJsonTo<T>();
 
 	    string RequestUrl { get; }
+
+        /// <summary>
+        /// Finds element, uses it's href attribute value and makes a Get request
+        /// </summary>
+        /// <param name="selector">CSS or XPath selector to element with href attribute</param>
+        /// <returns>Navigationresult</returns>
+	    INavigationResult Follow(string selector);
 	}
 }

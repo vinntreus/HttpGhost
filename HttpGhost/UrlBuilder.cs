@@ -9,7 +9,7 @@ namespace HttpGhost
     {
         private readonly string url;
         private readonly object querystring;
-        private ISerializer serializer;
+        private readonly ISerializer serializer;
 
         public UrlBuilder(string url, object querystring)
         {

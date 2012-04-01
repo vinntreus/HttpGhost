@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Collections.Generic;
 using HttpGhost.Authentication;
@@ -15,5 +16,8 @@ namespace HttpGhost.Transport
 
 	    string Url { get; }
 	    void WriteFormDataToRequestStream(object formData);
+	    AuthenticationInfo GetAuthentication();
+	    string GetContentType();
+	    Uri Uri { get; }
 	}
 }
