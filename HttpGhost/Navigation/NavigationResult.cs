@@ -8,7 +8,7 @@ using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation
 {
-    public class NavigationResult : INavigationResult
+    internal class NavigationResult : INavigationResult
     {
         private readonly IRequest request;
         private IEnumerable<HtmlNode> nodes;

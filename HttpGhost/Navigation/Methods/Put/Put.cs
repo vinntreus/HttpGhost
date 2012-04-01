@@ -4,7 +4,7 @@ using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation.Methods
 {
-    public class Put : Navigator
+    internal class Put : Navigator
     {
         public Put(IRequest request, PutNavigationOptions options) : base(request)
         {

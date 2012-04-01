@@ -3,7 +3,7 @@ using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation
 {
-    public class FollowRequest
+    internal class FollowRequest
     {
         private readonly IRequest request;
         private readonly string url;

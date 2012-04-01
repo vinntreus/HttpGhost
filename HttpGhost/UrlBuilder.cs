@@ -5,7 +5,7 @@ using HttpGhost.Serialization;
 
 namespace HttpGhost
 {
-    public class UrlBuilder
+    internal class UrlBuilder
     {
         private readonly string url;
         private readonly object querystring;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace HttpGhost.Parsing
 {
-    public class DescendentToken
+    internal class DescendentToken
     {
         private readonly List<char> pattern;
 

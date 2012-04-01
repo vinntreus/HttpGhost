@@ -4,7 +4,7 @@ using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation.Methods
 {
-    public class Delete : Navigator
+    internal class Delete : Navigator
     {
         public Delete(IRequest request, DeleteNavigationOptions options) : base(request)
         {

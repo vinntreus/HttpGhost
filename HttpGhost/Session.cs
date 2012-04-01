@@ -7,11 +7,19 @@ using HttpGhost.Transport;
 
 namespace HttpGhost
 {
+	/// <summary>
+	/// Main entry to use HttpGhost
+	/// </summary>
 	public class Session
 	{
+	    /// <summary>
+	    /// Gets authentication type
+	    /// </summary>
 	    public AuthenticationInfo Authentication { get; private set; }
-		public bool AutoFollowRedirect { get; set; }
 
+        /// <summary>
+        /// Get/Set contenttype
+        /// </summary>
 		public string ContentType { get; set; }
 
 		/// <summary>
@@ -27,9 +35,14 @@ namespace HttpGhost
 		private Session(AuthenticationType type, Credentials credentials)
 		{
 			Authentication = new AuthenticationInfo(type, credentials);
-			AutoFollowRedirect = true;
 		}
 
+        /// <summary>
+        /// Use Http-get to fetch data from url, querystring is optional
+        /// </summary>
+        /// <param name="url">An url</param>
+        /// <param name="querystring">Use anonymous object for querystring</param>
+        /// <returns></returns>
 		public INavigationResult Get(string url, object querystring = null)
 		{
 		    var actualUrl = new UrlBuilder(url, querystring).Build();
@@ -38,6 +51,13 @@ namespace HttpGhost
             return new Get(webRequest, options).Navigate();
 		}
 
+
+		/// <summary>
+		/// Http-post with data to url
+		/// </summary>
+		/// <param name="postingObject">Anonymous object for data</param>
+		/// <param name="url">Url</param>
+		/// <returns></returns>
 		public INavigationResult Post(object postingObject, string url)
 		{
             var webRequest = Request.Create(url);
@@ -45,6 +65,12 @@ namespace HttpGhost
             return new Post(webRequest, options).Navigate();
 		}
 
+        /// <summary>
+        /// Http-put with data to url
+        /// </summary>
+        /// <param name="postingObject">Anonymous object for data</param>
+        /// <param name="url">Url</param>
+        /// <returns></returns>
 		public INavigationResult Put(object postingObject, string url)
 		{
             var webRequest = Request.Create(url);
@@ -52,6 +78,12 @@ namespace HttpGhost
             return new Put(webRequest, options).Navigate();
 		}
 
+        /// <summary>
+        /// Http-delete with data to url
+        /// </summary>
+        /// <param name="postingObject">Anonymous object for data</param>
+        /// <param name="url">Url</param>
+        /// <returns></returns>
 		public INavigationResult Delete(object postingObject, string url)
 		{
             var webRequest = Request.Create(url);

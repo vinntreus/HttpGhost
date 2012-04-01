@@ -4,7 +4,7 @@ using HttpGhost.Authentication;
 
 namespace HttpGhost.Navigation.Methods
 {
-    public class PostNavigationOptions
+    internal class PostNavigationOptions
     {
         public object PostingObject { get; private set; }
         public AuthenticationInfo AuthenticationInfo { get; private set; }

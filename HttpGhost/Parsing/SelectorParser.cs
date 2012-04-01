@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HttpGhost.Parsing
 {
-    public class SelectorParser
+    internal class SelectorParser
     {
         private string pattern;
         protected bool IsXpath { get; private set; }

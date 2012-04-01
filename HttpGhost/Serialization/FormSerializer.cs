@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HttpGhost.Serialization
 {
-	public class FormSerializer : ISerializer
+    internal class FormSerializer : ISerializer
 	{
 		private StringBuilder httpString;
 

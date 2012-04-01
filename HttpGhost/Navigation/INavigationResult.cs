@@ -5,14 +5,29 @@ using HttpGhost.Html;
 
 namespace HttpGhost.Navigation
 {
+	/// <summary>
+	/// Result from a successful navigation
+	/// </summary>
 	public interface INavigationResult
 	{
         /// <summary>
         /// Time spent in milliseconds
         /// </summary>
 	    long TimeSpent { get; }
+
+        /// <summary>
+        /// Status from response
+        /// </summary>
 		HttpStatusCode Status { get; }
+
+        /// <summary>
+        /// Response content/body
+        /// </summary>
 		string ResponseContent { get; }
+
+        /// <summary>
+        /// Response headers
+        /// </summary>
 		WebHeaderCollection ResponseHeaders { get; }
         
         /// <summary>
@@ -29,6 +44,9 @@ namespace HttpGhost.Navigation
         /// <returns></returns>
 	    T FromJsonTo<T>();
 
+        /// <summary>
+        /// Absolute url from request
+        /// </summary>
 	    string RequestUrl { get; }
 
         /// <summary>

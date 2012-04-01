@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HttpGhost.Navigation
 {
-    public class UrlByLink
+    internal class UrlByLink
     {
         private readonly string href;
         private readonly Uri uri;

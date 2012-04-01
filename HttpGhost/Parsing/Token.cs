@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace HttpGhost.Parsing
 {
-    public class Token
+    internal class Token
     {
         protected char previousChar;
 
