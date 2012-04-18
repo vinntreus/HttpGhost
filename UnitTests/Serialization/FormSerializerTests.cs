@@ -19,7 +19,7 @@ namespace UnitTests.Serialization
 		[Test]
 		public void Serialize_ObjectWithOneStringProperty_ReturnPropertynameFirst()
 		{
-			var result = formserializer.Serialize(new {Title = "a"});
+			var result = formserializer.Serialize(new {Title = "a"}, "");
 
 			Assert.That(result, Is.StringStarting("Title"));
 		}
@@ -27,7 +27,7 @@ namespace UnitTests.Serialization
 		[Test]
 		public void Serialize_ObjectWithOneStringProperty_ReturnEqualSignAfterPropertyname()
 		{
-			var result = formserializer.Serialize(new { Title = "a" });
+			var result = formserializer.Serialize(new { Title = "a" }, "");
 
 			Assert.That(result, Is.StringStarting("Title="));
 		}
@@ -35,7 +35,7 @@ namespace UnitTests.Serialization
 		[Test]
 		public void Serialize_ObjectWithOneStringProperty_ReturnValueAfterEqualsign()
 		{
-			var result = formserializer.Serialize(new { Title = "a" });
+			var result = formserializer.Serialize(new { Title = "a" }, "");
 
 			Assert.That(result, Is.StringEnding("=a"));
 		}
@@ -43,7 +43,7 @@ namespace UnitTests.Serialization
 		[Test]
 		public void Serialize_String_ReturnString()
 		{
-			var result = formserializer.Serialize("aj");
+			var result = formserializer.Serialize("aj", "");
 
 			Assert.That(result, Is.EqualTo("aj"));
 		}
@@ -51,7 +51,7 @@ namespace UnitTests.Serialization
 		[Test]
 		public void Serialize_WithMultipleProperties_ShouldSeparateWithAmpersand()
 		{
-			var result = formserializer.Serialize(new { Title = "a", Fuddle = "b" });
+			var result = formserializer.Serialize(new { Title = "a", Fuddle = "b" }, "");
 
 			Assert.That(result, Is.StringEnding("Title=a&Fuddle=b"));
 		}

@@ -8,11 +8,12 @@ namespace HttpGhost.Serialization
 	/// </summary>
 	public interface ISerializer
 	{
-        /// <summary>
-        /// Serialize from anonymous object to string
-        /// </summary>
-        /// <param name="objectToSerialize"></param>
-        /// <returns></returns>
-		string Serialize(object objectToSerialize);
+	    /// <summary>
+	    /// Serialize from anonymous object
+	    /// </summary>
+	    /// <param name="objectToSerialize"></param>
+	    /// <param name="contentType"> </param>
+	    /// <returns></returns>
+	    string Serialize(object objectToSerialize, string contentType);
 	}
 }

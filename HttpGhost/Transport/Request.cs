@@ -62,7 +62,7 @@ namespace HttpGhost.Transport
 
         public void WriteFormDataToRequestStream(object formData)
         {
-            WriteFormDataToRequestStream(serializer.Serialize(formData));
+            WriteFormDataToRequestStream(serializer.Serialize(formData, GetContentType()));
         }
 
 	    public AuthenticationInfo GetAuthentication()

@@ -84,7 +84,7 @@ namespace UnitTests.Transport
 
     public class FakeSerializer : ISerializer
     {
-        public string Serialize(object objectToSerialize)
+        public string Serialize(object objectToSerialize, string getContentType)
         {
             return SerializeResult;
         }

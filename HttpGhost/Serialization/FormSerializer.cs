@@ -14,8 +14,10 @@ namespace HttpGhost.Serialization
 			httpString = new StringBuilder();
 		}
 
-		public string Serialize(object objectToSerialize)
+		public string Serialize(object objectToSerialize, string contentType)
 		{
+            if (contentType == "application/json")
+                return Newtonsoft.Json.JsonConvert.SerializeObject(objectToSerialize);
 			if (objectToSerialize is string)
 				return objectToSerialize.ToString();
 

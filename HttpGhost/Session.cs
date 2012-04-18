@@ -61,7 +61,7 @@ namespace HttpGhost
 		public INavigationResult Post(object postingObject, string url)
 		{
             var webRequest = Request.Create(url);
-            var options = new PostNavigationOptions(postingObject, Authentication);
+            var options = new PostNavigationOptions(postingObject, Authentication, ContentType);
             return new Post(webRequest, options).Navigate();
 		}
 

@@ -20,7 +20,7 @@ namespace UnitTests.Navigation
 
         private Post PostNavigator(PostNavigationOptions options = null)
         {
-            return new Post(mock, options ?? new PostNavigationOptions(null, null));
+            return new Post(mock, options ?? new PostNavigationOptions(null, null, null));
         }
 
         private Put PutNavigator(PutNavigationOptions options = null)
@@ -107,7 +107,7 @@ namespace UnitTests.Navigation
 		{
 			var expectedAuthenticationInfo = new AuthenticationInfo(AuthenticationType.BasicAuthentication, new Credentials("a", "b"));
 			
-            PostNavigator(new PostNavigationOptions(null, expectedAuthenticationInfo));
+            PostNavigator(new PostNavigationOptions(null, expectedAuthenticationInfo, null));
 
             Assert.That(mock.HaveSetAuthentication, Is.EqualTo(1));
 		}
@@ -131,7 +131,7 @@ namespace UnitTests.Navigation
 		[Test]
 		public void Post_ShouldSetFormCollection()
 		{
-            PostNavigator(new PostNavigationOptions("a=a", null));
+            PostNavigator(new PostNavigationOptions("a=a", null, null));
 
             Assert.That(mock.HaveSetFormDataWith((object)"a=a"), Is.EqualTo(1));
 		}

@@ -24,7 +24,7 @@ namespace HttpGhost
         public string Build()
         {
             if (querystring != null)
-                return string.Format("{0}?{1}", url, serializer.Serialize(querystring));
+                return string.Format("{0}?{1}", url, serializer.Serialize(querystring, ""));
             return url;
         }
     }
