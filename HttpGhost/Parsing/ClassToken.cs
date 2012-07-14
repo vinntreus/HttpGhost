@@ -6,9 +6,9 @@ namespace HttpGhost.Parsing
     internal class ClassToken : Token
     {
         private readonly List<char> pattern;
-        private readonly SelectorParser selectorParser;
+        private readonly CssSelectorParser selectorParser;
 
-        public ClassToken(List<char> pattern, SelectorParser selectorParser) : base(selectorParser.PreviousChar)
+        public ClassToken(List<char> pattern, CssSelectorParser selectorParser) : base(selectorParser.PreviousChar)
         {
             this.pattern = pattern;
             this.selectorParser = selectorParser;

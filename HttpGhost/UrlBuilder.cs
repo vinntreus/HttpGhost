@@ -18,7 +18,7 @@ namespace HttpGhost
 
             this.url = url;
             this.querystring = querystring;
-            serializer = new FormSerializer();
+            serializer = new RequestBodySerializer();
         }
 
         public string Build()

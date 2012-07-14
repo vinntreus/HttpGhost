@@ -94,5 +94,24 @@ namespace UnitTests
         {
             return setFormData[formData];
         }
+
+        public void AddHeader(System.Net.HttpRequestHeader requestHeader, string value)
+        {
+            Headers.Add(requestHeader, value);
+        }
+
+
+        public System.Net.WebHeaderCollection Headers
+        {
+            get;
+            set;
+        }
+
+
+        public string Body
+        {
+            get;
+            set;
+        }
     }
 }

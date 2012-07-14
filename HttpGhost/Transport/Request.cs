@@ -1,93 +1,41 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using HttpGhost.Authentication;
-using HttpGhost.Serialization;
 
 namespace HttpGhost.Transport
 {
-	public class Request : IRequest
-	{
-		private readonly HttpWebRequest webRequest;
-	    private readonly ISerializer serializer;
+    public class Request : IRequest
+    {
+        private AuthenticationInfo authenticationInfo;
+        public string Url { get; private set; }
+        public string Body { get; set; }
+        public WebHeaderCollection Headers { get; private set; }
 
-	    public Request(HttpWebRequest webRequest, ISerializer serializer)
-		{
-			this.webRequest = webRequest;
-		    this.serializer = serializer;
-		    webRequest.Headers = new WebHeaderCollection();
-		}
-
-        public static IRequest Create(string url, ISerializer serializer = null)
+        public Request(string url)
         {
-            return new Request((HttpWebRequest)WebRequest.Create(new Uri(url)), serializer ?? new FormSerializer());
+            this.Url = url;
+            this.Headers = new WebHeaderCollection();
         }
 
-	    public string Url
-	    {
-	        get { return this.webRequest.RequestUri.PathAndQuery; }
-	    }
-
-	    public IResponse GetResponse()
-		{
-			return new Response((HttpWebResponse) webRequest.GetResponse());
-		}
-
-	    private AuthenticationInfo authenticationInfo;
-		public void SetAuthentication(AuthenticationInfo authentication)
-		{
-		    authenticationInfo = authentication;
-			if (authentication.Type == AuthenticationType.Anonymous)
-				return;
-
-			var base64String = Convert.ToBase64String(new ASCIIEncoding().GetBytes(authentication.Credentials.UsernamePassword));
-			webRequest.Headers.Add("Authorization", "Basic " + base64String);
-			var networkCredential = new NetworkCredential(authentication.Credentials.Username, authentication.Credentials.Password);
-			webRequest.Credentials = new CredentialCache{{ webRequest.RequestUri , "Basic", networkCredential }} ;
-			webRequest.AllowAutoRedirect = false;
-
-		}
-
-		public void SetMethod(string method)
-		{
-			webRequest.Method = method;
-		}
-
-		public void SetContentType(string contentType)
-		{
-			webRequest.ContentType = contentType;
-		}
-
-        public void WriteFormDataToRequestStream(object formData)
+        public void AddHeader(HttpRequestHeader requestHeader, string value)
         {
-            WriteFormDataToRequestStream(serializer.Serialize(formData, GetContentType()));
+            this.Headers.Add(requestHeader, value);
         }
 
-	    public AuthenticationInfo GetAuthentication()
-	    {
-	        return authenticationInfo;
-	    }
+        /// <summary>
+        /// Anonymous or Basic, sets a Authorization-header for Basic-authentication
+        /// </summary>
+        /// <param name="authentication"></param>
+        public void SetAuthentication(AuthenticationInfo authentication)
+        {
+            authenticationInfo = authentication;
+            if (authentication.Type == AuthenticationType.Anonymous)
+                return;
 
-	    public string GetContentType()
-	    {
-	        return webRequest.ContentType;
-	    }
-
-	    public Uri Uri
-	    {
-            get { return webRequest.RequestUri; }
-	    }
-
-	    public void WriteFormDataToRequestStream(string formData)
-		{
-			var bytes = Encoding.UTF8.GetBytes(formData);
-			webRequest.ContentLength = bytes.Length;
-
-			var dataStream = webRequest.GetRequestStream();
-			dataStream.Write(bytes, 0, bytes.Length);
-			dataStream.Close();
-		}
-	}
+            var base64String = Convert.ToBase64String(new ASCIIEncoding().GetBytes(authentication.Credentials.UsernamePassword));
+            Headers.Add("Authorization", "Basic " + base64String);
+        }
+    }    
 }

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
 using Nancy;
 using Nancy.Responses;
 
@@ -9,7 +10,7 @@ namespace IntegrationTests.Nancy
     {
         public Home()
         {
-            Get["/"] = _ => "Getting";
+            Get["/"] = _ => { return "Getting"; };
             Get["/get-querystring"] = parameters => Request.Query.q + "";
             Get["/redirect-to-home"] = _ => Response.AsRedirect("/", RedirectResponse.RedirectType.Permanent);
             Post["/"] = _ => "Posting";

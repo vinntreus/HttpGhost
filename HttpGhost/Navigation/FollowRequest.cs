@@ -1,4 +1,4 @@
-using HttpGhost.Navigation.Methods;
+using System;
 using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation
@@ -11,23 +11,14 @@ namespace HttpGhost.Navigation
         public FollowRequest(IRequest request, string url)
         {
             this.request = request;
-            this.url = new UrlByLink(url, request.Uri).Build();
-        }
-
-        protected virtual IRequest CreateRequest()
-        {
-            return Request.Create(url);
-        }
-
-        protected virtual GetNavigationOptions GetNavigationOptions()
-        {
-            return new GetNavigationOptions(request.GetAuthentication(), request.GetContentType());
+            this.url = new UrlByLink(url, new Uri(request.Url)).Build();
         }
 
         public virtual INavigationResult Navigate()
         {
-            return new Get(CreateRequest(), GetNavigationOptions()).Navigate();
+            var request = new Request(url);
+            var nav = new Navigator(request);
+            return nav.Get();
         }
-
     }
 }

@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
 using HttpGhost;
 using NUnit.Framework;
 
@@ -23,7 +25,7 @@ namespace IntegrationTests
 			var result = session.Get(baseUrl);
 
 			Assert.That(result.ResponseContent, Is.StringContaining("Getting"));
-		}
+		}        
 
         [Test]
         public void Session_GetWithQuerystring_ReturnHtml()

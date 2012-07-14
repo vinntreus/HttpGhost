@@ -2,22 +2,23 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using HttpGhost.Authentication;
+using System.Net;
 
 namespace HttpGhost.Transport
 {
 	public interface IRequest
 	{
-		IResponse GetResponse();
-		
-		void SetAuthentication(AuthenticationInfo authentication);
-		void SetMethod(string method);
-		void SetContentType(string contentType);
-		void WriteFormDataToRequestStream(string formData);
+        WebHeaderCollection Headers { get; }
 
-	    string Url { get; }
-	    void WriteFormDataToRequestStream(object formData);
-	    AuthenticationInfo GetAuthentication();
-	    string GetContentType();
-	    Uri Uri { get; }
+        void AddHeader(HttpRequestHeader requestHeader, string value);        
+
+        /// <summary>
+        /// Request body (JSON-string, Form-data etc)
+        /// </summary>
+        string Body { get; }
+        
+        string Url { get; }
+
+		void SetAuthentication(AuthenticationInfo authentication);	    
 	}
 }

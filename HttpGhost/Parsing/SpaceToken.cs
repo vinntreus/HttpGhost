@@ -6,9 +6,9 @@ namespace HttpGhost.Parsing
     internal class SpaceToken
     {
         private readonly List<char> pattern;
-        private readonly SelectorParser selectorParser;
+        private readonly CssSelectorParser selectorParser;
 
-        public SpaceToken(List<char> pattern, SelectorParser selectorParser)
+        public SpaceToken(List<char> pattern, CssSelectorParser selectorParser)
         {
             this.pattern = pattern;
             this.selectorParser = selectorParser;

@@ -5,11 +5,11 @@ using System.Text;
 
 namespace HttpGhost.Serialization
 {
-    internal class FormSerializer : ISerializer
+    internal class RequestBodySerializer : ISerializer
 	{
 		private StringBuilder httpString;
 
-		public FormSerializer()
+		public RequestBodySerializer()
 		{
 			httpString = new StringBuilder();
 		}

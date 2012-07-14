@@ -10,7 +10,7 @@ namespace UnitTests.Parsing
     {
         private static string ToXPath(string pattern)
         {
-            return new SelectorParser(pattern).ToXPath();
+            return new CssSelectorParser(pattern).ToXPath();
         }
 
         [Test]

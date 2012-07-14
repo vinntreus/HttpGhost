@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 namespace HttpGhost.Parsing
 {
-    internal class SelectorParser
+    internal class CssSelectorParser
     {
         private string pattern;
         protected bool IsXpath { get; private set; }
         public bool IsProcessingAttribute { get; set; }
         public string EndProcessingAttributeWith { get; set; }
         public char PreviousChar { get; private set; }
-        private readonly IDictionary<char, Action<List<char>, SelectorParser>> tokens = new Dictionary<char, Action<List<char>, SelectorParser>>
+        private readonly IDictionary<char, Action<List<char>, CssSelectorParser>> tokens = new Dictionary<char, Action<List<char>, CssSelectorParser>>
                                                                                       {
             {'.', (pattern, me) => new ClassToken(pattern, me).ToXpath()},
             {'#', (pattern, me) => new IdToken(pattern, me).ToXpath()},
@@ -19,7 +19,7 @@ namespace HttpGhost.Parsing
             {' ', (pattern, me) => new SpaceToken(pattern, me).ToXpath()}
         };
 
-        public SelectorParser(string pattern)
+        public CssSelectorParser(string pattern)
         {
             IsXpath = pattern.StartsWith("//", StringComparison.InvariantCulture);
             this.pattern = pattern;

@@ -37,11 +37,13 @@
     <DocumentationFile>bin\HttpGhost.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack">
-      <HintPath>..\packages\HtmlAgilityPack.1.4.3\lib\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.4.5.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HtmlAgilityPack.1.4.5\lib\Net40\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.4.5.7\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -55,39 +57,31 @@
     <Compile Include="Authentication\AuthenticationType.cs" />
     <Compile Include="Authentication\Credentials.cs" />
     <Compile Include="Authentication\InvalidUserCredentialsException.cs" />
-    <Compile Include="ContentType.cs" />
     <Compile Include="Html\Element.cs" />
     <Compile Include="Html\Elements.cs" />
+    <Compile Include="Navigation\Client.cs" />
     <Compile Include="Navigation\FollowRequest.cs" />
     <Compile Include="Navigation\INavigationResult.cs" />
     <Compile Include="Navigation\NavigationResultException.cs" />
     <Compile Include="Navigation\Navigator.cs" />
-    <Compile Include="Navigation\Methods\Delete\DeleteNavigationOptions.cs" />
-    <Compile Include="Navigation\Methods\Delete\Delete.cs" />
-    <Compile Include="Navigation\Methods\Get\GetNavigationOptions.cs" />
-    <Compile Include="Navigation\Methods\Get\Get.cs" />
     <Compile Include="Navigation\NavigationResult.cs" />
-    <Compile Include="Navigation\Methods\Post\PostNavigationOptions.cs" />
-    <Compile Include="Navigation\Methods\Post\Post.cs" />
-    <Compile Include="Navigation\Methods\Put\PutNavigationOptions.cs" />
-    <Compile Include="Navigation\Methods\Put\Put.cs" />
     <Compile Include="Navigation\UrlByLink.cs" />
     <Compile Include="Parsing\ClassToken.cs" />
-    <Compile Include="Parsing\SelectorParser.cs" />
+    <Compile Include="Parsing\CssSelectorParser.cs" />
     <Compile Include="Parsing\DescendentToken.cs" />
     <Compile Include="Parsing\ElementToken.cs" />
     <Compile Include="Parsing\IdToken.cs" />
     <Compile Include="Parsing\SpaceToken.cs" />
     <Compile Include="Parsing\Token.cs" />
-    <Compile Include="Serialization\FormSerializer.cs" />
+    <Compile Include="Serialization\RequestBodySerializer.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Transport\IRequest.cs" />
     <Compile Include="Transport\IResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session.cs" />
-    <Compile Include="Transport\Request.cs" />
     <Compile Include="Transport\Response.cs" />
     <Compile Include="UrlBuilder.cs" />
+    <Compile Include="Transport\Request.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

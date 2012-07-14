@@ -1,9 +1,8 @@
-using System.Linq;
-using System.Collections.Generic;
 using HttpGhost.Authentication;
 using HttpGhost.Navigation;
-using HttpGhost.Navigation.Methods;
 using HttpGhost.Transport;
+using HttpGhost.Serialization;
+using System.Net;
 
 namespace HttpGhost
 {
@@ -46,11 +45,10 @@ namespace HttpGhost
 		public INavigationResult Get(string url, object querystring = null)
 		{
 		    var actualUrl = new UrlBuilder(url, querystring).Build();
-            var webRequest = Request.Create(actualUrl);
-            var options = new GetNavigationOptions(Authentication, ContentType);
-            return new Get(webRequest, options).Navigate();
+            var nav = BuildNavigator(actualUrl);
+            return nav.Get(); 
 		}
-
+       
 
 		/// <summary>
 		/// Http-post with data to url
@@ -60,10 +58,9 @@ namespace HttpGhost
 		/// <returns></returns>
 		public INavigationResult Post(object postingObject, string url)
 		{
-            var webRequest = Request.Create(url);
-            var options = new PostNavigationOptions(postingObject, Authentication, ContentType);
-            return new Post(webRequest, options).Navigate();
-		}
+            var nav = BuildNavigator(url, postingObject);
+            return nav.Post();
+		}        
 
         /// <summary>
         /// Http-put with data to url
@@ -73,9 +70,8 @@ namespace HttpGhost
         /// <returns></returns>
 		public INavigationResult Put(object postingObject, string url)
 		{
-            var webRequest = Request.Create(url);
-            var options = new PutNavigationOptions(postingObject, Authentication);
-            return new Put(webRequest, options).Navigate();
+            var nav = BuildNavigator(url, postingObject);
+            return nav.Put();
 		}
 
         /// <summary>
@@ -86,9 +82,17 @@ namespace HttpGhost
         /// <returns></returns>
 		public INavigationResult Delete(object postingObject, string url)
 		{
-            var webRequest = Request.Create(url);
-            var options = new DeleteNavigationOptions(postingObject, Authentication);
-            return new Delete(webRequest, options).Navigate();
+            var nav = BuildNavigator(url, postingObject);
+            return nav.Delete();
 		}
+
+        private Navigator BuildNavigator(string url, object postingObject = null)
+        {
+            var request = new Request(url);
+            request.SetAuthentication(Authentication);
+            request.AddHeader(HttpRequestHeader.ContentType, ContentType);
+            request.Body = new RequestBodySerializer().Serialize(postingObject ?? "", ContentType);
+            return new Navigator(request);
+        }
 	}
 }

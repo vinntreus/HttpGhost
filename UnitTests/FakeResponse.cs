@@ -8,7 +8,8 @@ namespace UnitTests
     public class FakeResponse : IResponse
     {
         public HttpStatusCode StatusCode { get; set; }
-        public string Html { get; set; }
+        public string Body { get; set; }
         public WebHeaderCollection Headers { get; set; }
+        public string ContentType { get; set; }
     }
 }

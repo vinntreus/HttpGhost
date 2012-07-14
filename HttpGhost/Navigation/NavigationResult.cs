@@ -24,7 +24,7 @@ namespace HttpGhost.Navigation
 
         public HttpStatusCode Status { get { return response.StatusCode; } }
 
-        public string ResponseContent { get { return response.Html; } }
+        public string ResponseContent { get { return response.Body; } }
 
         public WebHeaderCollection ResponseHeaders
         {
@@ -52,7 +52,7 @@ namespace HttpGhost.Navigation
             {
                 var htmlDoc = new HtmlDocument();
                 htmlDoc.LoadHtml(ResponseContent);
-                selector = new SelectorParser(selector).ToXPath();
+                selector = new CssSelectorParser(selector).ToXPath();
                 nodes = htmlDoc.DocumentNode.SelectNodes(selector);
             }
             return nodes;

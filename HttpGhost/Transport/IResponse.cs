@@ -7,7 +7,7 @@ namespace HttpGhost.Transport
 	public interface IResponse
 	{
 		HttpStatusCode StatusCode { get; }
-		string Html { get; }
-		WebHeaderCollection Headers { get; }
+		string Body { get; }
+		WebHeaderCollection Headers { get; }	    
 	}
 }

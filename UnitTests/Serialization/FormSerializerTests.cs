@@ -8,12 +8,12 @@ namespace UnitTests.Serialization
 	[TestFixture]
 	public class FormSerializerTests
 	{
-		private FormSerializer formserializer;
+		private RequestBodySerializer formserializer;
 
 		[SetUp]
 		public void Setup()
 		{
-			formserializer = new FormSerializer();
+			formserializer = new RequestBodySerializer();
 		}
 
 		[Test]
