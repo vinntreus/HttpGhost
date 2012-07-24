@@ -54,8 +54,7 @@ namespace HttpGhost
 		    var actualUrl = new UrlBuilder(url, querystring).Build();
             var req = BuildRequest(actualUrl, "GET");
             return Navigate(req);
-		}
-       
+		}       
 
 		/// <summary>
 		/// Http-post with data to url
@@ -93,16 +92,6 @@ namespace HttpGhost
             return Navigate(req);
 		}
 
-        /// <summary>
-        /// Provide a request which the navigator uses to navigate
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns>Resulting navigation result</returns>
-        public INavigationResult Navigate(IRequest request)
-        {
-            return navigator.Navigate(request);
-        }
-
         private IRequest BuildRequest(string url, string method, object postingObject = null)
         {
             var request = new Request(url);
@@ -123,6 +112,11 @@ namespace HttpGhost
                 case "application/json": return new JsonSerializer();
                 default: return new FormSerializer();
             }
+        }
+
+        private INavigationResult Navigate(IRequest request)
+        {
+            return navigator.Navigate(request);
         }
 	}
 }
