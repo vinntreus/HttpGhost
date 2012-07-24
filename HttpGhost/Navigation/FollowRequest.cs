@@ -16,9 +16,9 @@ namespace HttpGhost.Navigation
 
         public virtual INavigationResult Navigate()
         {
-            var request = new Request(url);
-            var nav = new Navigator(request);
-            return nav.Get();
+            var request = new Request(url) { Method = "GET" };
+            var nav = new WebClientNavigator();
+            return nav.Navigate(request);
         }
     }
 }

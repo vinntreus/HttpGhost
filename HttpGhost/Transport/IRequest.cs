@@ -17,8 +17,14 @@ namespace HttpGhost.Transport
         /// </summary>
         string Body { get; }
         
+        /// <summary>
+        /// Requesting url
+        /// </summary>
         string Url { get; }
 
-		void SetAuthentication(AuthenticationInfo authentication);	    
+        /// <summary>
+        /// Requesting method like GET, PUT, POST or DELETE
+        /// </summary>
+        string Method { get; }
 	}
 }

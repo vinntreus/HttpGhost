@@ -46,7 +46,10 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Authentication\BasicAuthenticationTests.cs" />
     <Compile Include="Authentication\CredentialsTests.cs" />
+    <Compile Include="FakeAuthenticator.cs" />
+    <Compile Include="FakeNavigator.cs" />
     <Compile Include="Html\ElementsTests.cs" />
     <Compile Include="Navigation\UrlByLinkTests.cs" />
     <Compile Include="RequestFake.cs" />

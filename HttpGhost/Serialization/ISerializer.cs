@@ -11,9 +11,8 @@ namespace HttpGhost.Serialization
 	    /// <summary>
 	    /// Serialize from anonymous object
 	    /// </summary>
-	    /// <param name="objectToSerialize"></param>
-	    /// <param name="contentType"> </param>
+	    /// <param name="objectToSerialize"></param>	    
 	    /// <returns></returns>
-	    string Serialize(object objectToSerialize, string contentType);
+	    string Serialize(object objectToSerialize);
 	}
 }

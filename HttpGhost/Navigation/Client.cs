@@ -27,18 +27,18 @@ namespace HttpGhost.Navigation
         /// <param name="req"></param>
         /// <param name="method">HttpMetod, eg. POST</param>
         /// <returns></returns>
-        public static IResponse Push(IRequest req, string method)
+        public static IResponse Push(IRequest req)
         {            
-            return WithWebClient(req.Headers, c => c.UploadString(req.Url, method, req.Body));
+            return WithWebClient(req.Headers, c => c.UploadString(req.Url, req.Method, req.Body));
         }
 
-        private static IResponse WithWebClient(WebHeaderCollection headers, Func<WebClient, string> getData)
+        private static IResponse WithWebClient(WebHeaderCollection headers, Func<WebClient, string> body)
         {
             var res = CreateResponse();
             using (var webclient = new WebClient())
             {
-                webclient.Headers = headers;                
-                res.Body = getData(webclient);
+                webclient.Headers = headers;
+                res.Body = body(webclient);
                 res.Headers = webclient.ResponseHeaders;
                 res.StatusCode = GetStatusCode(webclient);
             }

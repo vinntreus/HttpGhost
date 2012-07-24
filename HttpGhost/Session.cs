@@ -11,30 +11,37 @@ namespace HttpGhost
 	/// </summary>
 	public class Session
 	{
-	    /// <summary>
-	    /// Gets authentication type
-	    /// </summary>
-	    public AuthenticationInfo Authentication { get; private set; }
+        private INavigate navigator;
+	    private IAuthenticate authentication { get; set; }
+
+        public string ContentType { get; set; }
+
+		/// <summary>
+		/// Uses Anonymous authentication
+		/// </summary>
+		public Session() : this(new AnonymousAuthentication()){}
+
+		/// <summary>
+		/// Uses Basic Authentication.
+		/// </summary>
+		public Session(string username, string password) : this(new BasicAuthentication(username, password)){}
+        
+        /// <summary>
+        /// Uses provided authentication mechanism and navigator which uses .Net webclient for requests
+        /// </summary>
+        /// <param name="authentication"></param>
+		public Session(IAuthenticate authentication) : this(authentication, new WebClientNavigator()){}
 
         /// <summary>
-        /// Get/Set contenttype
+        /// Uses provided authentication and navigation mechanism
         /// </summary>
-		public string ContentType { get; set; }
-
-		/// <summary>
-		/// Sets the AuthenticationType to Anonymous
-		/// </summary>
-		public Session() : this(AuthenticationType.Anonymous, null){}
-
-		/// <summary>
-		/// Sets the AuthenticationType to Basic
-		/// </summary>
-		public Session(string username, string password) : this(AuthenticationType.BasicAuthentication, new Credentials(username, password)){}
-
-		private Session(AuthenticationType type, Credentials credentials)
-		{
-			Authentication = new AuthenticationInfo(type, credentials);
-		}
+        /// <param name="authentication"></param>
+        /// <param name="navigator"></param>
+        public Session(IAuthenticate authentication, INavigate navigator)
+        {
+            this.authentication = authentication;
+            this.navigator = navigator;
+        }
 
         /// <summary>
         /// Use Http-get to fetch data from url, querystring is optional
@@ -45,8 +52,8 @@ namespace HttpGhost
 		public INavigationResult Get(string url, object querystring = null)
 		{
 		    var actualUrl = new UrlBuilder(url, querystring).Build();
-            var nav = BuildNavigator(actualUrl);
-            return nav.Get(); 
+            var req = BuildRequest(actualUrl, "GET");
+            return Navigate(req);
 		}
        
 
@@ -58,8 +65,8 @@ namespace HttpGhost
 		/// <returns></returns>
 		public INavigationResult Post(object postingObject, string url)
 		{
-            var nav = BuildNavigator(url, postingObject);
-            return nav.Post();
+            var req = BuildRequest(url, "POST", postingObject);
+            return Navigate(req);
 		}        
 
         /// <summary>
@@ -70,8 +77,8 @@ namespace HttpGhost
         /// <returns></returns>
 		public INavigationResult Put(object postingObject, string url)
 		{
-            var nav = BuildNavigator(url, postingObject);
-            return nav.Put();
+            var req = BuildRequest(url, "PUT", postingObject);
+            return Navigate(req);
 		}
 
         /// <summary>
@@ -82,17 +89,40 @@ namespace HttpGhost
         /// <returns></returns>
 		public INavigationResult Delete(object postingObject, string url)
 		{
-            var nav = BuildNavigator(url, postingObject);
-            return nav.Delete();
+            var req = BuildRequest(url, "DELETE", postingObject);
+            return Navigate(req);
 		}
 
-        private Navigator BuildNavigator(string url, object postingObject = null)
+        /// <summary>
+        /// Provide a request which the navigator uses to navigate
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>Resulting navigation result</returns>
+        public INavigationResult Navigate(IRequest request)
+        {
+            return navigator.Navigate(request);
+        }
+
+        private IRequest BuildRequest(string url, string method, object postingObject = null)
         {
             var request = new Request(url);
-            request.SetAuthentication(Authentication);
-            request.AddHeader(HttpRequestHeader.ContentType, ContentType);
-            request.Body = new RequestBodySerializer().Serialize(postingObject ?? "", ContentType);
-            return new Navigator(request);
+            authentication.Process(request);
+            if (!string.IsNullOrEmpty(ContentType))
+            {
+                request.AddHeader(HttpRequestHeader.ContentType, ContentType);
+            }
+            request.Body = BuildSerializerBy(ContentType).Serialize(postingObject);
+            request.Method = method;
+            return request;
+        }
+
+        private ISerializer BuildSerializerBy(string contentType)
+        {
+            switch (contentType)
+            {
+                case "application/json": return new JsonSerializer();
+                default: return new FormSerializer();
+            }
         }
 	}
 }

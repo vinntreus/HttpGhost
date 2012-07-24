@@ -5,19 +5,29 @@ using System.Text;
 
 namespace HttpGhost.Serialization
 {
-    internal class RequestBodySerializer : ISerializer
+    internal class JsonSerializer : ISerializer
+    {
+        public string Serialize(object objectToSerialize)
+        {
+            if (objectToSerialize == null)
+                return "";
+            return Newtonsoft.Json.JsonConvert.SerializeObject(objectToSerialize);
+        }
+    }
+
+    internal class FormSerializer : ISerializer
 	{
 		private StringBuilder httpString;
 
-		public RequestBodySerializer()
+		public FormSerializer()
 		{
 			httpString = new StringBuilder();
 		}
 
-		public string Serialize(object objectToSerialize, string contentType)
+		public string Serialize(object objectToSerialize)
 		{
-            if (contentType == "application/json")
-                return Newtonsoft.Json.JsonConvert.SerializeObject(objectToSerialize);
+            if (objectToSerialize == null)
+                return "";
 			if (objectToSerialize is string)
 				return objectToSerialize.ToString();
 

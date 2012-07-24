@@ -53,9 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authentication\AuthenticationInfo.cs" />
-    <Compile Include="Authentication\AuthenticationType.cs" />
+    <Compile Include="Authentication\AnonymousAuthentication.cs" />
+    <Compile Include="Authentication\BasicAuthentication.cs" />
     <Compile Include="Authentication\Credentials.cs" />
+    <Compile Include="Authentication\IAuthenticate.cs" />
     <Compile Include="Authentication\InvalidUserCredentialsException.cs" />
     <Compile Include="Html\Element.cs" />
     <Compile Include="Html\Elements.cs" />

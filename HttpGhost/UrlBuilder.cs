@@ -18,13 +18,13 @@ namespace HttpGhost
 
             this.url = url;
             this.querystring = querystring;
-            serializer = new RequestBodySerializer();
+            serializer = new FormSerializer();
         }
 
         public string Build()
         {
             if (querystring != null)
-                return string.Format("{0}?{1}", url, serializer.Serialize(querystring, ""));
+                return string.Format("{0}?{1}", url, serializer.Serialize(querystring));
             return url;
         }
     }

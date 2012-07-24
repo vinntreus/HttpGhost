@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Reflection;
@@ -6,54 +8,58 @@ using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation
 {
-    public class Navigator
+    public interface INavigate
     {
-        protected readonly IRequest request;
+        INavigationResult Navigate(IRequest request);
+    }
+
+    public class WebClientNavigator : INavigate
+    {        
         private readonly Stopwatch watch;        
 
-        public Navigator(IRequest request)
-        {
-            this.request = request;
+        public WebClientNavigator()
+        {            
             this.watch = new Stopwatch();
         }
 
-        public INavigationResult Get()
+        public INavigationResult Navigate(IRequest request)
         {
-            return Navigate(() => Client.Fetch(request));
+            if (string.IsNullOrEmpty(request.Method))
+            {
+                throw new NavigationResultException("Request method is empty");
+            }
+            if (request.Method.ToUpper().Trim() == "GET")
+            {
+                return Fetch(request);
+            }
+            return Push(request);
         }
 
-        public INavigationResult Post()
-        {
-            return ModifyData("POST");
+        private INavigationResult Fetch(IRequest request)
+        {            
+            var response = Navigate(() => Client.Fetch(request));
+            return BuildNavigationResult(request, response);
+        }        
+
+        private INavigationResult Push(IRequest request)
+        {            
+            var response = Navigate(() => Client.Push(request));
+            return BuildNavigationResult(request, response);
         }
 
-        public INavigationResult Put()
-        {
-            return ModifyData("PUT");
-        }
-
-        public INavigationResult Delete()
-        {
-            return ModifyData("DELETE");
-        }
-
-        private INavigationResult ModifyData(string method)
-        {
-            return Navigate(() => Client.Push(request, method));
-        }
-
-        private INavigationResult Navigate(Func<IResponse> getResponse)
+        private IResponse Navigate(Func<IResponse> getResponse)
         {
             watch.Restart();
-
             var response = getResponse();
-            var result = new NavigationResult(request, response);
-
             watch.Stop();
-
-            result.TimeSpent = watch.ElapsedMilliseconds;
-
-            return result;
+            return response;
         }
+
+        private INavigationResult BuildNavigationResult(IRequest request, IResponse response)
+        {
+            var result = new NavigationResult(request, response);
+            result.TimeSpent = watch.ElapsedMilliseconds;
+            return result;
+        }        
     }    
 }

@@ -22,12 +22,6 @@ namespace UnitTests
             return response ?? new FakeResponse();
         }
 
-        public void SetAuthentication(AuthenticationInfo authentication)
-        {
-            HaveSetAuthentication++;
-        }
-
-
         readonly IDictionary<string, int> setMethod = new Dictionary<string, int>();
         readonly IDictionary<string, int> setContentType = new Dictionary<string, int>();
         readonly IDictionary<object, int> setFormData = new Dictionary<object, int>();
@@ -66,11 +60,6 @@ namespace UnitTests
         public void WriteFormDataToRequestStream(object formData)
         {
             SetDictionary(setFormData, formData);
-        }
-
-        public AuthenticationInfo GetAuthentication()
-        {
-            throw new System.NotImplementedException();
         }
 
         public string GetContentType()
@@ -112,6 +101,12 @@ namespace UnitTests
         {
             get;
             set;
+        }
+
+
+        public string Method
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }
