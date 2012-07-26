@@ -17,7 +17,7 @@ namespace HttpGhost.Navigation
         /// <returns></returns>
         public static IResponse Fetch(IRequest req)
         {
-            return WithWebClient(req.Headers, c => c.DownloadString(req.Url));
+            return WithWebClient(req, c => c.DownloadString(req.Url));
         }
 
         /// <summary>
@@ -25,19 +25,18 @@ namespace HttpGhost.Navigation
         /// Set IRequest.Body with content to send.
         /// </summary>
         /// <param name="req"></param>
-        /// <param name="method">HttpMetod, eg. POST</param>
         /// <returns></returns>
         public static IResponse Push(IRequest req)
         {            
-            return WithWebClient(req.Headers, c => c.UploadString(req.Url, req.Method, req.Body));
+            return WithWebClient(req, c => c.UploadString(req.Url, req.Method, req.Body));
         }
 
-        private static IResponse WithWebClient(WebHeaderCollection headers, Func<WebClient, string> body)
+        private static IResponse WithWebClient(IRequest request, Func<WebClient, string> body)
         {
             var res = CreateResponse();
             using (var webclient = new WebClient())
             {
-                webclient.Headers = headers;
+                webclient.Headers = request.Headers;
                 res.Body = body(webclient);
                 res.Headers = webclient.ResponseHeaders;
                 res.StatusCode = GetStatusCode(webclient);
@@ -52,7 +51,7 @@ namespace HttpGhost.Navigation
 
         private static HttpStatusCode GetStatusCode(WebClient client)
         {
-            FieldInfo responseField = client.GetType().GetField("m_WebResponse", BindingFlags.Instance | BindingFlags.NonPublic);
+            var responseField = typeof(WebClient).GetField("m_WebResponse", BindingFlags.Instance | BindingFlags.NonPublic);
 
             var response = (HttpWebResponse)responseField.GetValue(client);
 

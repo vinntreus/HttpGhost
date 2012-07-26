@@ -7,12 +7,12 @@ namespace UnitTests.Transport
     [TestFixture]
     public class RequestTests
     {
-        private const string SomeURL = "http://a";
+        private const string SOME_URL = "http://a";
 
         [Test]
         public void AddHeader_SomeHeader_AddsHeader()
         {
-            var request = new Request(SomeURL);
+            var request = new Request(SOME_URL);
 
             request.AddHeader(HttpRequestHeader.ContentType, "application/json");
 

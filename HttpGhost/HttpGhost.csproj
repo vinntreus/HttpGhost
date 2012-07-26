@@ -62,11 +62,13 @@
     <Compile Include="Html\Elements.cs" />
     <Compile Include="Navigation\Client.cs" />
     <Compile Include="Navigation\FollowRequest.cs" />
+    <Compile Include="Navigation\INavigate.cs" />
     <Compile Include="Navigation\INavigationResult.cs" />
     <Compile Include="Navigation\NavigationResultException.cs" />
-    <Compile Include="Navigation\Navigator.cs" />
+    <Compile Include="Navigation\WebClientNavigator.cs" />
     <Compile Include="Navigation\NavigationResult.cs" />
     <Compile Include="Navigation\UrlByLink.cs" />
+    <Compile Include="Navigation\WebRequestNavigator.cs" />
     <Compile Include="Parsing\ClassToken.cs" />
     <Compile Include="Parsing\CssSelectorParser.cs" />
     <Compile Include="Parsing\DescendentToken.cs" />
@@ -74,8 +76,9 @@
     <Compile Include="Parsing\IdToken.cs" />
     <Compile Include="Parsing\SpaceToken.cs" />
     <Compile Include="Parsing\Token.cs" />
-    <Compile Include="Serialization\RequestBodySerializer.cs" />
+    <Compile Include="Serialization\FormSerializer.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\JsonSerializer.cs" />
     <Compile Include="Transport\IRequest.cs" />
     <Compile Include="Transport\IResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

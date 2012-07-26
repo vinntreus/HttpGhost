@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using HttpGhost.Authentication;
+﻿using System.Net;
 
 namespace HttpGhost.Transport
 {
@@ -14,15 +9,23 @@ namespace HttpGhost.Transport
         public string Method { get; set; }
         public WebHeaderCollection Headers { get; private set; }
         
-        public Request(string url)
+        public Request(string url) : this(url, "GET"){}
+        public Request(string url, string method): this(url, method, new WebHeaderCollection()){}
+        public Request(string url, string method, WebHeaderCollection headers)
         {
-            this.Url = url;
-            this.Headers = new WebHeaderCollection();
+            Url = url;
+            Method = method;
+            Headers = headers;
         }
 
         public void AddHeader(HttpRequestHeader requestHeader, string value)
         {
-            this.Headers.Add(requestHeader, value);
+            Headers.Add(requestHeader, value);
+        }
+
+        public void AddHeader(string name, string value)
+        {
+            Headers.Add(name, value);
         }
     }    
 }

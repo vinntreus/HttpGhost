@@ -1,71 +1,82 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-using System.Configuration;
-using HttpGhost;
+﻿using HttpGhost;
 using NUnit.Framework;
+using System.Net;
 
 namespace IntegrationTests
 {
-    //[TestFixture]
-    //[Explicit("Need site up and running")]
-    //public class BasicAuthenticationTests : IntegrationTestsBase
-    //{
-    //    private readonly string username = ConfigurationManager.AppSettings["BasicAuthenticationUsername"];
-    //    private readonly string password = ConfigurationManager.AppSettings["BasicAuthenticationPassword"];
-    //    private readonly string baseUrl = ConfigurationManager.AppSettings["BasicAuthenticationUrl"];
+    [TestFixture]    
+    public class BasicAuthenticationTests : IntegrationTestsBase
+    {
+        private const string USERNAME = "user";
+        private const string PASSWORD = "pass";
+        //this is found in IntegrationTests.Nancy/Basic
+        private const string BASE_URL = "http://127.0.0.1:8080/basic";
 
-    //    [Test]
-    //    public void Session_Get_ReturnHtml()
-    //    {
-    //        var session = new Session(username, password);
-			
-    //        var result = session.Get(baseUrl);
+        [Test]
+        public void Session_GetWithoutcredentials_Fails()
+        {
+            var session = new Session();
 
-    //        Assert.That(result.ResponseContent, Is.StringContaining("<html>"));
-    //    }
+            Assert.That(() => session.Get(BASE_URL), 
+                        Throws.TypeOf<WebException>().With.Message.StringContaining("401"));            
+        }
 
-    //    [Test]
-    //    public void Session_Post_ReturnHtml()
-    //    {
-    //        var url = baseUrl + "/Home/Parse";
-    //        var session = new Session(username, password);
+        [Test]
+        public void Session_Get_ReturnHtml()
+        {
+            var session = GetSessionWithBasicAuthentication();
 
-    //        var result = session.Post(new { Title = "jippi"}, url);
+            var result = session.Get(BASE_URL);
 
-    //        Assert.That(result.ResponseContent, Is.StringContaining("<h2>jippi</h2>"));
-    //    }
+            Assert.That(result.ResponseContent, Is.StringContaining("got it"));
+        }
 
-    //    [Test]
-    //    public void Session_Put_ReturnHtml()
-    //    {
-    //        var url = baseUrl + "/Home/Update";
-    //        var session = new Session(username, password);
+        [Test]
+        public void Session_Post_ReturnHtml()
+        {
+            var session = GetSessionWithBasicAuthentication();
 
-    //        var result = session.Put(new { Title = "jippi" }, url);
+            var result = session.Post(new { Title = "jippi" }, BASE_URL);
 
-    //        Assert.That(result.ResponseContent, Is.StringContaining("<h2>New title: jippi</h2>"));
-    //    }
+            Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
+        }
 
-    //    [Test]
-    //    public void Session_Delete_ReturnHtml()
-    //    {
-    //        var url = baseUrl + "/Home/Delete/";
-    //        var session = new Session(username, password);
+        [Test]
+        public void Session_Put_ReturnHtml()
+        {
+            var session = GetSessionWithBasicAuthentication();
 
-    //        var result = session.Delete(new {id = 2}, url);
+            var result = session.Put(new { Title = "jippi2" }, BASE_URL);
 
-    //        Assert.That(result.ResponseContent, Is.StringContaining("<h2>Deleted: 2</h2>"));
-    //    }
+            Assert.That(result.ResponseContent, Is.StringContaining("jippi2"));
+        }
 
-    //    [Test]
-    //    public void Session_PostThatRedirects_ShouldPassCredentialsInRedirect()
-    //    {
-    //        var url = baseUrl + "/Home/Redirect";
-    //        var session = new Session(username, password);
+        [Test]
+        public void Session_Delete_ReturnHtml()
+        {
+            var session = GetSessionWithBasicAuthentication();
 
-    //        var result = session.Post(new {title = "arne"}, url);
+            var result = session.Delete(new { Id = 1 }, BASE_URL);
 
-    //        Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
-    //    }
-    //}
+            Assert.That(result.ResponseContent, Is.StringContaining("1"));
+        }       
+
+        [Test]
+        public void Session_PostThatRedirects_ShouldPassCredentialsInRedirect()
+        {
+            var session = GetSessionWithBasicAuthentication();
+
+            var result = session.Post(new { title = "arne" }, BASE_URL + "/redir");
+
+            Assert.That(result.ResponseContent, Is.StringContaining("got it"));
+        }
+
+        private Session GetSessionWithBasicAuthentication()
+        {
+            return new Session(USERNAME, PASSWORD)
+            {
+                ContentType = "application/x-www-form-urlencoded" //nancy only transforms Request.Form when this contenttype
+            };
+        }
+    }
 }

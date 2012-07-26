@@ -6,7 +6,7 @@ namespace HttpGhost.Authentication
 {
     public class BasicAuthentication : IAuthenticate
     {
-        private string usernamePassword;
+        private readonly string usernamePassword;
 
         public BasicAuthentication(string username, string password)
         {

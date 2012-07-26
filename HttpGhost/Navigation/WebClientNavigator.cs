@@ -1,25 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
-using System.Reflection;
 using HttpGhost.Transport;
 
 namespace HttpGhost.Navigation
 {
-    public interface INavigate
-    {
-        INavigationResult Navigate(IRequest request);
-    }
-
     public class WebClientNavigator : INavigate
     {        
         private readonly Stopwatch watch;        
 
         public WebClientNavigator()
         {            
-            this.watch = new Stopwatch();
+            watch = new Stopwatch();
         }
 
         public INavigationResult Navigate(IRequest request)
@@ -57,9 +48,10 @@ namespace HttpGhost.Navigation
 
         private INavigationResult BuildNavigationResult(IRequest request, IResponse response)
         {
-            var result = new NavigationResult(request, response);
-            result.TimeSpent = watch.ElapsedMilliseconds;
-            return result;
+            return new NavigationResult(request, response)
+            {
+                TimeSpent = watch.ElapsedMilliseconds
+            };
         }        
     }    
 }

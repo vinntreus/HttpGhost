@@ -28,3 +28,4 @@ _ReSharper*/
 *.IntegrationTests/App.config
 *.bin
 /packages
+todo.txt

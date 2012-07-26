@@ -11,8 +11,8 @@ namespace HttpGhost
 	/// </summary>
 	public class Session
 	{
-        private INavigate navigator;
-	    private IAuthenticate authentication { get; set; }
+        private readonly INavigate navigator;
+        private readonly IAuthenticate authentication;
 
         public string ContentType { get; set; }
 
@@ -30,7 +30,7 @@ namespace HttpGhost
         /// Uses provided authentication mechanism and navigator which uses .Net webclient for requests
         /// </summary>
         /// <param name="authentication"></param>
-		public Session(IAuthenticate authentication) : this(authentication, new WebClientNavigator()){}
+		public Session(IAuthenticate authentication) : this(authentication, new WebRequestNavigator()){}
 
         /// <summary>
         /// Uses provided authentication and navigation mechanism
