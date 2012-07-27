@@ -52,7 +52,7 @@
     <Compile Include="FakeNavigator.cs" />
     <Compile Include="Html\ElementsTests.cs" />
     <Compile Include="Navigation\UrlByLinkTests.cs" />
-    <Compile Include="Navigation\WebRequestNavigatorTests.cs" />
+    <Compile Include="Navigation\HttpWebRequestBuilderTests.cs" />
     <Compile Include="RequestFake.cs" />
     <Compile Include="FakeResponse.cs" />
     <Compile Include="Navigation\NavigationResultTests.cs" />
