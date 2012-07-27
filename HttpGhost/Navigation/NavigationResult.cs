@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Collections.Generic;
 using System.Net;
 using HtmlAgilityPack;
@@ -12,7 +11,7 @@ namespace HttpGhost.Navigation
     {
         private readonly IRequest request;
         private IEnumerable<HtmlNode> nodes;
-        protected readonly IResponse response;
+        private readonly IResponse response;
 
         public NavigationResult(IRequest request, IResponse response)
         {

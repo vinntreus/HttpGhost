@@ -79,5 +79,16 @@ namespace IntegrationTests
 	        Assert.That(secondResult.RequestUrl, Is.StringEnding("follow"));
             Assert.That(secondResult.ResponseContent, Is.EqualTo("Followed"));
 	    }
+
+        [Test]
+        public void Session_GetAndFollow302_ReturnsHtml()
+        {
+            var url = baseUrl + "/with-link";
+            var firstResult = session.Get(url);
+            var secondResult = firstResult.Follow("#mylink302");
+
+            Assert.That(secondResult.RequestUrl, Is.StringEnding("follow"));
+            Assert.That(secondResult.ResponseContent, Is.EqualTo("Followed"));
+        }
 	}
 }

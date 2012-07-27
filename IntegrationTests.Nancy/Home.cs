@@ -18,7 +18,8 @@ namespace IntegrationTests.Nancy
             Delete["/"] = _ => "Deleting";
 
 
-            Get["/with-link"] = _ => "<a id='mylink' href='/follow'>follow</a> ";
+            Get["/with-link"] = _ => "<a id='mylink' href='/follow'>follow</a><a id='mylink302' href='/with-link-302'>follow</a>";
+            Get["/with-link-302"] = _ => Response.AsRedirect("/follow", RedirectResponse.RedirectType.Permanent); ;
             Get["/follow"] = _ => "Followed";
         }
     }
