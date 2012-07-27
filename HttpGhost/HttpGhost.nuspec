@@ -13,8 +13,8 @@
     <copyright>Copyright 2012</copyright>
     <tags>Http Ghost Test Integrationtest</tags>
     <dependencies>
-      <dependency id="HtmlAgilityPack" version="1.4.3" />
-      <dependency id="Newtonsoft.Json" version="4.0.8" />      
+      <dependency id="HtmlAgilityPack" version="1.4.5" />
+      <dependency id="Newtonsoft.Json" version="4.5.7" />      
     </dependencies>
   </metadata>
 </package>
