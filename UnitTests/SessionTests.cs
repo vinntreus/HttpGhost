@@ -11,16 +11,16 @@ namespace UnitTests
     [TestFixture]
     public class SessionTests
     {
-        private FakeAuthenticator fakeAuthenticator;
-        private FakeNavigator fakeNavigator;
+        private AuthenticatorFake authenticatorFake;
+        private NavigatorFake navigatorFake;
         private Session session;
 
         [SetUp]
         public void Setup()
         {
-            fakeAuthenticator = new FakeAuthenticator();
-            fakeNavigator = new FakeNavigator();
-            session = new Session(fakeAuthenticator, fakeNavigator);
+            authenticatorFake = new AuthenticatorFake();
+            navigatorFake = new NavigatorFake();
+            session = new Session(authenticatorFake, navigatorFake);
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace UnitTests
         {
             session.Get("http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Method, Is.EqualTo("GET"));
         }
@@ -38,7 +38,7 @@ namespace UnitTests
         {
             session.Get("http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Url, Is.EqualTo("http://a"));
         }
@@ -48,7 +48,7 @@ namespace UnitTests
         {
             session.Get("http://a", new { b = 2 });
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Url, Is.EqualTo("http://a?b=2"));
         }
@@ -58,7 +58,7 @@ namespace UnitTests
         {
             session.Get("http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Headers[HttpRequestHeader.ContentType], Is.Null);
         }
@@ -69,7 +69,7 @@ namespace UnitTests
             session.ContentType = "application/json";
             session.Get("http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Headers[HttpRequestHeader.ContentType], Is.EqualTo("application/json"));
         }
@@ -81,7 +81,7 @@ namespace UnitTests
             session.ContentType = contentType;
             session.Get("http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Body, Is.EqualTo(string.Empty));
         }
@@ -91,7 +91,7 @@ namespace UnitTests
         {
             session.Post(new{ a = 1 }, "http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Method, Is.EqualTo("POST"));
         }
@@ -101,7 +101,7 @@ namespace UnitTests
         {
             session.Post(new { a = 1 }, "http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Body, Is.EqualTo("a=1"));
         }
@@ -111,7 +111,7 @@ namespace UnitTests
         {
             session.Put(new { a = 1 }, "http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Method, Is.EqualTo("PUT"));
         }
@@ -121,7 +121,7 @@ namespace UnitTests
         {
             session.Put(new { a = 2 }, "http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Body, Is.EqualTo("a=2"));
         }
@@ -131,7 +131,7 @@ namespace UnitTests
         {
             session.Delete(new { a = 1 }, "http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Method, Is.EqualTo("DELETE"));
         }
@@ -141,7 +141,7 @@ namespace UnitTests
         {
             session.Delete(new { a = 3 }, "http://a");
 
-            var request = fakeNavigator.Request;
+            var request = navigatorFake.Request;
 
             Assert.That(request.Body, Is.EqualTo("a=3"));
         }

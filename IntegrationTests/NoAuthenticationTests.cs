@@ -87,5 +87,16 @@ namespace IntegrationTests
             Assert.That(secondResult.RequestUrl, Is.StringEnding("follow"));
             Assert.That(secondResult.ResponseContent, Is.EqualTo("Followed"));
         }
+
+        //[Test]
+        //public void Session_SubmitForm_ReturnsResult()
+        //{
+        //    var url = BaseUrl + "/page-with-form";
+        //    var form = session.Get(url).FindForm("#form");
+        //    form.SetValue("#input1", "value");
+        //    var result = form.Submit();
+	        
+
+        //}
 	}
 }

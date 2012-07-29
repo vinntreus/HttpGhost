@@ -19,7 +19,7 @@ namespace UnitTests
 
         public IResponse GetResponse()
         {
-            return response ?? new FakeResponse();
+            return response ?? new ResponseFake();
         }
 
         readonly IDictionary<string, int> setMethod = new Dictionary<string, int>();

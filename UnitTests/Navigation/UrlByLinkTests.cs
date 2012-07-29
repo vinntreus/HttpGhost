@@ -7,17 +7,10 @@ namespace UnitTests.Navigation
     [TestFixture]
     public class UrlByLinkTests
     {
-        private static UrlByLink GetUrlByLink(string href, Uri uri)
-        {
-            return new UrlByLink(href, uri);
-        }
-
         [Test]
         public void Build_WithHref_ReturnsValidUrl()
         {
-            var urlByLink = GetUrlByLink("/car", new Uri("http://localhost"));
-
-            var url = urlByLink.Build();
+            var url = UrlByLink.Build("/car", new Uri("http://localhost"));
 
             Assert.That(url, Is.EqualTo("http://localhost/car"));
         }
@@ -25,9 +18,7 @@ namespace UnitTests.Navigation
         [Test]
         public void Build_UriAsHttps_ReturnsHttpsUrl()
         {
-            var urlByLink = GetUrlByLink("/car", new Uri("https://localhost"));
-
-            var url = urlByLink.Build();
+            var url = UrlByLink.Build("/car", new Uri("https://localhost"));
 
             Assert.That(url, Is.EqualTo("https://localhost/car"));
         }
@@ -38,9 +29,7 @@ namespace UnitTests.Navigation
         [TestCase("http://")]
         public void Build_HrefIsAbsoluteUrl_ReturnHref(string href)
         {
-            var urlByLink = GetUrlByLink(href, new Uri("https://localhost"));
-
-            var url = urlByLink.Build();
+            var url = UrlByLink.Build(href, new Uri("https://localhost"));
 
             Assert.That(url, Is.EqualTo(href));
         }

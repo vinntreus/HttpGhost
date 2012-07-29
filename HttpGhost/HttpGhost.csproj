@@ -60,8 +60,9 @@
     <Compile Include="Authentication\InvalidUserCredentialsException.cs" />
     <Compile Include="Html\Element.cs" />
     <Compile Include="Html\Elements.cs" />
+    <Compile Include="HttpResult.cs" />
+    <Compile Include="IHttpResult.cs" />
     <Compile Include="Navigation\Client.cs" />
-    <Compile Include="Navigation\FollowRequest.cs" />
     <Compile Include="Navigation\INavigate.cs" />
     <Compile Include="Navigation\INavigationResult.cs" />
     <Compile Include="Navigation\NavigationResultException.cs" />

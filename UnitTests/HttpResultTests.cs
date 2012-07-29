@@ -1,31 +1,21 @@
-﻿using System.Linq;
+using System.Linq;
+using HttpGhost;
 using HttpGhost.Navigation;
 using HttpGhost.Transport;
 using NUnit.Framework;
 
-namespace UnitTests.Navigation
+namespace UnitTests
 {
     [TestFixture]
-    public class NavigationResultTests
+    public class HttpResultTests
     {
-        private NavigationResult navigationResult;
-        private RequestFake requestFake;
-        private FakeResponse responseFake;
-
-        [SetUp]
-        public void Setup()
-        {
-            requestFake = new RequestFake();
-            responseFake = new FakeResponse(); 
-            navigationResult = new NavigationResult(requestFake, responseFake);
-        }
 
         [Test]
         public void Find_NotFindingAnything_ReturnEmptyList()
         {
-            responseFake.Body = "";
+            var httpResult = BuildHttpResultWithResponseBody("");
 
-            var result = navigationResult.Find("//li");
+            var result = httpResult.Find("//li");
 
             Assert.That(result.Count(), Is.EqualTo(0));
         }
@@ -33,9 +23,9 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingOneLiByXPath_ReturnListWithOneLi()
         {
-            responseFake.Body = "<li>bacon</li>";
+            var httpResult = BuildHttpResultWithResponseBody("<li>bacon</li>");
 
-            var result = navigationResult.Find("//li");
+            var result = httpResult.Find("//li");
 
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(result.Raw, Is.EqualTo("<li>bacon</li>"));
@@ -45,9 +35,9 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingLiByClassByXPath_ReturnListWithOneLi()
         {
-            responseFake.Body = "<li class=\"flurp\">bacon</li><li>arne</li>";
+            var httpResult = BuildHttpResultWithResponseBody("<li class=\"flurp\">bacon</li><li>arne</li>");
 
-            var result = navigationResult.Find("//li[@class=\"flurp\"]");
+            var result = httpResult.Find("//li[@class=\"flurp\"]");
 
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(result.Raw, Is.EqualTo("<li class=\"flurp\">bacon</li>"));
@@ -56,9 +46,9 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingMultipleLiByXPath_ReturnListWithOneLi()
         {
-            responseFake.Body = "<li class=\"flurp\">bacon</li><li>arne</li>";
+            var httpResult = BuildHttpResultWithResponseBody("<li class=\"flurp\">bacon</li><li>arne</li>");
 
-            var result = navigationResult.Find("//li");
+            var result = httpResult.Find("//li");
 
             Assert.That(result.Count(), Is.EqualTo(2));
         }
@@ -66,9 +56,9 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingByClassDescendantsByXPath_ReturnListWithOneLi()
         {
-            responseFake.Body = "<li class=\"flurp\"><li class=\"tjong\">arne</li></li>";
+            var httpResult = BuildHttpResultWithResponseBody("<li class=\"flurp\"><li class=\"tjong\">arne</li></li>");
 
-            var result = navigationResult.Find("//*[contains(@class,'flurp')]/*[contains(@class,'tjong')]");
+            var result = httpResult.Find("//*[contains(@class,'flurp')]/*[contains(@class,'tjong')]");
 
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(result.Raw, Is.EqualTo("<li class=\"tjong\">arne</li>"));
@@ -78,9 +68,9 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingOneLiByCSS_ReturnListWithOneLi()
         {
-            responseFake.Body = "<li>bacon</li>";
+            var httpResult = BuildHttpResultWithResponseBody("<li>bacon</li>");
 
-            var result = navigationResult.Find("li");
+            var result = httpResult.Find("li");
 
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(result.Raw, Is.EqualTo("<li>bacon</li>"));
@@ -89,9 +79,9 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingLiByClassByCSS_ReturnListWithOneLi()
         {
-            responseFake.Body = "<li class=\"flurp\">bacon</li><li>arne</li>";
+            var httpResult = BuildHttpResultWithResponseBody("<li class=\"flurp\">bacon</li><li>arne</li>");
 
-            var result = navigationResult.Find("li.flurp");
+            var result = httpResult.Find("li.flurp");
 
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(result.Raw, Is.EqualTo("<li class=\"flurp\">bacon</li>"));
@@ -100,9 +90,9 @@ namespace UnitTests.Navigation
         [Test]
         public void Find_FindingByClassDescendantsByCSS_ReturnListWithOneLi()
         {
-            responseFake.Body = "<li class=\"flurp\"><li class=\"tjong\">arne</li></li>";
+            var httpResult = BuildHttpResultWithResponseBody("<li class=\"flurp\"><li class=\"tjong\">arne</li></li>");
 
-            var result = navigationResult.Find(".flurp .tjong");
+            var result = httpResult.Find(".flurp .tjong");
 
             Assert.That(result.Count(), Is.EqualTo(1));
             Assert.That(result.Raw, Is.EqualTo("<li class=\"tjong\">arne</li>"));
@@ -111,10 +101,15 @@ namespace UnitTests.Navigation
         [Test]
         public void Follow_NoElements_ThrowsException()
         {
-            responseFake.Body = "";
+            var httpResult = BuildHttpResultWithResponseBody("");
 
-            Assert.That(() => navigationResult.Follow("#link"), 
+            Assert.That(() => httpResult.Follow("#link"), 
                 Throws.TypeOf<NavigationResultException>().With.Message.StringContaining("No element with href found"));
+        }
+
+        private static IHttpResult BuildHttpResultWithResponseBody(string body)
+        {
+            return new HttpResult(new NavigationResult(new Request(""), new Response { Body = body }));
         }
     }
 }

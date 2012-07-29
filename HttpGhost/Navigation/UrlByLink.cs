@@ -1,21 +1,10 @@
 using System;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace HttpGhost.Navigation
 {
-    internal class UrlByLink
+    internal static class UrlByLink
     {
-        private readonly string href;
-        private readonly Uri uri;
-
-        public UrlByLink(string href, Uri uri)
-        {
-            this.href = href;
-            this.uri = uri;
-        }
-
-        public string Build()
+        public static string Build(string href, Uri uri)
         {
             if (href.StartsWith("http"))
                 return href;

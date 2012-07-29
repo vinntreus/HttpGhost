@@ -1,3 +1,4 @@
+using System;
 using HttpGhost.Authentication;
 using HttpGhost.Navigation;
 using HttpGhost.Transport;
@@ -49,7 +50,7 @@ namespace HttpGhost
         /// <param name="url">An url</param>
         /// <param name="querystring">Use anonymous object for querystring</param>
         /// <returns></returns>
-		public INavigationResult Get(string url, object querystring = null)
+        public IHttpResult Get(string url, object querystring = null)
 		{
 		    var actualUrl = new UrlBuilder(url, querystring).Build();
             var req = BuildRequest(actualUrl, "GET");
@@ -62,7 +63,7 @@ namespace HttpGhost
 		/// <param name="postingObject">Anonymous object for data</param>
 		/// <param name="url">Url</param>
 		/// <returns></returns>
-		public INavigationResult Post(object postingObject, string url)
+        public IHttpResult Post(object postingObject, string url)
 		{
             var req = BuildRequest(url, "POST", postingObject);
             return Navigate(req);
@@ -74,7 +75,7 @@ namespace HttpGhost
         /// <param name="postingObject">Anonymous object for data</param>
         /// <param name="url">Url</param>
         /// <returns></returns>
-		public INavigationResult Put(object postingObject, string url)
+        public IHttpResult Put(object postingObject, string url)
 		{
             var req = BuildRequest(url, "PUT", postingObject);
             return Navigate(req);
@@ -86,7 +87,7 @@ namespace HttpGhost
         /// <param name="postingObject">Anonymous object for data</param>
         /// <param name="url">Url</param>
         /// <returns></returns>
-		public INavigationResult Delete(object postingObject, string url)
+        public IHttpResult Delete(object postingObject, string url)
 		{
             var req = BuildRequest(url, "DELETE", postingObject);
             return Navigate(req);
@@ -114,9 +115,12 @@ namespace HttpGhost
             }
         }
 
-        private INavigationResult Navigate(IRequest request)
+        private IHttpResult Navigate(IRequest request)
         {
-            return navigator.Navigate(request);
+            return new HttpResult(navigator.Navigate(request))
+            {
+                OnFollow = url => Get(url)
+            };
         }
 	}
 }

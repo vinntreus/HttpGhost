@@ -5,7 +5,7 @@ using HttpGhost.Transport;
 
 namespace UnitTests
 {
-    public class FakeResponse : IResponse
+    public class ResponseFake : IResponse
     {
         public HttpStatusCode StatusCode { get; set; }
         public string Body { get; set; }
