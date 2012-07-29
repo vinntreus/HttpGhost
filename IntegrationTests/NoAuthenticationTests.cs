@@ -1,16 +1,13 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
-using HttpGhost;
+﻿using HttpGhost;
 using NUnit.Framework;
 
 namespace IntegrationTests
 {
 	[TestFixture]
+    [Category("Integration")]
 	public class NoAuthenticationTests : IntegrationTestsBase
 	{
-        protected readonly string baseUrl = "http://127.0.0.1:8080";
+        protected readonly string BaseUrl = "http://127.0.0.1:8080";
 	    private Session session;
 
 	    [SetUp]
@@ -22,7 +19,7 @@ namespace IntegrationTests
 		[Test]
 		public void Session_Get_ReturnHtml()
 		{
-			var result = session.Get(baseUrl);
+			var result = session.Get(BaseUrl);
 
 			Assert.That(result.ResponseContent, Is.StringContaining("Getting"));
 		}        
@@ -30,7 +27,7 @@ namespace IntegrationTests
         [Test]
         public void Session_GetWithQuerystring_ReturnHtml()
         {
-            var url = baseUrl + "/get-querystring";
+            var url = BaseUrl + "/get-querystring";
             var result = session.Get(url, new {q = "b"});
 
             Assert.That(result.ResponseContent, Is.StringContaining("b"));
@@ -39,7 +36,7 @@ namespace IntegrationTests
         [Test]
         public void Session_GetToUrlWhichRedirects_FollowRedirect()
         {
-            var url = baseUrl + "/redirect-to-home";
+            var url = BaseUrl + "/redirect-to-home";
             var result = session.Get(url);
 
             Assert.That(result.ResponseContent, Is.StringContaining("Getting"));
@@ -48,7 +45,7 @@ namespace IntegrationTests
         [Test]
         public void Session_Post_ReturnHtml()
         {
-            var result = session.Post(new { title = "jippi" }, baseUrl);
+            var result = session.Post(new { title = "jippi" }, BaseUrl);
             
             Assert.That(result.ResponseContent, Is.StringContaining("Posting"));
         }
@@ -56,7 +53,7 @@ namespace IntegrationTests
         [Test]
         public void Session_Put_ReturnHtml()
         {
-            var result = session.Put(new { Title = "jippi" }, baseUrl);
+            var result = session.Put(new { Title = "jippi" }, BaseUrl);
 
             Assert.That(result.ResponseContent, Is.StringContaining("Putting"));
         }
@@ -64,7 +61,7 @@ namespace IntegrationTests
         [Test]
         public void Session_Delete_ReturnHtml()
         {
-            var result = session.Delete(new { id = 2 }, baseUrl);
+            var result = session.Delete(new { id = 2 }, BaseUrl);
 
             Assert.That(result.ResponseContent, Is.StringContaining("Deleting"));
         }
@@ -72,7 +69,7 @@ namespace IntegrationTests
 	    [Test]
 	    public void Session_GetAndFollow_ReturnsHtml()
 	    {
-            var url = baseUrl + "/with-link";
+            var url = BaseUrl + "/with-link";
             var firstResult = session.Get(url);
 	        var secondResult = firstResult.Follow("#mylink");
             
@@ -83,7 +80,7 @@ namespace IntegrationTests
         [Test]
         public void Session_GetAndFollow302_ReturnsHtml()
         {
-            var url = baseUrl + "/with-link";
+            var url = BaseUrl + "/with-link";
             var firstResult = session.Get(url);
             var secondResult = firstResult.Follow("#mylink302");
 

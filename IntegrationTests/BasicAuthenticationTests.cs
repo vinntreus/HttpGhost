@@ -5,6 +5,7 @@ using System.Net;
 namespace IntegrationTests
 {
     [TestFixture]    
+    [Category("Integration")]
     public class BasicAuthenticationTests : IntegrationTestsBase
     {
         private const string USERNAME = "user";
