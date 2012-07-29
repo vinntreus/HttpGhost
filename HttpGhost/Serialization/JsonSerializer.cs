@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace HttpGhost.Serialization
+﻿namespace HttpGhost.Serialization
 {
     internal class JsonSerializer : ISerializer
     {
@@ -12,6 +7,11 @@ namespace HttpGhost.Serialization
             if (objectToSerialize == null)
                 return "";
             return Newtonsoft.Json.JsonConvert.SerializeObject(objectToSerialize);
+        }
+
+        public T Deserialize<T>(string body)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(body);
         }
     }
 }

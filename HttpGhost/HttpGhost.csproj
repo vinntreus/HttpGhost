@@ -77,7 +77,9 @@
     <Compile Include="Parsing\IdToken.cs" />
     <Compile Include="Parsing\SpaceToken.cs" />
     <Compile Include="Parsing\Token.cs" />
+    <Compile Include="Serialization\DefaultSerializeBuilder.cs" />
     <Compile Include="Serialization\FormSerializer.cs" />
+    <Compile Include="Serialization\ISerializeBuilder.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
     <Compile Include="Serialization\JsonSerializer.cs" />
     <Compile Include="Transport\IRequest.cs" />

@@ -1,8 +1,7 @@
-using System;
 using HttpGhost.Authentication;
 using HttpGhost.Navigation;
-using HttpGhost.Transport;
 using HttpGhost.Serialization;
+using HttpGhost.Transport;
 using System.Net;
 
 namespace HttpGhost
@@ -13,7 +12,8 @@ namespace HttpGhost
 	public class Session
 	{
         private readonly INavigate navigator;
-        private readonly IAuthenticate authentication;
+	    private readonly ISerializeBuilder serializeBuilder;
+	    private readonly IAuthenticate authentication;
 
         public string ContentType { get; set; }
 
@@ -28,20 +28,22 @@ namespace HttpGhost
 		public Session(string username, string password) : this(new BasicAuthentication(username, password)){}
         
         /// <summary>
-        /// Uses provided authentication mechanism and navigator which uses .Net webclient for requests
+        /// Uses provided authentication mechanism and navigator which uses .Net webclient for requests and a default serializer
         /// </summary>
         /// <param name="authentication"></param>
-		public Session(IAuthenticate authentication) : this(authentication, new WebRequestNavigator()){}
+		public Session(IAuthenticate authentication) : this(authentication, new WebRequestNavigator(), new DefaultSerializeBuilder()){}
 
-        /// <summary>
-        /// Uses provided authentication and navigation mechanism
-        /// </summary>
-        /// <param name="authentication"></param>
-        /// <param name="navigator"></param>
-        public Session(IAuthenticate authentication, INavigate navigator)
+	    /// <summary>
+	    /// Uses provided authentication, navigation and serialize mechanism
+	    /// </summary>
+	    /// <param name="authentication"></param>
+	    /// <param name="navigator"></param>
+	    /// <param name="serializeBuilder"> </param>
+	    public Session(IAuthenticate authentication, INavigate navigator, ISerializeBuilder serializeBuilder)
         {
             this.authentication = authentication;
             this.navigator = navigator;
+            this.serializeBuilder = serializeBuilder;
         }
 
         /// <summary>
@@ -101,18 +103,9 @@ namespace HttpGhost
             {
                 request.AddHeader(HttpRequestHeader.ContentType, ContentType);
             }
-            request.Body = BuildSerializerBy(ContentType).Serialize(postingObject);
+            request.Body = serializeBuilder.Build(ContentType).Serialize(postingObject);
             request.Method = method;
             return request;
-        }
-
-        private ISerializer BuildSerializerBy(string contentType)
-        {
-            switch (contentType)
-            {
-                case "application/json": return new JsonSerializer();
-                default: return new FormSerializer();
-            }
         }
 
         private IHttpResult Navigate(IRequest request)

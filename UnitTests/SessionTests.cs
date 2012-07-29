@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using HttpGhost;
+using HttpGhost.Serialization;
 using NUnit.Framework;
 
 namespace UnitTests
@@ -20,7 +17,7 @@ namespace UnitTests
         {
             authenticatorFake = new AuthenticatorFake();
             navigatorFake = new NavigatorFake();
-            session = new Session(authenticatorFake, navigatorFake);
+            session = new Session(authenticatorFake, navigatorFake, new DefaultSerializeBuilder());
         }
 
         [Test]

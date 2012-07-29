@@ -5,12 +5,14 @@ using HtmlAgilityPack;
 using HttpGhost.Html;
 using HttpGhost.Navigation;
 using HttpGhost.Parsing;
+using HttpGhost.Serialization;
 
 namespace HttpGhost
 {
     public class HttpResult : IHttpResult
     {
         private IEnumerable<HtmlNode> nodes;
+        private readonly JsonSerializer serializer;
 
         public HttpResult(INavigationResult navigationResult)
         {
@@ -19,6 +21,7 @@ namespace HttpGhost
             ResponseContent = navigationResult.Response.Body;
             ResponseHeaders = navigationResult.Response.Headers;
             RequestUrl = navigationResult.Request.Url;
+            serializer = new JsonSerializer();
         }
 
         public long TimeSpent { get; private set; }
@@ -30,7 +33,7 @@ namespace HttpGhost
 
         public T FromJsonTo<T>()
         {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<T>(ResponseContent);
+            return serializer.Deserialize<T>(ResponseContent);
         }
 
         public Elements Find(string selector)
