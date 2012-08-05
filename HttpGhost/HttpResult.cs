@@ -3,7 +3,6 @@ using System.Net;
 using HtmlAgilityPack;
 using HttpGhost.Html;
 using HttpGhost.Navigation;
-using HttpGhost.Parsing;
 using HttpGhost.Serialization;
 
 namespace HttpGhost
@@ -12,7 +11,6 @@ namespace HttpGhost
     {
         private readonly JsonSerializer serializer;
         private readonly HtmlDocument htmlDoc;
-        //private readonly HtmlNavigator htmlNavigator;
 
         public HttpResult(INavigationResult navigationResult)
         {
@@ -22,7 +20,6 @@ namespace HttpGhost
             ResponseHeaders = navigationResult.Response.Headers;
             RequestUrl = navigationResult.Request.Url;
             serializer = new JsonSerializer();
-            //htmlNavigator = new HtmlNavigator(ResponseContent);
             htmlDoc = new HtmlDocument();
             htmlDoc.LoadHtml(ResponseContent);
         }
@@ -45,6 +42,16 @@ namespace HttpGhost
             return new Elements(htmlDoc.Find(selector));
         }
 
+        public Form FindForm(string selector)
+        {
+            var node = htmlDoc.FindOne(selector);
+            if(node == null)
+            {
+                throw new NavigationResultException(FormatSelectorError("Could not find form", selector, ResponseContent));
+            }
+            return new Form(node, RequestUrl) { OnSubmit = OnSubmitForm };
+        }
+
         public IHttpResult Follow(string selector)
         {
             var href = Find(selector).Attribute("href");
@@ -56,79 +63,9 @@ namespace HttpGhost
             return OnFollow(url);
         }
 
-        public Form FindForm(string selector)
-        {
-            var node = htmlDoc.FindOne(selector);
-            if(node == null)
-            {
-                throw new NavigationResultException(FormatSelectorError("Could not find form", selector, ResponseContent));
-            }
-            return new Form(node, RequestUrl) { OnSubmit = OnSubmitForm };
-        }
-
         private static string FormatSelectorError(string message, string selector, string body)
         {
             return string.Format("{0}\nSelector: '{1}'\nBody: '{2}'", message, selector, body);
         }
     }
-
-    public static class HtmlNodeExtension
-    {
-        public static HtmlNodeCollection SelectNodesByCss(this HtmlNode node, string cssSelector)
-        {
-            var xpath = CssSelectorToXPath(cssSelector);
-            return node.SelectNodes(xpath);
-        }
-
-        public static HtmlNode SelectSingleNodeByCss(this HtmlNode node, string cssSelector)
-        {
-            var xpath = CssSelectorToXPath(cssSelector);
-            return node.SelectSingleNode(xpath);
-        }
-
-        public static HtmlNodeCollection Find(this HtmlDocument htmlDoc, string selector)
-        {
-            var xpath = CssSelectorToXPath(selector);
-            return htmlDoc.DocumentNode.SelectNodes(xpath);
-        }
-
-        public static HtmlNode FindOne(this HtmlDocument htmlDoc, string selector)
-        {
-            var xpath = CssSelectorToXPath(selector);
-            return htmlDoc.DocumentNode.SelectSingleNode(xpath);
-        }
-
-        private static string CssSelectorToXPath(string selector)
-        {
-            return new CssSelectorParser(selector).ToXPath();
-        }
-    }
-
-    //public class HtmlNavigator
-    //{
-    //    private readonly HtmlDocument htmlDoc;
-
-    //    public HtmlNavigator(string html)
-    //    {
-    //        htmlDoc = new HtmlDocument();
-    //        htmlDoc.LoadHtml(html);
-    //    }
-
-    //    public HtmlNodeCollection Find(string selector)
-    //    {
-    //        var xpath = SelectorToXPath(selector);
-    //        return htmlDoc.DocumentNode.SelectNodes(xpath);
-    //    }
-
-    //    public HtmlNode FindOne(string selector)
-    //    {
-    //        var xpath = SelectorToXPath(selector);
-    //        return htmlDoc.DocumentNode.SelectSingleNode(xpath);
-    //    }
-
-    //    private static string SelectorToXPath(string selector)
-    //    {
-    //        return new CssSelectorParser(selector).ToXPath();
-    //    }
-    //}
 }

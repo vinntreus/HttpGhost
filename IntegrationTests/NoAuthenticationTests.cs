@@ -45,7 +45,7 @@ namespace IntegrationTests
         [Test]
         public void Session_Post_ReturnHtml()
         {
-            var result = session.Post(new { title = "jippi" }, BaseUrl);
+            var result = session.Post(BaseUrl, new { title = "jippi" });
             
             Assert.That(result.ResponseContent, Is.StringContaining("Posting"));
         }
@@ -53,7 +53,7 @@ namespace IntegrationTests
         [Test]
         public void Session_Put_ReturnHtml()
         {
-            var result = session.Put(new { Title = "jippi" }, BaseUrl);
+            var result = session.Put(BaseUrl, new { Title = "jippi" });
 
             Assert.That(result.ResponseContent, Is.StringContaining("Putting"));
         }
@@ -61,7 +61,7 @@ namespace IntegrationTests
         [Test]
         public void Session_Delete_ReturnHtml()
         {
-            var result = session.Delete(new { id = 2 }, BaseUrl);
+            var result = session.Delete(BaseUrl, new { id = 2 });
 
             Assert.That(result.ResponseContent, Is.StringContaining("Deleting"));
         }
@@ -95,7 +95,7 @@ namespace IntegrationTests
             var form = session.Get(url).FindForm("#form");
             var expectedRequestUrl = form.GetAttribute("action");
             form.SetValue("#input1", "value");
-            session.ContentType = "application/x-www-form-urlencoded";
+            //session.ContentType = "application/x-www-form-urlencoded";
             var result = form.Submit();
 
             Assert.That(result.RequestUrl, Is.StringEnding(expectedRequestUrl));

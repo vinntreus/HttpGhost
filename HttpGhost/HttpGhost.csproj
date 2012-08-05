@@ -58,9 +58,12 @@
     <Compile Include="Authentication\Credentials.cs" />
     <Compile Include="Authentication\IAuthenticate.cs" />
     <Compile Include="Authentication\InvalidUserCredentialsException.cs" />
+    <Compile Include="ContentType.cs" />
+    <Compile Include="HtmlNodeExtension.cs" />
     <Compile Include="Html\Element.cs" />
     <Compile Include="Html\Elements.cs" />
     <Compile Include="Html\Form.cs" />
+    <Compile Include="HttpMethods.cs" />
     <Compile Include="HttpResult.cs" />
     <Compile Include="IHttpResult.cs" />
     <Compile Include="Navigation\Client.cs" />

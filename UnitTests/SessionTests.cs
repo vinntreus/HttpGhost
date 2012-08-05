@@ -63,8 +63,7 @@ namespace UnitTests
         [Test]
         public void Get_WithContentType_RequestHasContentType()
         {
-            session.ContentType = "application/json";
-            session.Get("http://a");
+            session.Get("http://a", null, "application/json");
 
             var request = navigatorFake.Request;
 
@@ -75,8 +74,7 @@ namespace UnitTests
         [TestCase("application/json")]
         public void Get_Always_RequestBodyIsEmpty(string contentType)
         {
-            session.ContentType = contentType;
-            session.Get("http://a");
+            session.Get("http://a", null, contentType);
 
             var request = navigatorFake.Request;
 
@@ -86,7 +84,7 @@ namespace UnitTests
         [Test]
         public void Post_Always_RequestHasPOSTMethod()
         {
-            session.Post(new{ a = 1 }, "http://a");
+            session.Post("http://a", new{ a = 1 });
 
             var request = navigatorFake.Request;
 
@@ -96,7 +94,7 @@ namespace UnitTests
         [Test]
         public void Post_Always_AddPostingObjectToRequestBody()
         {
-            session.Post(new { a = 1 }, "http://a");
+            session.Post("http://a", new { a = 1 });
 
             var request = navigatorFake.Request;
 
@@ -106,7 +104,7 @@ namespace UnitTests
         [Test]
         public void Put_Always_RequestHasPUTMethod()
         {
-            session.Put(new { a = 1 }, "http://a");
+            session.Put("http://a", new { a = 1 });
 
             var request = navigatorFake.Request;
 
@@ -116,7 +114,7 @@ namespace UnitTests
         [Test]
         public void Put_Always_AddPostingObjectToRequestBody()
         {
-            session.Put(new { a = 2 }, "http://a");
+            session.Put("http://a", new { a = 2 });
 
             var request = navigatorFake.Request;
 
@@ -126,7 +124,7 @@ namespace UnitTests
         [Test]
         public void Delete_Always_RequestHasDeleteMethod()
         {
-            session.Delete(new { a = 1 }, "http://a");
+            session.Delete("http://a", new { a = 1 });
 
             var request = navigatorFake.Request;
 
@@ -136,7 +134,7 @@ namespace UnitTests
         [Test]
         public void Delete_Always_AddPostingObjectToRequestBody()
         {
-            session.Delete(new { a = 3 }, "http://a");
+            session.Delete("http://a", new { a = 3 });
 
             var request = navigatorFake.Request;
 

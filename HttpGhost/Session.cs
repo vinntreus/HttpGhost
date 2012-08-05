@@ -1,3 +1,4 @@
+using System;
 using HttpGhost.Authentication;
 using HttpGhost.Navigation;
 using HttpGhost.Serialization;
@@ -14,8 +15,6 @@ namespace HttpGhost
         private readonly INavigate navigator;
 	    private readonly ISerializeBuilder serializeBuilder;
 	    private readonly IAuthenticate authentication;
-
-        public string ContentType { get; set; }
 
 		/// <summary>
 		/// Uses Anonymous authentication
@@ -46,64 +45,68 @@ namespace HttpGhost
             this.serializeBuilder = serializeBuilder;
         }
 
-        /// <summary>
-        /// Use Http-get to fetch data from url, querystring is optional
-        /// </summary>
-        /// <param name="url">An url</param>
-        /// <param name="querystring">Use anonymous object for querystring</param>
-        /// <returns></returns>
-        public IHttpResult Get(string url, object querystring = null)
+	    /// <summary>
+	    /// Use Http-get to fetch data from url, querystring is optional
+	    /// </summary>
+	    /// <param name="url">An url</param>
+	    /// <param name="querystring">Use anonymous object for querystring</param>
+	    /// <param name="contentType">Contenttype</param>
+	    /// <returns></returns>
+	    public IHttpResult Get(string url, object querystring = null, string contentType = null)
 		{
 		    var actualUrl = new UrlBuilder(url, querystring).Build();
-            var req = BuildRequest(actualUrl, "GET");
-            return Navigate(req);
-		}       
-
-		/// <summary>
-		/// Http-post with data to url
-		/// </summary>
-		/// <param name="postingObject">Anonymous object for data</param>
-		/// <param name="url">Url</param>
-		/// <returns></returns>
-        public IHttpResult Post(object postingObject, string url)
-		{
-            var req = BuildRequest(url, "POST", postingObject);
-            return Navigate(req);
-		}        
-
-        /// <summary>
-        /// Http-put with data to url
-        /// </summary>
-        /// <param name="postingObject">Anonymous object for data</param>
-        /// <param name="url">Url</param>
-        /// <returns></returns>
-        public IHttpResult Put(object postingObject, string url)
-		{
-            var req = BuildRequest(url, "PUT", postingObject);
+            var req = BuildRequest(actualUrl, HttpMethods.GET, null, contentType);
             return Navigate(req);
 		}
 
-        /// <summary>
-        /// Http-delete with data to url
-        /// </summary>
-        /// <param name="postingObject">Anonymous object for data</param>
-        /// <param name="url">Url</param>
-        /// <returns></returns>
-        public IHttpResult Delete(object postingObject, string url)
+	    /// <summary>
+	    /// Http-post with data to url
+	    /// </summary>
+	    /// <param name="url">Url</param>
+	    /// <param name="postingObject">Anonymous object for data</param>
+	    /// <param name="contentType">Contenttype</param>
+	    /// <returns></returns>
+	    public IHttpResult Post(string url, object postingObject, string contentType = null)
 		{
-            var req = BuildRequest(url, "DELETE", postingObject);
+            var req = BuildRequest(url, HttpMethods.POST, postingObject, contentType);
             return Navigate(req);
 		}
 
-        private IRequest BuildRequest(string url, string method, object postingObject = null)
+	    /// <summary>
+	    /// Http-put with data to url
+	    /// </summary>
+	    /// <param name="url">Url</param>
+	    /// <param name="postingObject">Anonymous object for data</param>
+	    /// <param name="contentType">Contentype</param>
+	    /// <returns></returns>
+	    public IHttpResult Put(string url, object postingObject, string contentType = null)
+		{
+            var req = BuildRequest(url, HttpMethods.PUT, postingObject, contentType);
+            return Navigate(req);
+		}
+
+	    /// <summary>
+	    /// Http-delete with data to url
+	    /// </summary>
+	    /// <param name="url">Url</param>
+	    /// <param name="postingObject">Anonymous object for data</param>
+	    /// <param name="contentType"> </param>
+	    /// <returns></returns>
+	    public IHttpResult Delete(string url, object postingObject, string contentType = null)
+		{
+            var req = BuildRequest(url, HttpMethods.DELETE , postingObject, contentType);
+            return Navigate(req);
+		}
+
+        private IRequest BuildRequest(string url, string method, object postingObject = null, string contentType = null)
         {
             var request = new Request(url);
             authentication.Process(request);
-            if (!string.IsNullOrEmpty(ContentType))
+            if (!string.IsNullOrEmpty(contentType))
             {
-                request.AddHeader(HttpRequestHeader.ContentType, ContentType);
+                request.AddHeader(HttpRequestHeader.ContentType, contentType);
             }
-            request.Body = serializeBuilder.Build(ContentType).Serialize(postingObject);
+            request.Body = serializeBuilder.BuildBy(contentType).Serialize(postingObject);
             request.Method = method;
             return request;
         }
@@ -113,7 +116,11 @@ namespace HttpGhost
             return new HttpResult(navigator.Navigate(request))
             {
                 OnFollow = url => Get(url),
-                OnSubmitForm = (postingObject, url) => Post(postingObject, url)
+                OnSubmitForm = (postingObject, action) =>
+                {
+                    var url = UrlByLink.Build(action, new Uri(request.Url));
+                    return Post(url, postingObject, ContentType.X_WWW_FORM_URLENCODED);
+                }
             };
         }
 	}

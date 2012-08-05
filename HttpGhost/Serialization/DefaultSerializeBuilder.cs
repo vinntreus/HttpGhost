@@ -2,7 +2,7 @@ namespace HttpGhost.Serialization
 {
     public class DefaultSerializeBuilder : ISerializeBuilder
     {
-        public ISerializer Build(string contentType)
+        public ISerializer BuildBy(string contentType)
         {
             switch (contentType)
             {

@@ -16,13 +16,14 @@ namespace HttpGhost.Html
 
         internal Func<object, string, IHttpResult> OnSubmit { get; set; }
 
-        public void SetValue(string selector, string value)
+        public Form SetValue(string selector, string value)
         {
             var field = Node.SelectNodesByCss(selector);
             foreach (var node in field)
             {
                 node.Attributes["value"].Value = value;
             }
+            return this;
         }
 
         /// <summary>
@@ -33,8 +34,7 @@ namespace HttpGhost.Html
         {
             var dataToSubmit = GetFormData();
             var action = GetAttribute("action");
-            var url = UrlByLink.Build(action, new Uri(baseUrl));
-            return OnSubmit(dataToSubmit, url);
+            return OnSubmit(dataToSubmit, action);
         }
 
         /// <summary>

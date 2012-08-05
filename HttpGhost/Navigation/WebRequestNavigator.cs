@@ -35,7 +35,7 @@ namespace HttpGhost.Navigation
             if (IsRedirect(response.StatusCode))
             {
                 var url = GetUrlForRedirect(request.Url, response);
-                return Navigate(new Request(url, "GET", request.Headers));
+                return Navigate(new Request(url, HttpMethods.GET, request.Headers));
             }
 
             watch.Reset();
