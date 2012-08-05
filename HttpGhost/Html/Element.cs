@@ -13,7 +13,7 @@ namespace HttpGhost.Html
 
         public string GetAttribute(string attribute)
         {
-            return Node.Attributes[attribute] != null ? Node.Attributes[attribute].Value : "";
+            return Node.GetAttributeValue(attribute, "");
         }
 
         public string Raw
