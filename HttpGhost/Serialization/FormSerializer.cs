@@ -20,6 +20,12 @@ namespace HttpGhost.Serialization
                 return "";
             if (objectToSerialize is string)
                 return objectToSerialize.ToString();
+            if(objectToSerialize is IDictionary<string, string>)
+            {
+                var dictionary = (IDictionary<string, string>) objectToSerialize;
+                return string.Join("&", dictionary.Select(kv => kv.Key + "=" + kv.Value).ToArray());
+            }
+                
 
             httpString = new StringBuilder();
 

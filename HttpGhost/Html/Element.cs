@@ -4,31 +4,31 @@ namespace HttpGhost.Html
 {
     public class Element
     {
-        private readonly HtmlNode node;
+        protected readonly HtmlNode Node;
 
         public Element(HtmlNode node)
         {
-            this.node = node;
+            Node = node;
         }
 
         public string GetAttribute(string attribute)
         {
-            return node.Attributes[attribute] != null ? node.Attributes[attribute].Value : "";
+            return Node.Attributes[attribute] != null ? Node.Attributes[attribute].Value : "";
         }
 
         public string Raw
         {
-            get { return node.OuterHtml; }
+            get { return Node.OuterHtml; }
         }
 
         public string Text
         {
-            get { return node.InnerText; }
+            get { return Node.InnerText; }
         }
        
         public override string ToString()
         {
-            return node.OuterHtml;
+            return Node.OuterHtml;
         }
     }
 }

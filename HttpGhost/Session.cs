@@ -112,7 +112,8 @@ namespace HttpGhost
         {
             return new HttpResult(navigator.Navigate(request))
             {
-                OnFollow = url => Get(url)
+                OnFollow = url => Get(url),
+                OnSubmitForm = (postingObject, url) => Post(postingObject, url)
             };
         }
 	}

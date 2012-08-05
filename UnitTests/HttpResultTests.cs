@@ -103,9 +103,19 @@ namespace UnitTests
         {
             var httpResult = BuildHttpResultWithResponseBody("");
 
-            Assert.That(() => httpResult.Follow("#link"), 
-                Throws.TypeOf<NavigationResultException>().With.Message.StringContaining("No element with href found"));
+            Assert.That(() => httpResult.Follow("#link"),
+                Throws.TypeOf<NavigationResultException>().With.Message.StringContaining("Could not find element with href"));
         }
+
+        [Test]
+        public void FindForm_NoForm_ThrowsException()
+        {
+            var httpResult = BuildHttpResultWithResponseBody("");
+
+            Assert.That(() => httpResult.FindForm("#form"),
+                Throws.TypeOf<NavigationResultException>().With.Message.StringContaining("Could not find form"));
+        }
+
 
         private static IHttpResult BuildHttpResultWithResponseBody(string body)
         {

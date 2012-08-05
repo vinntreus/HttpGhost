@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
-using System.Threading;
 using Nancy;
 using Nancy.Responses;
 
@@ -10,7 +7,7 @@ namespace IntegrationTests.Nancy
     {
         public Home()
         {
-            Get["/"] = _ => { return "Getting"; };
+            Get["/"] = _ => "Getting";
             Get["/get-querystring"] = parameters => Request.Query.q + "";
             Get["/redirect-to-home"] = _ => Response.AsRedirect("/", RedirectResponse.RedirectType.Permanent);
             Post["/"] = _ => "Posting";
@@ -21,6 +18,14 @@ namespace IntegrationTests.Nancy
             Get["/with-link"] = _ => "<a id='mylink' href='/follow'>follow</a><a id='mylink302' href='/with-link-302'>follow</a>";
             Get["/with-link-302"] = _ => Response.AsRedirect("/follow", RedirectResponse.RedirectType.Permanent); ;
             Get["/follow"] = _ => "Followed";
+
+            Get["/page-with-form"] = _ => "<form action='/form-submit' method='post' id='form'>" +
+                                            "<input type='text' name='item' id='input1' value='' />"+
+                                         "</form>";
+            Post["/form-submit"] = _ =>
+                {
+                    return Request.Form["item"].Value;
+                };
         }
     }
 }

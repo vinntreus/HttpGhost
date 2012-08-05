@@ -55,5 +55,25 @@ namespace UnitTests.Serialization
 
 			Assert.That(result, Is.StringEnding("Title=a&Fuddle=b"));
 		}
+
+	    [Test]
+	    public void Serialize_DictionaryOfStrings_UsesKeyAndValue()
+	    {
+	        IDictionary<string, string> data = new Dictionary<string, string> { {"key", "value"}};
+
+	        var result = formserializer.Serialize(data);
+
+	        Assert.That(result, Is.StringContaining("key=value"));
+	    }
+
+        [Test]
+        public void Serialize_DictionaryOfStrings_EachKeyValueIsSeparatedWithAmpersant()
+        {
+            IDictionary<string, string> data = new Dictionary<string, string> { { "key", "value" }, {"key2", "value2"} };
+
+            var result = formserializer.Serialize(data);
+
+            Assert.That(result, Is.EqualTo("key=value&key2=value2"));
+        }
 	}
 }

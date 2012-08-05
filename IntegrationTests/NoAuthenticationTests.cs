@@ -88,15 +88,18 @@ namespace IntegrationTests
             Assert.That(secondResult.ResponseContent, Is.EqualTo("Followed"));
         }
 
-        //[Test]
-        //public void Session_SubmitForm_ReturnsResult()
-        //{
-        //    var url = BaseUrl + "/page-with-form";
-        //    var form = session.Get(url).FindForm("#form");
-        //    form.SetValue("#input1", "value");
-        //    var result = form.Submit();
-	        
+        [Test]
+        public void Session_SubmitForm_ReturnsResult()
+        {
+            var url = BaseUrl + "/page-with-form";
+            var form = session.Get(url).FindForm("#form");
+            var expectedRequestUrl = form.GetAttribute("action");
+            form.SetValue("#input1", "value");
+            session.ContentType = "application/x-www-form-urlencoded";
+            var result = form.Submit();
 
-        //}
+            Assert.That(result.RequestUrl, Is.StringEnding(expectedRequestUrl));
+            Assert.That(result.ResponseContent, Is.StringContaining("value"));
+        }
 	}
 }

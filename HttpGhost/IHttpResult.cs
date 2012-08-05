@@ -50,5 +50,7 @@ namespace HttpGhost
         /// <param name="selector">CSS or XPath selector to element with href attribute</param>
         /// <returns>Navigationresult</returns>
         IHttpResult Follow(string selector);
+
+        Form FindForm(string form);
     }
 }
