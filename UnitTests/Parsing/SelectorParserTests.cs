@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Collections.Generic;
+using HtmlAgilityPack;
 using HttpGhost.Parsing;
 using NUnit.Framework;
 
@@ -94,11 +95,27 @@ namespace UnitTests.Parsing
         }
 
         [Test]
-        public void Create_ClassWithElementDescendsClassWithElement_AddStarWithContains()
+        public void Create_ClassWithElementDescendsClassWithElement_NoStarHasContainsForClasses()
         {
             var xpath = ToXPath("ul.beer li.soda");
 
             Assert.That(xpath, Is.EqualTo("//ul[contains(@class,'beer')]//li[contains(@class,'soda')]"));
+        }
+
+        [Test]
+        public void Create_ElementWithAttribute_AtSignInFrontOfAttributeName()
+        {
+            var xpath = ToXPath("input[value='one']");
+
+            Assert.That(xpath, Is.EqualTo("//input[@value='one']"));
+        }
+
+        [Test]
+        public void Create_AttributeWithoutElement_AddStar()
+        {
+            var xpath = ToXPath("[value='one']");
+
+            Assert.That(xpath, Is.EqualTo("//*[@value='one']"));
         }
     }
 }

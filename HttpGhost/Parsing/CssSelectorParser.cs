@@ -16,7 +16,8 @@ namespace HttpGhost.Parsing
             {'.', (pattern, me) => new ClassToken(pattern, me).ToXpath()},
             {'#', (pattern, me) => new IdToken(pattern, me).ToXpath()},
             {'>', (pattern, me) => new DescendentToken(pattern).ToXpath()},
-            {' ', (pattern, me) => new SpaceToken(pattern, me).ToXpath()}
+            {' ', (pattern, me) => new SpaceToken(pattern, me).ToXpath()},
+            {'[', (pattern, me) => new BracketToken(pattern, me).ToXpath()}
         };
 
         public CssSelectorParser(string pattern)

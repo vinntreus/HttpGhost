@@ -74,6 +74,7 @@
     <Compile Include="Navigation\NavigationResult.cs" />
     <Compile Include="Navigation\UrlByLink.cs" />
     <Compile Include="Navigation\WebRequestNavigator.cs" />
+    <Compile Include="Parsing\BracketToken.cs" />
     <Compile Include="Parsing\ClassToken.cs" />
     <Compile Include="Parsing\CssSelectorParser.cs" />
     <Compile Include="Parsing\DescendentToken.cs" />
