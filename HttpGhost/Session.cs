@@ -10,27 +10,27 @@ namespace HttpGhost
 	/// <summary>
 	/// Main entry to use HttpGhost
 	/// </summary>
-	public class Session
+	public abstract class SessionBase<T>
 	{
-        private readonly INavigate navigator;
-	    private readonly ISerializeBuilder serializeBuilder;
-	    private readonly IAuthenticate authentication;
+        protected readonly INavigate navigator;
+	    protected readonly ISerializeBuilder serializeBuilder;
+	    protected readonly IAuthenticate authentication;
 
 		/// <summary>
 		/// Uses Anonymous authentication
 		/// </summary>
-		public Session() : this(new AnonymousAuthentication()){}
+		protected SessionBase() : this(new AnonymousAuthentication()){}
 
 		/// <summary>
 		/// Uses Basic Authentication.
 		/// </summary>
-		public Session(string username, string password) : this(new BasicAuthentication(username, password)){}
+		protected SessionBase(string username, string password) : this(new BasicAuthentication(username, password)){}
         
         /// <summary>
         /// Uses provided authentication mechanism and navigator which uses .Net webclient for requests and a default serializer
         /// </summary>
         /// <param name="authentication"></param>
-		public Session(IAuthenticate authentication) : this(authentication, new WebRequestNavigator(), new DefaultSerializeBuilder()){}
+        protected SessionBase(IAuthenticate authentication) : this(authentication, new WebRequestNavigator(), new DefaultSerializeBuilder()){}
 
 	    /// <summary>
 	    /// Uses provided authentication, navigation and serialize mechanism
@@ -38,7 +38,7 @@ namespace HttpGhost
 	    /// <param name="authentication"></param>
 	    /// <param name="navigator"></param>
 	    /// <param name="serializeBuilder"> </param>
-	    public Session(IAuthenticate authentication, INavigate navigator, ISerializeBuilder serializeBuilder)
+	    protected SessionBase(IAuthenticate authentication, INavigate navigator, ISerializeBuilder serializeBuilder)
         {
             this.authentication = authentication;
             this.navigator = navigator;
@@ -52,7 +52,7 @@ namespace HttpGhost
 	    /// <param name="querystring">Use anonymous object for querystring</param>
 	    /// <param name="contentType">Contenttype</param>
 	    /// <returns></returns>
-	    public IHttpResult Get(string url, object querystring = null, string contentType = null)
+	    public T Get(string url, object querystring = null, string contentType = null)
 		{
 		    var actualUrl = new UrlBuilder(url, querystring).Build();
             var req = BuildRequest(actualUrl, HttpMethods.GET, null, contentType);
@@ -66,7 +66,7 @@ namespace HttpGhost
 	    /// <param name="postingObject">Anonymous object for data</param>
 	    /// <param name="contentType">Contenttype</param>
 	    /// <returns></returns>
-	    public IHttpResult Post(string url, object postingObject, string contentType = null)
+	    public T Post(string url, object postingObject, string contentType = null)
 		{
             var req = BuildRequest(url, HttpMethods.POST, postingObject, contentType);
             return Navigate(req);
@@ -79,7 +79,7 @@ namespace HttpGhost
 	    /// <param name="postingObject">Anonymous object for data</param>
 	    /// <param name="contentType">Contentype</param>
 	    /// <returns></returns>
-	    public IHttpResult Put(string url, object postingObject, string contentType = null)
+	    public T Put(string url, object postingObject, string contentType = null)
 		{
             var req = BuildRequest(url, HttpMethods.PUT, postingObject, contentType);
             return Navigate(req);
@@ -92,7 +92,7 @@ namespace HttpGhost
 	    /// <param name="postingObject">Anonymous object for data</param>
 	    /// <param name="contentType"> </param>
 	    /// <returns></returns>
-	    public IHttpResult Delete(string url, object postingObject, string contentType = null)
+	    public T Delete(string url, object postingObject, string contentType = null)
 		{
             var req = BuildRequest(url, HttpMethods.DELETE , postingObject, contentType);
             return Navigate(req);
@@ -111,9 +111,40 @@ namespace HttpGhost
             return request;
         }
 
-        private IHttpResult Navigate(IRequest request)
+	    protected abstract T Navigate(IRequest request);
+	}
+
+    public class Session : SessionBase<IHttpResult>
+    {
+        /// <summary>
+		/// Uses Anonymous authentication
+		/// </summary>
+		public Session(){}
+
+		/// <summary>
+		/// Uses Basic Authentication.
+		/// </summary>
+		public Session(string username, string password) : base(username, password){}
+        
+        /// <summary>
+        /// Uses provided authentication mechanism and navigator which uses .Net webclient for requests and a default serializer
+        /// </summary>
+        /// <param name="authentication"></param>
+        public Session(IAuthenticate authentication) : base(authentication){}
+
+        public Session(IAuthenticate authentication, INavigate navigator, ISerializeBuilder serializeBuilder) : base(authentication, navigator, serializeBuilder){}
+
+        protected override IHttpResult Navigate(IRequest request)
         {
-            return new HttpResult(navigator.Navigate(request))
+            return new HttpResult(navigator.Navigate(request));
+        }
+    }
+
+    public class HtmlSession : SessionBase<HtmlResult>
+    {
+        protected override HtmlResult Navigate(IRequest request)
+        {
+            return new HtmlResult(navigator.Navigate(request))
             {
                 OnFollow = url => Get(url),
                 OnSubmitForm = (postingObject, action) =>
@@ -123,5 +154,13 @@ namespace HttpGhost
                 }
             };
         }
-	}
+    }
+
+    public class JsonSession : SessionBase<JsonResult>
+    {
+        protected override JsonResult Navigate(IRequest request)
+        {
+            return new JsonResult(navigator.Navigate(request));
+        }
+    }
 }

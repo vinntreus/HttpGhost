@@ -29,7 +29,7 @@ namespace IntegrationTests
 
             var result = session.Get(BASE_URL);
 
-            Assert.That(result.ResponseContent, Is.StringContaining("got it"));
+            Assert.That(result.Response.Body, Is.StringContaining("got it"));
         }
 
         [Test]
@@ -37,9 +37,9 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Post(BASE_URL, new { Title = "jippi" }, "application/x-www-form-urlencoded");
+            var result = session.Post(BASE_URL, new { Title = "jippi" }, ContentType.X_WWW_FORM_URLENCODED);
 
-            Assert.That(result.ResponseContent, Is.StringContaining("jippi"));
+            Assert.That(result.Response.Body, Is.StringContaining("jippi"));
         }
 
         [Test]
@@ -47,9 +47,9 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Put(BASE_URL, new { Title = "jippi2" }, "application/x-www-form-urlencoded");
+            var result = session.Put(BASE_URL, new { Title = "jippi2" }, ContentType.X_WWW_FORM_URLENCODED);
 
-            Assert.That(result.ResponseContent, Is.StringContaining("jippi2"));
+            Assert.That(result.Response.Body, Is.StringContaining("jippi2"));
         }
 
         [Test]
@@ -57,9 +57,9 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Delete(BASE_URL, new { Id = 1 }, "application/x-www-form-urlencoded");
+            var result = session.Delete(BASE_URL, new { Id = 1 }, ContentType.X_WWW_FORM_URLENCODED);
 
-            Assert.That(result.ResponseContent, Is.StringContaining("1"));
+            Assert.That(result.Response.Body, Is.StringContaining("1"));
         }       
 
         [Test]
@@ -67,17 +67,14 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Post(BASE_URL + "/redir", new { title = "arne" }, "application/x-www-form-urlencoded");
+            var result = session.Post(BASE_URL + "/redir", new { title = "arne" }, ContentType.X_WWW_FORM_URLENCODED);
 
-            Assert.That(result.ResponseContent, Is.StringContaining("got it"));
+            Assert.That(result.Response.Body, Is.StringContaining("got it"));
         }
 
-        private Session GetSessionWithBasicAuthentication()
+        private static Session GetSessionWithBasicAuthentication()
         {
-            return new Session(USERNAME, PASSWORD)
-            {
-                //ContentType = "application/x-www-form-urlencoded" //nancy only transforms Request.Form when this contenttype
-            };
+            return new Session(USERNAME, PASSWORD);
         }
     }
 }
