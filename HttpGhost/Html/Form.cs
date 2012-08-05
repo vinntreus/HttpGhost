@@ -25,15 +25,23 @@ namespace HttpGhost.Html
             }
         }
 
+        /// <summary>
+        /// Submits form (POST) to url build by former RequestUrl + forms action attribute
+        /// </summary>
+        /// <returns></returns>
         public IHttpResult Submit()
         {
-            var dataToSubmit = GetDataToSubmit();
+            var dataToSubmit = GetFormData();
             var action = GetAttribute("action");
             var url = UrlByLink.Build(action, new Uri(baseUrl));
             return OnSubmit(dataToSubmit, url);
         }
 
-        private IDictionary<string, string> GetDataToSubmit()
+        /// <summary>
+        /// Retrieves key/values (from name/value attributes) from input-fields in form
+        /// </summary>
+        /// <returns></returns>
+        public IDictionary<string, string> GetFormData()
         {
             var inputs = Node.SelectNodesByCss("input");
             var data = new Dictionary<string, string>();
