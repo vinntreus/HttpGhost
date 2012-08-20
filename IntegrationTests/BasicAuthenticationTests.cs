@@ -16,7 +16,7 @@ namespace IntegrationTests
         [Test]
         public void Session_GetWithoutcredentials_Fails()
         {
-            var session = new Session();
+            var session = new HttpSession();
 
             Assert.That(() => session.Get(BASE_URL), 
                         Throws.TypeOf<WebException>().With.Message.StringContaining("401"));            
@@ -72,9 +72,9 @@ namespace IntegrationTests
             Assert.That(result.Response.Body, Is.StringContaining("got it"));
         }
 
-        private static Session GetSessionWithBasicAuthentication()
+        private static HttpSession GetSessionWithBasicAuthentication()
         {
-            return new Session(USERNAME, PASSWORD);
+            return new HttpSession(USERNAME, PASSWORD);
         }
     }
 }

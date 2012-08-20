@@ -3,7 +3,7 @@ using HttpGhost.Parsing;
 
 namespace HttpGhost
 {
-    public static class HtmlNodeExtension
+    internal static class HtmlNodeExtension
     {
         public static HtmlNodeCollection SelectNodesByCss(this HtmlNode node, string cssSelector)
         {

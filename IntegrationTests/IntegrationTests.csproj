@@ -47,7 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicAuthenticationTests.cs" />
+    <Compile Include="HtmlSessionTests.cs" />
     <Compile Include="IntegrationTestsBase.cs" />
+    <Compile Include="JsonSessionTests.cs" />
     <Compile Include="NoAuthenticationTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
