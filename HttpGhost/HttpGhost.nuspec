@@ -15,6 +15,7 @@
       * Find elements by attribute using css selector
       * Submit form
       * Major rewrite of session, subclass session to HttpSession, HtmlSession, JsonSession
+      * Update JSON.NET to 4.5.9 and HtmlAgilityPack to 1.4.6      
     </releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Http Ghost Test Integrationtest</tags>
