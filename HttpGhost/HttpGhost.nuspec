@@ -11,11 +11,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
-      2.0.0
+      2.0.0.1
+      * Update HtmlSession and JsonSession ctor to be as HttpSession
+      
+      2.0.0.0
       * Find elements by attribute using css selector
       * Submit form
       * Major rewrite of session, subclass session to HttpSession, HtmlSession, JsonSession
-      * Update JSON.NET to 4.5.9 and HtmlAgilityPack to 1.4.6      
+      * Update JSON.NET to 4.5.9 and HtmlAgilityPack to 1.4.6
     </releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Http Ghost Test Integrationtest</tags>
