@@ -9,7 +9,13 @@
     <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
     <projectUrl>https://github.com/vinntreus/HttpGhost</projectUrl>    
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>$description$</description>    
+    <description>$description$</description>
+    <releaseNotes>
+      2.0.0
+      * Find elements by attribute using css selector
+      * Submit form
+      * Major rewrite of session, subclass session to HttpSession, HtmlSession, JsonSession
+    </releaseNotes>
     <copyright>Copyright 2012</copyright>
     <tags>Http Ghost Test Integrationtest</tags>
     <dependencies>
