@@ -131,7 +131,7 @@ public void Get_URL_CanConvertResultToObject()
 	var session = new JsonSession();
 	var result = session.Get(URL);
 
-	var obj = result.To<<TestClass>(); //converts to any class, or dynamic
+	var obj = result.To&lt;TestClass&gt;(); //converts to any class, or dynamic
 
 	Assert.That(obj.A, Is.EqualTo("b"));
 }
