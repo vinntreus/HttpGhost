@@ -1,8 +1,7 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
 
-namespace HttpGhost.Parsing
+namespace HttpGhost.CssSelector
 {
     internal class CssSelectorParser
     {
@@ -12,7 +11,7 @@ namespace HttpGhost.Parsing
         public string EndProcessingAttributeWith { get; set; }
         public char PreviousChar { get; private set; }
         private readonly IDictionary<char, Action<List<char>, CssSelectorParser>> tokens = new Dictionary<char, Action<List<char>, CssSelectorParser>>
-                                                                                      {
+        {
             {'.', (pattern, me) => new ClassToken(pattern, me).ToXpath()},
             {'#', (pattern, me) => new IdToken(pattern, me).ToXpath()},
             {'>', (pattern, me) => new DescendentToken(pattern).ToXpath()},
@@ -25,7 +24,6 @@ namespace HttpGhost.Parsing
             IsXpath = pattern.StartsWith("//", StringComparison.InvariantCulture);
             this.pattern = pattern;
         }
-
 
         public string ToXPath()
         {

@@ -6,24 +6,24 @@ using NUnit.Framework;
 namespace UnitTests
 {
     [TestFixture]
-    public class SessionTests
+    public class HttpSessionTests
     {
         private AuthenticatorFake authenticatorFake;
         private NavigatorFake navigatorFake;
-        private Session session;
+        private HttpSession httpSession;
 
         [SetUp]
         public void Setup()
         {
             authenticatorFake = new AuthenticatorFake();
             navigatorFake = new NavigatorFake();
-            session = new Session(authenticatorFake, navigatorFake, new DefaultSerializeBuilder());
+            httpSession = new HttpSession(authenticatorFake, navigatorFake, new DefaultSerializeBuilder());
         }
 
         [Test]
         public void Get_Always_RequestHasGETMethod()
         {
-            session.Get("http://a");
+            httpSession.Get("http://a");
 
             var request = navigatorFake.Request;
 
@@ -33,7 +33,7 @@ namespace UnitTests
         [Test]
         public void Get_WithoutQuerystring_RequestHasUrlWithoutQuerystring()
         {
-            session.Get("http://a");
+            httpSession.Get("http://a");
 
             var request = navigatorFake.Request;
 
@@ -43,7 +43,7 @@ namespace UnitTests
         [Test]
         public void Get_ProvidedQuerystring_RequestHasUrlWithQuerystring()
         {
-            session.Get("http://a", new { b = 2 });
+            httpSession.Get("http://a", new { b = 2 });
 
             var request = navigatorFake.Request;
 
@@ -53,7 +53,7 @@ namespace UnitTests
         [Test]
         public void Get_WithoutSpecifyedContentType_ContentTypeIsEmpty()
         {
-            session.Get("http://a");
+            httpSession.Get("http://a");
 
             var request = navigatorFake.Request;
 
@@ -63,7 +63,7 @@ namespace UnitTests
         [Test]
         public void Get_WithContentType_RequestHasContentType()
         {
-            session.Get("http://a", null, "application/json");
+            httpSession.Get("http://a", null, "application/json");
 
             var request = navigatorFake.Request;
 
@@ -74,7 +74,7 @@ namespace UnitTests
         [TestCase("application/json")]
         public void Get_Always_RequestBodyIsEmpty(string contentType)
         {
-            session.Get("http://a", null, contentType);
+            httpSession.Get("http://a", null, contentType);
 
             var request = navigatorFake.Request;
 
@@ -84,7 +84,7 @@ namespace UnitTests
         [Test]
         public void Post_Always_RequestHasPOSTMethod()
         {
-            session.Post("http://a", new{ a = 1 });
+            httpSession.Post("http://a", new{ a = 1 });
 
             var request = navigatorFake.Request;
 
@@ -94,7 +94,7 @@ namespace UnitTests
         [Test]
         public void Post_Always_AddPostingObjectToRequestBody()
         {
-            session.Post("http://a", new { a = 1 });
+            httpSession.Post("http://a", new { a = 1 });
 
             var request = navigatorFake.Request;
 
@@ -104,7 +104,7 @@ namespace UnitTests
         [Test]
         public void Put_Always_RequestHasPUTMethod()
         {
-            session.Put("http://a", new { a = 1 });
+            httpSession.Put("http://a", new { a = 1 });
 
             var request = navigatorFake.Request;
 
@@ -114,7 +114,7 @@ namespace UnitTests
         [Test]
         public void Put_Always_AddPostingObjectToRequestBody()
         {
-            session.Put("http://a", new { a = 2 });
+            httpSession.Put("http://a", new { a = 2 });
 
             var request = navigatorFake.Request;
 
@@ -124,7 +124,7 @@ namespace UnitTests
         [Test]
         public void Delete_Always_RequestHasDeleteMethod()
         {
-            session.Delete("http://a", new { a = 1 });
+            httpSession.Delete("http://a", new { a = 1 });
 
             var request = navigatorFake.Request;
 
@@ -134,7 +134,7 @@ namespace UnitTests
         [Test]
         public void Delete_Always_AddPostingObjectToRequestBody()
         {
-            session.Delete("http://a", new { a = 3 });
+            httpSession.Delete("http://a", new { a = 3 });
 
             var request = navigatorFake.Request;
 

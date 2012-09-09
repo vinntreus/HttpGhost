@@ -1,10 +1,7 @@
-using System.Linq;
-using System.Collections.Generic;
-using HtmlAgilityPack;
-using HttpGhost.Parsing;
+using HttpGhost.CssSelector;
 using NUnit.Framework;
 
-namespace UnitTests.Parsing
+namespace UnitTests.CssSelector
 {
     [TestFixture]
     public class SelectorParserTests

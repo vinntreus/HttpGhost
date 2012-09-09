@@ -1,7 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace HttpGhost.Parsing
+namespace HttpGhost.CssSelector
 {
     internal class ElementToken
     {

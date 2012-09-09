@@ -1,9 +1,8 @@
 using HtmlAgilityPack;
-using HttpGhost.Parsing;
 
-namespace HttpGhost
+namespace HttpGhost.CssSelector
 {
-    public static class HtmlNodeExtension
+    internal static class HtmlNodeExtension
     {
         public static HtmlNodeCollection SelectNodesByCss(this HtmlNode node, string cssSelector)
         {

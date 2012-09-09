@@ -26,6 +26,24 @@ namespace IntegrationTests.Nancy
                 {
                     return Request.Form["item"].Value;
                 };
+
+            Get["/json", c => c.Request.Headers.ContentType == "application/json"] = _ =>
+                {
+                    return new JsonResponse(new {A = "b"}, new DefaultJsonSerializer());
+                };
+            Post["/json", c => c.Request.Headers.ContentType == "application/json"] = _ =>
+            {
+                return new JsonResponse(new { A = "b" }, new DefaultJsonSerializer());
+            };
+
+            Put["/json", c => c.Request.Headers.ContentType == "application/json"] = _ =>
+            {
+                return new JsonResponse(new { A = "b" }, new DefaultJsonSerializer());
+            };
+            Delete["/json", c => c.Request.Headers.ContentType == "application/json"] = _ =>
+            {
+                return new JsonResponse(new { A = "b" }, new DefaultJsonSerializer());
+            };
         }
     }
 }

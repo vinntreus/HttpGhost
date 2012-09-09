@@ -7,7 +7,7 @@ using NUnit.Framework;
 namespace UnitTests
 {
     [TestFixture]
-    public class HttpResultTests
+    public class HtmlResultTests
     {
 
         [Test]
@@ -117,9 +117,9 @@ namespace UnitTests
         }
 
 
-        private static IHttpResult BuildHttpResultWithResponseBody(string body)
+        private static HtmlResult BuildHttpResultWithResponseBody(string body)
         {
-            return new HttpResult(new NavigationResult(new Request(""), new Response { Body = body }));
+            return new HtmlResult(new NavigationResult(new Request(""), new Response { Body = body }));
         }
     }
 }

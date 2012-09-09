@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
 using HtmlAgilityPack;
-using HttpGhost.Navigation;
+using HttpGhost.CssSelector;
 
 namespace HttpGhost.Html
 {
     public class Form : Element
     {
-        private readonly string baseUrl;
-
-        public Form(HtmlNode node, string baseUrl) : base(node)
-        {
-            this.baseUrl = baseUrl;
-        }
+        public Form(HtmlNode node) : base(node){}
 
         internal Func<object, string, IHttpResult> OnSubmit { get; set; }
 
@@ -27,7 +22,7 @@ namespace HttpGhost.Html
         }
 
         /// <summary>
-        /// Submits form (POST) to url build by former RequestUrl + forms action attribute
+        /// Submits form (POST) using action-attribute and all input name/values
         /// </summary>
         /// <returns></returns>
         public IHttpResult Submit()

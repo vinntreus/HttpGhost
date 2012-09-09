@@ -1,9 +1,7 @@
 using System.Globalization;
-using System.Linq;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace HttpGhost.Parsing
+namespace HttpGhost.CssSelector
 {
     internal class Token
     {
