@@ -3,7 +3,7 @@ using HttpGhost.Transport;
 
 namespace HttpGhost
 {
-    public class HttpResult : IHttpResult
+    internal class HttpResult : IHttpResult
     {
         public HttpResult(INavigationResult navigationResult)
         {

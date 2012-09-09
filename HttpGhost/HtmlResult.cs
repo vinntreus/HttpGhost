@@ -6,7 +6,7 @@ using HttpGhost.Navigation;
 
 namespace HttpGhost
 {
-    public class HtmlResult : HttpResult, IHtmlResult
+    internal class HtmlResult : HttpResult, IHtmlResult
     {
         private readonly HtmlDocument htmlDoc;
 

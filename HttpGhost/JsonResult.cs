@@ -3,7 +3,7 @@ using HttpGhost.Serialization;
 
 namespace HttpGhost
 {
-    public class JsonResult : HttpResult, IJsonResult
+    internal class JsonResult : HttpResult, IJsonResult
     {
         private readonly JsonSerializer serializer;
 
