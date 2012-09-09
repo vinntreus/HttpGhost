@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace UnitTests
 {
     [TestFixture]
-    public class SessionTests
+    public class HttpSessionTests
     {
         private AuthenticatorFake authenticatorFake;
         private NavigatorFake navigatorFake;

@@ -51,15 +51,15 @@
     <Compile Include="AuthenticatorFake.cs" />
     <Compile Include="NavigatorFake.cs" />
     <Compile Include="Html\ElementsTests.cs" />
-    <Compile Include="HttpResultTests.cs" />
+    <Compile Include="HtmlResultTests.cs" />
     <Compile Include="Navigation\UrlByLinkTests.cs" />
     <Compile Include="Navigation\HttpWebRequestBuilderTests.cs" />
     <Compile Include="RequestFake.cs" />
     <Compile Include="ResponseFake.cs" />
-    <Compile Include="Parsing\SelectorParserTests.cs" />
+    <Compile Include="CssSelector\SelectorParserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\FormSerializerTests.cs" />
-    <Compile Include="SessionTests.cs" />
+    <Compile Include="HttpSessionTests.cs" />
     <Compile Include="Transport\RequestTests.cs" />
     <Compile Include="UrlBuilderTests.cs" />
   </ItemGroup>

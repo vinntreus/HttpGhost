@@ -1,34 +1,11 @@
 using System;
 using HtmlAgilityPack;
+using HttpGhost.CssSelector;
 using HttpGhost.Html;
 using HttpGhost.Navigation;
 
 namespace HttpGhost
 {
-    public interface IHtmlResult : IHttpResult
-    {
-        /// <summary>
-        /// Finds html-elements by using css-selector or xpath
-        /// </summary>
-        /// <param name="selector">Css or xpath-selector</param>
-        /// <returns>Html elements collection</returns>
-        Elements Find(string selector);
-
-        /// <summary>
-        /// Find html form element by using css-selector or xpath
-        /// </summary>
-        /// <param name="selector">Css or xpath-selector</param>
-        /// <returns>Form element</returns>
-        Form FindForm(string selector);
-
-        /// <summary>
-        /// Follow a link, aka simulate a click on a href-element, use css- or xpath-selector to find link and make get request from its href attribute
-        /// </summary>
-        /// <param name="selector">Css or xpath-selector</param>
-        /// <returns>Httpresult</returns>
-        IHttpResult Follow(string selector);
-    }
-
     public class HtmlResult : HttpResult, IHtmlResult
     {
         private readonly HtmlDocument htmlDoc;
@@ -54,7 +31,7 @@ namespace HttpGhost
             {
                 throw new NavigationResultException(FormatSelectorError("Could not find form", selector, Response.Body));
             }
-            return new Form(node, Request.Url) { OnSubmit = OnSubmitForm };
+            return new Form(node) { OnSubmit = OnSubmitForm };
         }
 
         public IHttpResult Follow(string selector)

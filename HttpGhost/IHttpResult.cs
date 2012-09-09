@@ -7,12 +7,10 @@ namespace HttpGhost
         /// <summary>
         /// Time spent in milliseconds
         /// </summary>
-        long TimeSpent { get; }
+        long TimeSpentInMs { get; }
 
         IRequest Request { get; }
 
         IResponse Response { get; }
     }
-
-    
 }

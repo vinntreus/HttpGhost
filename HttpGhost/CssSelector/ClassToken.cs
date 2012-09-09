@@ -1,14 +1,13 @@
-using System.Linq;
 using System.Collections.Generic;
 
-namespace HttpGhost.Parsing
+namespace HttpGhost.CssSelector
 {
-    internal class IdToken : Token
+    internal class ClassToken : Token
     {
         private readonly List<char> pattern;
         private readonly CssSelectorParser selectorParser;
 
-        public IdToken(List<char> pattern, CssSelectorParser selectorParser) : base(selectorParser.PreviousChar)
+        public ClassToken(List<char> pattern, CssSelectorParser selectorParser) : base(selectorParser.PreviousChar)
         {
             this.pattern = pattern;
             this.selectorParser = selectorParser;
@@ -17,12 +16,17 @@ namespace HttpGhost.Parsing
         public void ToXpath()
         {
             selectorParser.IsProcessingAttribute = true;
+
+            if (IsPreviousCharSpace())
+            {
+                pattern.Add('/');
+            }
             if (!IsPreviousCharElement())
             {
                 pattern.Add('*');
             }
-            pattern.AddRange("[@id=\"");
-            selectorParser.EndProcessingAttributeWith = "\"]";
+            pattern.AddRange("[contains(@class,'");
+            selectorParser.EndProcessingAttributeWith = "')]";
         }
     }
 }
