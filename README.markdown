@@ -13,7 +13,7 @@ your desired type.
 
 ## How
 
-It can be installed using nuget: Install-Package HttpGhost
+It can be installed using nuget: <code>Install-Package HttpGhost</code>
 
 HttpGhost can be used with any unit test framework, which makes it easy to plugin with your existing CI-server. 
 It could be used in a simple console application to try out some JSON api or what not.
