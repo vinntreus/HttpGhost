@@ -11,6 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
+      2.0.0.3
+      * Insert values to existing form, which will be posted in submit
+      
       2.0.0.2
       * Update Newtonsoft.Json to 4.5.10
       * Fix issue 26: Now more fluent interface on IHtmlResult
