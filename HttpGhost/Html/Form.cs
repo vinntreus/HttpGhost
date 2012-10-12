@@ -7,7 +7,8 @@ namespace HttpGhost.Html
 {
     public class Form : Element
     {
-        public Form(HtmlNode node) : base(node)
+        public Form(HtmlNode node)
+            : base(node)
         {
             extraValues = new Dictionary<string, string>();
         }
@@ -37,18 +38,20 @@ namespace HttpGhost.Html
         public IHtmlResult Submit()
         {
             var dataToSubmit = GetFormData();
-            foreach (var extraValue in extraValues)
-            {
-                if(!dataToSubmit.ContainsKey(extraValue.Key))
-                {
-                    dataToSubmit.Add(extraValue);
-                }
-            }
+            AddExtraValues(dataToSubmit);
             var action = GetAttribute("action");
             return OnSubmit(dataToSubmit, action);
         }
 
-        private readonly IDictionary<string, string> extraValues; 
+        private void AddExtraValues(IDictionary<string, string> dataToSubmit)
+        {
+            foreach (var extraValue in extraValues)
+            {
+                dataToSubmit[extraValue.Key] = extraValue.Value;
+            }
+        }
+
+        private readonly IDictionary<string, string> extraValues;
 
         /// <summary>
         /// Adds name/value to collection of items to be submited. Item does not need to be in inital form.
@@ -58,7 +61,7 @@ namespace HttpGhost.Html
         /// <returns></returns>
         public Form InsertValue(string name, string value)
         {
-            if(!extraValues.ContainsKey(name))
+            if (!extraValues.ContainsKey(name))
                 extraValues.Add(name, value);
             return this;
         }
@@ -70,18 +73,25 @@ namespace HttpGhost.Html
         public IDictionary<string, string> GetFormData()
         {
             var inputs = Node.SelectNodesByCss("input");
+            if (inputs == null)
+            {
+                return new Dictionary<string, string>();
+            }
+
+            return GetNameValuesFromNodes(inputs);
+        }
+
+        private static IDictionary<string, string> GetNameValuesFromNodes(IEnumerable<HtmlNode> inputs)
+        {
             var data = new Dictionary<string, string>();
 
-            if (inputs != null)
+            foreach (var input in inputs)
             {
-                foreach (var input in inputs)
+                var name = input.GetAttributeValue("name", "");
+                var value = input.GetAttributeValue("value", "");
+                if (!string.IsNullOrEmpty(name))
                 {
-                    var name = input.GetAttributeValue("name", "");
-                    var value = input.GetAttributeValue("value", "");
-                    if (!string.IsNullOrEmpty(name))
-                    {
-                        data.Add(name, value);
-                    }
+                    data[name] = value;
                 }
             }
 
