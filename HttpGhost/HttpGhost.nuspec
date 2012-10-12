@@ -11,6 +11,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
+      2.0.0.4
+      * Handle same names in form submit
+      
       2.0.0.3
       * Insert values to existing form, which will be posted in submit
       
