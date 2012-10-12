@@ -11,6 +11,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
+      2.0.0.2
+      * Update Newtonsoft.Json to 4.5.10
+      * Fix issue 26: Now more fluent interface on IHtmlResult
+      
       2.0.0.1
       * Update HtmlSession and JsonSession ctor to be as HttpSession
       
@@ -24,7 +28,7 @@
     <tags>Http Ghost Test Integrationtest</tags>
     <dependencies>
       <dependency id="HtmlAgilityPack" version="1.4.6" />
-      <dependency id="Newtonsoft.Json" version="4.5.9" />      
+      <dependency id="Newtonsoft.Json" version="4.5.10" />      
     </dependencies>
   </metadata>
 </package>
