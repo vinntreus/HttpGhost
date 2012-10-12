@@ -16,8 +16,8 @@ namespace HttpGhost
             htmlDoc.LoadHtml(Response.Body);
         }
 
-        internal Func<string, IHttpResult> OnFollow { get; set; }
-        internal Func<object, string, IHttpResult> OnSubmitForm { get; set; }
+        internal Func<string, IHtmlResult> OnFollow { get; set; }
+        internal Func<object, string, IHtmlResult> OnSubmitForm { get; set; }
 
         public Elements Find(string selector)
         {
@@ -34,7 +34,7 @@ namespace HttpGhost
             return new Form(node) { OnSubmit = OnSubmitForm };
         }
 
-        public IHttpResult Follow(string selector)
+        public IHtmlResult Follow(string selector)
         {
             var href = Find(selector).Attribute("href");
             if (string.IsNullOrEmpty(href))

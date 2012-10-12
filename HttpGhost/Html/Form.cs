@@ -9,7 +9,7 @@ namespace HttpGhost.Html
     {
         public Form(HtmlNode node) : base(node){}
 
-        internal Func<object, string, IHttpResult> OnSubmit { get; set; }
+        internal Func<object, string, IHtmlResult> OnSubmit { get; set; }
 
         public Form SetValue(string selector, string value)
         {
@@ -25,7 +25,7 @@ namespace HttpGhost.Html
         /// Submits form (POST) using action-attribute and all input name/values
         /// </summary>
         /// <returns></returns>
-        public IHttpResult Submit()
+        public IHtmlResult Submit()
         {
             var dataToSubmit = GetFormData();
             var action = GetAttribute("action");

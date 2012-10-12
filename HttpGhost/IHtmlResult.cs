@@ -23,6 +23,6 @@ namespace HttpGhost
         /// </summary>
         /// <param name="selector">Css or xpath-selector</param>
         /// <returns>Httpresult</returns>
-        IHttpResult Follow(string selector);
+        IHtmlResult Follow(string selector);
     }
 }
