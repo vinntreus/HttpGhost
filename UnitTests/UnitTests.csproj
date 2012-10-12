@@ -49,6 +49,7 @@
     <Compile Include="Authentication\BasicAuthenticationTests.cs" />
     <Compile Include="Authentication\CredentialsTests.cs" />
     <Compile Include="AuthenticatorFake.cs" />
+    <Compile Include="Html\FormTests.cs" />
     <Compile Include="NavigatorFake.cs" />
     <Compile Include="Html\ElementsTests.cs" />
     <Compile Include="HtmlResultTests.cs" />

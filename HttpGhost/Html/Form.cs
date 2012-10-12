@@ -7,10 +7,19 @@ namespace HttpGhost.Html
 {
     public class Form : Element
     {
-        public Form(HtmlNode node) : base(node){}
+        public Form(HtmlNode node) : base(node)
+        {
+            extraValues = new Dictionary<string, string>();
+        }
 
         internal Func<object, string, IHtmlResult> OnSubmit { get; set; }
 
+        /// <summary>
+        /// Sets value on existing element which is a child of the actual form element
+        /// </summary>
+        /// <param name="selector">css or xpath</param>
+        /// <param name="value">field value</param>
+        /// <returns></returns>
         public Form SetValue(string selector, string value)
         {
             var field = Node.SelectNodesByCss(selector);
@@ -28,8 +37,30 @@ namespace HttpGhost.Html
         public IHtmlResult Submit()
         {
             var dataToSubmit = GetFormData();
+            foreach (var extraValue in extraValues)
+            {
+                if(!dataToSubmit.ContainsKey(extraValue.Key))
+                {
+                    dataToSubmit.Add(extraValue);
+                }
+            }
             var action = GetAttribute("action");
             return OnSubmit(dataToSubmit, action);
+        }
+
+        private readonly IDictionary<string, string> extraValues; 
+
+        /// <summary>
+        /// Adds name/value to collection of items to be submited. Item does not need to be in inital form.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public Form InsertValue(string name, string value)
+        {
+            if(!extraValues.ContainsKey(name))
+                extraValues.Add(name, value);
+            return this;
         }
 
         /// <summary>
@@ -40,15 +71,20 @@ namespace HttpGhost.Html
         {
             var inputs = Node.SelectNodesByCss("input");
             var data = new Dictionary<string, string>();
-            foreach (var input in inputs)
+
+            if (inputs != null)
             {
-                var name = input.GetAttributeValue("name", "");
-                var value = input.GetAttributeValue("value", "");
-                if (!string.IsNullOrEmpty(name))
+                foreach (var input in inputs)
                 {
-                    data.Add(name, value);
+                    var name = input.GetAttributeValue("name", "");
+                    var value = input.GetAttributeValue("value", "");
+                    if (!string.IsNullOrEmpty(name))
+                    {
+                        data.Add(name, value);
+                    }
                 }
             }
+
             return data;
         }
     }
