@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Nancy;
+﻿using Nancy;
 using Nancy.Security;
 namespace IntegrationTests.Nancy
 {
@@ -12,14 +8,11 @@ namespace IntegrationTests.Nancy
         {
             this.RequiresAuthentication();
             
-            Get["/basic"] = _ => { return "got it"; };
-            Post["/basic"] = m => { return Request.Form["Title"].Value; };
-            Put["/basic"] = m => { return Request.Form["Title"].Value; };
-            Delete["/basic"] = m => { return Request.Form["Id"].Value; };
-            Post["/basic/redir"] = m => {
-                var auth = Request.Headers["Authorization"];
-                return Response.AsRedirect("/basic"); 
-            };
+            Get["/basic"] = _ => "got it";
+            Post["/basic"] = m => Request.Form["Title"].Value;
+            Put["/basic"] = m => Request.Form["Title"].Value;
+            Delete["/basic"] = m => Request.Form["Id"].Value;
+            Post["/basic/redir"] = m => Response.AsRedirect("/basic");
         }
     }
 }

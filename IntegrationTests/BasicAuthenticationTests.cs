@@ -10,15 +10,15 @@ namespace IntegrationTests
     {
         private const string USERNAME = "user";
         private const string PASSWORD = "pass";
-        //this is found in IntegrationTests.Nancy/Basic
-        private const string BASE_URL = "http://127.0.0.1:8080/basic";
+
+        private string BasicAuthUrl {get { return BaseUrl + "/basic"; }}
 
         [Test]
         public void Session_GetWithoutcredentials_Fails()
         {
             var session = new HttpSession();
 
-            Assert.That(() => session.Get(BASE_URL), 
+            Assert.That(() => session.Get(BasicAuthUrl), 
                         Throws.TypeOf<WebException>().With.Message.StringContaining("401"));            
         }
 
@@ -27,7 +27,7 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Get(BASE_URL);
+            var result = session.Get(BasicAuthUrl);
 
             Assert.That(result.Response.Body, Is.StringContaining("got it"));
         }
@@ -37,7 +37,7 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Post(BASE_URL, new { Title = "jippi" }, ContentType.X_WWW_FORM_URLENCODED);
+            var result = session.Post(BasicAuthUrl, new { Title = "jippi" }, ContentType.X_WWW_FORM_URLENCODED);
 
             Assert.That(result.Response.Body, Is.StringContaining("jippi"));
         }
@@ -47,7 +47,7 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Put(BASE_URL, new { Title = "jippi2" }, ContentType.X_WWW_FORM_URLENCODED);
+            var result = session.Put(BasicAuthUrl, new { Title = "jippi2" }, ContentType.X_WWW_FORM_URLENCODED);
 
             Assert.That(result.Response.Body, Is.StringContaining("jippi2"));
         }
@@ -57,7 +57,7 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Delete(BASE_URL, new { Id = 1 }, ContentType.X_WWW_FORM_URLENCODED);
+            var result = session.Delete(BasicAuthUrl, new { Id = 1 }, ContentType.X_WWW_FORM_URLENCODED);
 
             Assert.That(result.Response.Body, Is.StringContaining("1"));
         }       
@@ -67,7 +67,7 @@ namespace IntegrationTests
         {
             var session = GetSessionWithBasicAuthentication();
 
-            var result = session.Post(BASE_URL + "/redir", new { title = "arne" }, ContentType.X_WWW_FORM_URLENCODED);
+            var result = session.Post(BasicAuthUrl + "/redir", new { title = "arne" }, ContentType.X_WWW_FORM_URLENCODED);
 
             Assert.That(result.Response.Body, Is.StringContaining("got it"));
         }

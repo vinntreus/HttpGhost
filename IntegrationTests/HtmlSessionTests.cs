@@ -7,7 +7,6 @@ namespace IntegrationTests
     [Category("Integration")]
     public class HtmlSessionTests : IntegrationTestsBase
     {
-        protected readonly string BaseUrl = "http://127.0.0.1:8080";
         private HtmlSession session;
 
         [SetUp]

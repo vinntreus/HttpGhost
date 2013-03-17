@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using IntegrationTests.Nancy;
 
 namespace IntegrationTests.NancyConsole
@@ -11,7 +9,7 @@ namespace IntegrationTests.NancyConsole
         {
             var host = new Host();
             host.Start();
-            Console.WriteLine("Host up at http://127.0.0.1:8080, press any key to quit");
+            Console.WriteLine("Host up at http://127.0.0.1:1234, press any key to quit");
             Console.ReadLine();
             host.Stop();
         }
