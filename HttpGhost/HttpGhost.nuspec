@@ -11,19 +11,22 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>
+      2.0.0.5
+      * Update Newtonsoft.Json to 4.5.11
+
       2.0.0.4
       * Handle same names in form submit
-      
+
       2.0.0.3
       * Insert values to existing form, which will be posted in submit
-      
+
       2.0.0.2
       * Update Newtonsoft.Json to 4.5.10
       * Fix issue 26: Now more fluent interface on IHtmlResult
-      
+
       2.0.0.1
       * Update HtmlSession and JsonSession ctor to be as HttpSession
-      
+
       2.0.0.0
       * Find elements by attribute using css selector
       * Submit form
@@ -34,7 +37,7 @@
     <tags>Http Ghost Test Integrationtest</tags>
     <dependencies>
       <dependency id="HtmlAgilityPack" version="1.4.6" />
-      <dependency id="Newtonsoft.Json" version="4.5.10" />      
+      <dependency id="Newtonsoft.Json" version="4.5.11" />      
     </dependencies>
   </metadata>
 </package>
