@@ -9,9 +9,9 @@ namespace IntegrationTests
         private Host host;
 
         /// <summary>
-        /// http://127.0.0.1:1234, found in IntegrationTests.Nancy project
+        /// http://localhost:1234, found in IntegrationTests.Nancy project
         /// </summary>
-        protected readonly string BaseUrl = "http://127.0.0.1:1234";
+        protected readonly string BaseUrl = "http://localhost:1234";
 
         [TestFixtureSetUp]
         public void BeforeAllTests()

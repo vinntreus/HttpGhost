@@ -1,5 +1,4 @@
 using System;
-using IntegrationTests.Nancy.Modules;
 using Nancy.Hosting.Self;
 
 namespace IntegrationTests.Nancy
@@ -8,9 +7,10 @@ namespace IntegrationTests.Nancy
     {
         private readonly NancyHost host;
 
-        public Host(string path = "http://127.0.0.1:1234")
+        public Host(string path = "http://localhost:1234")
         {
-            host = new NancyHost(new AuthenticationBootstrapper(), new Uri(path));
+            var configuration = new HostConfiguration { RewriteLocalhost = false };
+            host = new NancyHost(new Uri(path), new AuthenticationBootstrapper(), configuration);
         }
 
         public void Start()
