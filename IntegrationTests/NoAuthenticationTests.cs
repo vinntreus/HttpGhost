@@ -7,7 +7,7 @@ namespace IntegrationTests
     [Category("Integration")]
 	public class NoAuthenticationTests : IntegrationTestsBase
 	{
-        protected readonly string BaseUrl = "http://127.0.0.1:1234";
+        protected readonly string BaseUrl = "http://localhost:1234";
 	    private HttpSession session;
 
 	    [SetUp]
